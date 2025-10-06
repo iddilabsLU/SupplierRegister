@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(npm install:*)",
+      "mcp__shadcn__get_project_registries",
+      "mcp__shadcn__search_items_in_registries",
+      "mcp__shadcn__view_items_in_registries",
+      "mcp__shadcn__get_add_command_for_items",
+      "mcp__shadcn__get_item_examples_from_registries",
+      "Bash(cmd /c npx -y shadcn@latest add @shadcn/form @shadcn/sonner)",
+      "Bash(npx:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)",
+      "Read(//c/Users/Acca/.claude/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    // Essential for this project
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+
+    // Highly recommended
+    "usernamehw.errorlens",
+    "aaron-bond.better-comments",
+    "yoavbls.pretty-ts-errors",
+
+    // Optional but useful
+    "formulahendry.auto-rename-tag",
+    "streetsidesoftware.code-spell-checker",
+    "eamodio.gitlens"
+  ],
+  "unwantedRecommendations": []
+}
