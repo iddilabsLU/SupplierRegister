@@ -23,25 +23,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Boilerplate Theme - Next.js + shadcn/ui",
-    template: "%s | Boilerplate Theme",
+    default: "Supplier Outsourcing Register - CSSF Circular 22/806 Demo",
+    template: "%s | Supplier Register",
   },
-  description: "A production-ready Next.js boilerplate with shadcn/ui, Tailwind CSS, TypeScript, and dark mode support.",
-  keywords: ["Next.js", "React", "TypeScript", "shadcn/ui", "Tailwind CSS", "Boilerplate"],
-  authors: [{ name: "Your Name" }],
-  creator: "Your Name",
+  description: "A comprehensive demo showcasing CSSF Circular 22/806 compliance for financial institutions managing outsourcing arrangements. Includes all mandatory and critical-only fields with full traceability.",
+  keywords: ["CSSF", "Outsourcing Register", "Luxembourg", "Financial Compliance", "Circular 22/806", "Regulatory"],
+  authors: [{ name: "Demo Application" }],
+  creator: "Demo Application",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://yoursite.com",
-    title: "Boilerplate Theme - Next.js + shadcn/ui",
-    description: "A production-ready Next.js boilerplate with shadcn/ui, Tailwind CSS, TypeScript, and dark mode support.",
-    siteName: "Boilerplate Theme",
+    title: "Supplier Outsourcing Register - CSSF Circular 22/806 Demo",
+    description: "A comprehensive demo showcasing CSSF Circular 22/806 compliance for financial institutions managing outsourcing arrangements.",
+    siteName: "Supplier Outsourcing Register",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Boilerplate Theme - Next.js + shadcn/ui",
-    description: "A production-ready Next.js boilerplate with shadcn/ui, Tailwind CSS, TypeScript, and dark mode support.",
+    title: "Supplier Outsourcing Register - CSSF Circular 22/806 Demo",
+    description: "A comprehensive demo showcasing CSSF Circular 22/806 compliance for financial institutions.",
     creator: "@yourusername",
   },
   robots: {
