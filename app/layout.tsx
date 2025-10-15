@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Poppins, Lora, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
-import { ThemeProvider } from "@/components/providers/theme-provider"
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -60,15 +59,8 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${lora.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        {children}
+        <Toaster />
       </body>
     </html>
   );

@@ -12,9 +12,9 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="space-y-6 text-center">
           <div className="space-y-4">
-            <Badge variant="outline" className="text-sm">
+            <Button variant="secondary" size="sm" className="pointer-events-none">
               Demo Application
-            </Badge>
+            </Button>
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
               Supplier Outsourcing Register
             </h1>
@@ -92,20 +92,6 @@ export default function HomePage() {
               54.a-54.i) and, where applicable, additional requirements for critical functions (points 55.a-55.l).
             </p>
           </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="space-y-4 text-center">
-          <h2 className="text-2xl font-semibold">Ready to Explore?</h2>
-          <p className="text-muted-foreground">
-            View the complete outsourcing register with all CSSF-required fields and references.
-          </p>
-          <Link href="/suppliers">
-            <Button size="lg" variant="outline" className="gap-2">
-              View Register
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
         </section>
       </div>
     </AppLayout>

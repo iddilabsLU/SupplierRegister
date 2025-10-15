@@ -37,7 +37,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
 
   return (
     <div className="w-full">
-      <div className="rounded-md border bg-white dark:bg-background">
+      <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
             <TableRow>
@@ -84,7 +84,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                     </TableCell>
                     <TableCell className="font-medium">{supplier.referenceNumber}</TableCell>
                     <TableCell className="max-w-[300px]">
-                      <div className="truncate" title={supplier.functionDescription.description}>
+                      <div className="whitespace-normal break-words">
                         {supplier.functionDescription.description}
                       </div>
                     </TableCell>

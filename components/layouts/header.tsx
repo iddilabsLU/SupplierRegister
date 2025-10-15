@@ -4,7 +4,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Package } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { ThemeToggle } from "@/components/shared/theme-toggle"
 
 export function Header() {
   const pathname = usePathname()
@@ -12,15 +11,15 @@ export function Header() {
   const navItems: { href: string; label: string }[] = []
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-8">
+    <header className="sticky top-0 z-50 w-full border-b border-primary bg-primary">
+      <div className="container flex h-12 items-center justify-between px-4 md:px-8">
         {/* Logo/Brand */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <Package className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold text-foreground hidden sm:inline-block">
+          <Package className="h-5 w-5 text-primary-foreground" />
+          <span className="text-base font-bold text-primary-foreground hidden sm:inline-block">
             Supplier Register
           </span>
-          <span className="text-lg font-bold text-foreground sm:hidden">
+          <span className="text-base font-bold text-primary-foreground sm:hidden">
             SR
           </span>
         </Link>
@@ -59,9 +58,6 @@ export function Header() {
               </Link>
             ))}
           </div>
-
-          {/* Theme Toggle */}
-          <ThemeToggle />
         </nav>
       </div>
     </header>

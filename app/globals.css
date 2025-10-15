@@ -110,59 +110,6 @@
   --shadow-2xl: 0 1px 3px 0px oklch(0 0 0 / 0.25);
 }
 
-.dark {
-  /* Background & text - inverted for dark mode */
-  --background: oklch(0.15 0.00 255.00);           /* #1A1A1A - dark background */
-  --foreground: oklch(0.95 0.00 89.88);            /* #F0F0F0 - light text */
-
-  /* Cards / popovers - darker than background */
-  --card: oklch(0.18 0.00 89.88);                  /* #222222 */
-  --card-foreground: oklch(0.95 0.00 89.88);       /* #F0F0F0 */
-  --popover: oklch(0.18 0.00 89.88);               /* #222222 */
-  --popover-foreground: oklch(0.95 0.00 89.88);    /* #F0F0F0 */
-
-  /* Primary - lighter version for dark mode */
-  --primary: oklch(0.60 0.08 250.36);              /* #5B8FC7 - lighter blue */
-  --primary-foreground: oklch(0.15 0.00 89.88);    /* #1A1A1A - dark text on primary */
-
-  /* Secondary - darker beige for dark mode */
-  --secondary: oklch(0.25 0.01 84.50);             /* #2E2D2A */
-  --secondary-foreground: oklch(0.90 0.01 84.50);  /* #E0DDD5 */
-
-  /* Muted - dark gray */
-  --muted: oklch(0.22 0.00 255.00);                /* #2A2A2A */
-  --muted-foreground: oklch(0.65 0.01 261.77);     /* #9B9FA6 */
-
-  /* Accent - dark beige */
-  --accent: oklch(0.25 0.01 84.50);                /* #2E2D2A */
-  --accent-foreground: oklch(0.90 0.01 84.50);     /* #E0DDD5 */
-
-  /* Destructive - softer red for dark mode */
-  --destructive: oklch(0.65 0.18 29.48);           /* #E86B5F */
-
-  /* Borders / inputs / focus ring */
-  --border: oklch(0.28 0.00 92.00);                /* #3A3936 */
-  --input:  oklch(0.28 0.00 92.00);                /* #3A3936 */
-  --ring:   oklch(0.60 0.08 249.78);               /* #5B8FC7 */
-
-  /* Charts - adjusted for dark backgrounds */
-  --chart-1: oklch(0.58 0.10 253.35);  /* lighter navy */
-  --chart-2: oklch(0.68 0.10 161.41);  /* lighter sage */
-  --chart-3: oklch(0.70 0.14 7.06);    /* lighter terracotta */
-  --chart-4: oklch(0.78 0.13 82.54);   /* lighter amber */
-  --chart-5: oklch(0.62 0.10 311.76);  /* lighter plum */
-
-  /* Sidebar */
-  --sidebar: oklch(0.18 0.00 255.00);              /* #222222 */
-  --sidebar-foreground: oklch(0.95 0.00 89.88);    /* #F0F0F0 */
-  --sidebar-primary: oklch(0.60 0.08 250.36);      /* #5B8FC7 */
-  --sidebar-primary-foreground: oklch(0.15 0 0);   /* #1A1A1A */
-  --sidebar-accent: oklch(0.22 0.00 255.00);       /* #2A2A2A */
-  --sidebar-accent-foreground: oklch(0.90 0.01 84.50);
-  --sidebar-border: oklch(0.28 0.00 92.00);        /* #3A3936 */
-  --sidebar-ring: oklch(0.60 0.08 249.78);         /* #5B8FC7 */
-}
-
 /* Optional gentle hovers */
 .btn-primary:hover { background: color-mix(in oklab, var(--primary), white 8%); }
 .tag-secondary:hover { background: color-mix(in oklab, var(--secondary), black 4%); }

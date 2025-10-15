@@ -5,11 +5,11 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="w-full border-t border-border bg-background">
+    <footer className="w-full border-t border-primary bg-primary">
       <div className="container px-4 py-8 md:px-8">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           {/* Copyright */}
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-primary-foreground/70">
             © {currentYear} Boilerplate Theme. Built with Next.js & shadcn/ui.
           </p>
 
@@ -17,7 +17,7 @@ export function Footer() {
           <div className="flex items-center gap-6">
             <Link
               href="/"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
             >
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">Home</span>
@@ -26,7 +26,7 @@ export function Footer() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
             >
               <Github className="h-4 w-4" />
               <span className="hidden sm:inline">GitHub</span>
@@ -35,7 +35,7 @@ export function Footer() {
               href="https://ui.shadcn.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
             >
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Docs</span>
@@ -45,7 +45,7 @@ export function Footer() {
 
         {/* Secondary Info */}
         <div className="mt-4 text-center">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-primary-foreground/50">
             Created with Claude Code • Mobile-First • Fully Responsive
           </p>
         </div>
