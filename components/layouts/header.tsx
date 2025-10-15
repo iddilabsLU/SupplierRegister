@@ -2,29 +2,26 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Settings } from "lucide-react"
+import { Package } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/shared/theme-toggle"
 
 export function Header() {
   const pathname = usePathname()
 
-  const navItems = [
-    { href: "/", label: "Theme Showcase" },
-    { href: "/register", label: "Register Example" },
-  ]
+  const navItems: { href: string; label: string }[] = []
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4 md:px-8">
         {/* Logo/Brand */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <Settings className="h-6 w-6 text-primary" />
+          <Package className="h-6 w-6 text-primary" />
           <span className="text-lg font-bold text-foreground hidden sm:inline-block">
-            Boilerplate Theme
+            Supplier Register
           </span>
           <span className="text-lg font-bold text-foreground sm:hidden">
-            BT
+            SR
           </span>
         </Link>
 

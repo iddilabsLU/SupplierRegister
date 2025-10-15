@@ -37,7 +37,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-white dark:bg-background">
         <Table>
           <TableHeader>
             <TableRow>
