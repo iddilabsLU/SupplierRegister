@@ -3,7 +3,6 @@
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -11,9 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
+import type {
   CustomFilter,
-  FilterFieldType,
+  FilterFieldType} from "@/lib/types/filters";
+import {
   FILTER_FIELD_OPTIONS,
 } from "@/lib/types/filters"
 

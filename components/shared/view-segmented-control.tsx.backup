@@ -1,0 +1,52 @@
+"use client"
+
+import { List, FileText, BarChart3 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils/cn"
+
+export type ViewType = "list" | "new" | "dashboard"
+
+interface ViewSegmentedControlProps {
+  activeView: ViewType
+  onViewChange: (view: ViewType) => void
+}
+
+export function ViewSegmentedControl({
+  activeView,
+  onViewChange,
+}: ViewSegmentedControlProps) {
+  const views: { value: ViewType; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { value: "list", label: "Register List", icon: List },
+    { value: "new", label: "New Entry", icon: FileText },
+    { value: "dashboard", label: "Dashboard", icon: BarChart3 },
+  ]
+
+  return (
+    <div className="flex justify-center">
+      <div className="inline-flex items-center rounded-lg bg-muted p-1 gap-1">
+        {views.map((view) => {
+          const Icon = view.icon
+          const isActive = activeView === view.value
+
+          return (
+            <Button
+              key={view.value}
+              variant={isActive ? "default" : "ghost"}
+              size="sm"
+              onClick={() => onViewChange(view.value)}
+              className={cn(
+                "gap-2 transition-all",
+                isActive
+                  ? "bg-background shadow-sm hover:bg-background"
+                  : "hover:bg-background/50"
+              )}
+            >
+              <Icon className="h-4 w-4" />
+              {view.label}
+            </Button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}

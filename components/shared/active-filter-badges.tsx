@@ -3,9 +3,10 @@
 import { X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
+import type {
   QuickFilters,
-  CustomFilter,
+  CustomFilter} from "@/lib/types/filters";
+import {
   FILTER_FIELD_OPTIONS,
 } from "@/lib/types/filters"
 

@@ -2,7 +2,7 @@
 
 import { AlertCircle, Cloud } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { QuickFilters as QuickFiltersType } from "@/lib/types/filters"
+import type { QuickFilters as QuickFiltersType } from "@/lib/types/filters"
 import { cn } from "@/lib/utils/cn"
 
 interface QuickFiltersProps {

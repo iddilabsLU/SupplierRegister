@@ -1,8 +1,7 @@
 import Link from "next/link"
 import { AppLayout } from "@/components/layouts/app-layout"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { FileText, Shield, CheckCircle, ArrowRight } from "lucide-react"
 
 export default function HomePage() {

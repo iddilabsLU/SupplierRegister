@@ -31,9 +31,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { SupplierOutsourcing } from "@/lib/types/supplier"
+import type { SupplierOutsourcing } from "@/lib/types/supplier"
 import { FieldDisplay } from "./field-display"
-import { formatDate, formatDateShort } from "@/lib/utils/formatters"
+import { formatDateShort } from "@/lib/utils/formatters"
 import { toast } from "sonner"
 
 interface SupplierRegisterTableProps {
@@ -123,7 +123,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
         <Table className="w-full table-fixed">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[2.5%]"></TableHead>
+              <TableHead className="w-[2.5%]" />
               <TableHead className="w-[6%]">Ref.</TableHead>
               <TableHead className="w-[17%]">Function</TableHead>
               <TableHead className="w-[14%]">Provider</TableHead>

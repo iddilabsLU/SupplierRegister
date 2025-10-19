@@ -3,14 +3,13 @@
 import { useState } from "react"
 import { ChevronDown, ChevronRight, Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import {
+import type {
   QuickFilters as QuickFiltersType,
   CustomFilter,
   FilterFieldType,
@@ -125,7 +124,7 @@ export function FilterPanel({
                 <div className="flex flex-1 items-center gap-2">
                   <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Custom:</span>
                   <div className="flex flex-wrap items-center gap-2 flex-1">
-                    {customFilters.map((filter, index) => (
+                    {customFilters.map((filter) => (
                       <CustomFilterRow
                         key={filter.id}
                         filter={filter}

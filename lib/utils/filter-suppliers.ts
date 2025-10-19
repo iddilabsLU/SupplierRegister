@@ -1,5 +1,5 @@
-import { SupplierOutsourcing } from "@/lib/types/supplier"
-import { QuickFilters, CustomFilter, FilterFieldType } from "@/lib/types/filters"
+import type { SupplierOutsourcing } from "@/lib/types/supplier"
+import type { QuickFilters, CustomFilter, FilterFieldType } from "@/lib/types/filters"
 
 /**
  * Filters suppliers based on quick filters and custom filters

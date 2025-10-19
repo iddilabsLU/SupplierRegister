@@ -1,5 +1,6 @@
+import type {
+  SupplierOutsourcing} from "@/lib/types/supplier";
 import {
-  SupplierOutsourcing,
   OutsourcingCategory,
   CloudServiceModel,
   DeploymentModel,
