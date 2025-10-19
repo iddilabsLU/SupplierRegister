@@ -4,6 +4,8 @@ import {
   CloudServiceModel,
   DeploymentModel,
   SubstitutabilityOutcome,
+  OutsourcingStatus,
+  RiskLevel,
 } from "@/lib/types/supplier"
 
 /**
@@ -14,6 +16,7 @@ export const suppliers: SupplierOutsourcing[] = [
   // SUPPLIER 1: Critical - IT Infrastructure Provider
   {
     referenceNumber: "OUT-2024-001",
+    status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2022-01-15",
       nextRenewalDate: "2025-01-15",
@@ -21,12 +24,13 @@ export const suppliers: SupplierOutsourcing[] = [
       entityNoticePeriod: "180 days",
     },
     functionDescription: {
+      name: "Cloud Hosting Infrastructure",
       description: "Cloud hosting infrastructure for core banking systems and customer databases",
       dataDescription: "Customer account data, transaction records, personal identification information",
       personalDataInvolved: true,
       personalDataTransferred: true,
     },
-    category: OutsourcingCategory.ICT,
+    category: OutsourcingCategory.CLOUD,
     serviceProvider: {
       name: "CloudTech Solutions S.A.",
       corporateRegistrationNumber: "B123456",
@@ -50,6 +54,8 @@ export const suppliers: SupplierOutsourcing[] = [
       deploymentModel: DeploymentModel.PRIVATE,
       dataNature: "Customer personal data, financial transactions, account balances",
       storageLocations: ["Luxembourg (primary)", "Germany (disaster recovery)"],
+      cloudOfficer: "Jean Dupont",
+      resourceOperator: "CloudTech Operations S.A.",
     },
     criticalFields: {
       entitiesUsing: {
@@ -61,6 +67,7 @@ export const suppliers: SupplierOutsourcing[] = [
         isOwnedByGroup: false,
       },
       riskAssessment: {
+        risk: RiskLevel.HIGH,
         lastAssessmentDate: "2024-09-15",
         mainResults: "High dependency risk identified. Mitigation: Multi-cloud strategy in progress. Data encryption and access controls adequate. Exit strategy documented.",
       },
@@ -74,6 +81,7 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-06-20",
       },
       subOutsourcing: {
+        activityDescription: "Physical data center infrastructure and network connectivity services",
         subContractors: [
           {
             name: "SecureNet Data Centers GmbH",
@@ -91,6 +99,7 @@ export const suppliers: SupplierOutsourcing[] = [
       alternativeProviders: ["Azure Government Cloud", "AWS Financial Services", "IBM Cloud for Financial Services"],
       isTimeCritical: true,
       estimatedAnnualCost: 850000,
+      costComments: "Annual cost includes infrastructure hosting, data center services, and 24/7 technical support. Cost reviewed quarterly.",
       regulatoryNotification: {
         notificationDate: "2021-11-10",
       },
@@ -100,6 +109,7 @@ export const suppliers: SupplierOutsourcing[] = [
   // SUPPLIER 2: Non-Critical - Office Cleaning Services
   {
     referenceNumber: "OUT-2024-002",
+    status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2023-03-01",
       nextRenewalDate: "2025-03-01",
@@ -107,6 +117,7 @@ export const suppliers: SupplierOutsourcing[] = [
       entityNoticePeriod: "30 days",
     },
     functionDescription: {
+      name: "Office Cleaning & Maintenance",
       description: "Office cleaning and maintenance services for headquarters building",
       dataDescription: "Access to office spaces during non-business hours. No access to IT systems or documents.",
       personalDataInvolved: false,
@@ -133,6 +144,7 @@ export const suppliers: SupplierOutsourcing[] = [
   // SUPPLIER 3: Critical - Payment Processing
   {
     referenceNumber: "OUT-2024-003",
+    status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2021-06-01",
       nextRenewalDate: "2026-06-01",
@@ -141,6 +153,7 @@ export const suppliers: SupplierOutsourcing[] = [
       entityNoticePeriod: "365 days",
     },
     functionDescription: {
+      name: "Payment Processing Services",
       description: "Payment processing services for SEPA transfers, card payments, and international wire transfers",
       dataDescription: "Payment transaction data, beneficiary information, IBAN/BIC codes, transaction amounts",
       personalDataInvolved: true,
@@ -170,6 +183,8 @@ export const suppliers: SupplierOutsourcing[] = [
       deploymentModel: DeploymentModel.HYBRID,
       dataNature: "Payment transaction data, customer identification for AML/KYC",
       storageLocations: ["Luxembourg", "Belgium"],
+      cloudOfficer: "Pierre Martin",
+      resourceOperator: "EuroPayments Cloud Services S.A.",
     },
     criticalFields: {
       entitiesUsing: {
@@ -180,6 +195,7 @@ export const suppliers: SupplierOutsourcing[] = [
         isOwnedByGroup: false,
       },
       riskAssessment: {
+        risk: RiskLevel.MEDIUM,
         lastAssessmentDate: "2024-10-01",
         mainResults: "Medium risk. Provider is financially stable with ISO 27001 certification. Concentration risk noted - provider handles 60% of our payment volume. Business continuity plans tested annually.",
       },
@@ -193,6 +209,7 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-05-10",
       },
       subOutsourcing: {
+        activityDescription: "International wire transfer messaging and settlement services via SWIFT network",
         subContractors: [
           {
             name: "SWIFT Belgium",
@@ -210,6 +227,7 @@ export const suppliers: SupplierOutsourcing[] = [
       alternativeProviders: ["LuxPayments S.A.", "CETREL S.A.", "SIX Payment Services"],
       isTimeCritical: true,
       estimatedAnnualCost: 420000,
+      costComments: "Includes transaction processing fees, SWIFT network access, and compliance monitoring. Volume-based pricing with annual cap.",
       regulatoryNotification: {
         notificationDate: "2021-04-15",
       },
@@ -219,6 +237,7 @@ export const suppliers: SupplierOutsourcing[] = [
   // SUPPLIER 4: Non-Critical - Marketing Services
   {
     referenceNumber: "OUT-2024-004",
+    status: OutsourcingStatus.NOT_YET_ACTIVE,
     dates: {
       startDate: "2024-01-10",
       nextRenewalDate: "2025-01-10",
@@ -226,6 +245,7 @@ export const suppliers: SupplierOutsourcing[] = [
       entityNoticePeriod: "60 days",
     },
     functionDescription: {
+      name: "Digital Marketing Services",
       description: "Digital marketing services including social media management, content creation, and email campaigns",
       dataDescription: "Marketing contact lists (names, emails, preferences), campaign performance data",
       personalDataInvolved: true,
@@ -253,6 +273,7 @@ export const suppliers: SupplierOutsourcing[] = [
   // SUPPLIER 5: Critical - Core Banking Software (SaaS)
   {
     referenceNumber: "OUT-2024-005",
+    status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2020-09-01",
       nextRenewalDate: "2025-09-01",
@@ -260,12 +281,13 @@ export const suppliers: SupplierOutsourcing[] = [
       entityNoticePeriod: "24 months",
     },
     functionDescription: {
+      name: "Core Banking Platform (SaaS)",
       description: "Core banking platform providing account management, transaction processing, loan management, and regulatory reporting",
       dataDescription: "Complete customer database including accounts, transactions, loans, personal information, financial history",
       personalDataInvolved: true,
       personalDataTransferred: true,
     },
-    category: OutsourcingCategory.ICT,
+    category: OutsourcingCategory.CLOUD,
     serviceProvider: {
       name: "BankingSoft International S.A.",
       corporateRegistrationNumber: "B334455",
@@ -289,6 +311,8 @@ export const suppliers: SupplierOutsourcing[] = [
       deploymentModel: DeploymentModel.PRIVATE,
       dataNature: "Full customer database, all financial transactions, account balances, credit information, PII",
       storageLocations: ["Luxembourg (contractually restricted)"],
+      cloudOfficer: "Marie Schmidt",
+      resourceOperator: "BankingSoft Cloud Services Ltd.",
     },
     criticalFields: {
       entitiesUsing: {
@@ -299,6 +323,7 @@ export const suppliers: SupplierOutsourcing[] = [
         isOwnedByGroup: false,
       },
       riskAssessment: {
+        risk: RiskLevel.HIGH,
         lastAssessmentDate: "2024-09-30",
         mainResults: "Critical dependency risk. Provider is market leader with strong financial position. Single point of failure identified. Exit costs prohibitive (estimated €15M+). Data sovereignty controls adequate.",
       },
@@ -312,6 +337,7 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-02-15",
       },
       subOutsourcing: {
+        activityDescription: "Cloud infrastructure hosting and managed database services for core banking platform",
         subContractors: [
           {
             name: "AWS Europe (Luxembourg) S.à r.l.",
@@ -329,6 +355,7 @@ export const suppliers: SupplierOutsourcing[] = [
       alternativeProviders: ["Temenos T24 (implementation required)", "Mambu (limited functionality)", "Avaloq Banking Suite"],
       isTimeCritical: true,
       estimatedAnnualCost: 1250000,
+      costComments: "SaaS license includes core banking platform, regulatory reporting modules, customer portal, and dedicated support. Annual increase capped at 3%.",
       regulatoryNotification: {
         notificationDate: "2020-06-15",
       },

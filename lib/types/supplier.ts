@@ -5,6 +5,7 @@
 
 // Enums
 export enum OutsourcingCategory {
+  CLOUD = "Cloud",
   ICT = "ICT Services",
   INTERNAL_CONTROL = "Internal Control Functions",
   PAYMENT_PROCESSING = "Payment Processing",
@@ -38,6 +39,18 @@ export enum SubstitutabilityOutcome {
   IMPOSSIBLE = "Impossible",
 }
 
+export enum OutsourcingStatus {
+  ACTIVE = "Active",
+  NOT_YET_ACTIVE = "Not Yet Active",
+  TERMINATED = "Terminated",
+}
+
+export enum RiskLevel {
+  LOW = "Low",
+  MEDIUM = "Medium",
+  HIGH = "High",
+}
+
 // Mandatory fields for ALL outsourcing arrangements (Point 54)
 export interface MandatoryOutsourcingFields {
   // 54.a - Reference Number
@@ -52,8 +65,12 @@ export interface MandatoryOutsourcingFields {
     entityNoticePeriod?: string
   }
 
+  // 53 - Status
+  status: OutsourcingStatus
+
   // 54.c - Function Description
   functionDescription: {
+    name: string
     description: string
     dataDescription: string
     personalDataInvolved: boolean
@@ -95,6 +112,8 @@ export interface MandatoryOutsourcingFields {
     deploymentModel: DeploymentModel
     dataNature: string
     storageLocations: string[]
+    cloudOfficer?: string
+    resourceOperator?: string
   }
 }
 
@@ -114,6 +133,7 @@ export interface CriticalOutsourcingFields {
 
   // 55.c - Risk Assessment
   riskAssessment: {
+    risk: RiskLevel
     lastAssessmentDate: string
     mainResults: string
   }
@@ -135,6 +155,7 @@ export interface CriticalOutsourcingFields {
 
   // 55.g - Sub-Outsourcing Information (where applicable)
   subOutsourcing?: {
+    activityDescription: string
     subContractors: Array<{
       name: string
       registrationCountry: string
@@ -158,6 +179,7 @@ export interface CriticalOutsourcingFields {
 
   // 55.k - Cost Information
   estimatedAnnualCost: number
+  costComments?: string
 
   // 55.l - Regulatory Notification
   regulatoryNotification?: {

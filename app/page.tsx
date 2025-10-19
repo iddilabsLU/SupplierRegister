@@ -12,7 +12,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="space-y-6 text-center">
           <div className="space-y-4">
-            <Button variant="secondary" size="sm" className="pointer-events-none">
+            <Button variant="outline" size="sm" className="pointer-events-none text-muted-foreground">
               Demo Application
             </Button>
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">

@@ -54,11 +54,17 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
               <TableHead className="min-w-[150px]">
                 Category <span className="text-xs text-muted-foreground">(54.d)</span>
               </TableHead>
+              <TableHead className="min-w-[130px]">
+                Status <span className="text-xs text-muted-foreground">(53)</span>
+              </TableHead>
               <TableHead className="min-w-[100px]">
                 Critical <span className="text-xs text-muted-foreground">(54.g)</span>
               </TableHead>
               <TableHead className="min-w-[120px]">
                 Start Date <span className="text-xs text-muted-foreground">(54.b)</span>
+              </TableHead>
+              <TableHead className="min-w-[140px]">
+                CSSF Notification <span className="text-xs text-muted-foreground">(55.l)</span>
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -85,22 +91,38 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                     <TableCell className="font-medium">{supplier.referenceNumber}</TableCell>
                     <TableCell className="max-w-[300px]">
                       <div className="whitespace-normal break-words">
-                        {supplier.functionDescription.description}
+                        {supplier.functionDescription.name}
                       </div>
                     </TableCell>
                     <TableCell>{supplier.serviceProvider.name}</TableCell>
                     <TableCell>{supplier.category}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          supplier.status === "Active" ? "default" :
+                          supplier.status === "Not Yet Active" ? "secondary" :
+                          "outline"
+                        }
+                      >
+                        {supplier.status}
+                      </Badge>
+                    </TableCell>
                     <TableCell>
                       <Badge variant={supplier.criticality.isCritical ? "destructive" : "secondary"}>
                         {supplier.criticality.isCritical ? "Critical" : "Non-Critical"}
                       </Badge>
                     </TableCell>
                     <TableCell>{formatDate(supplier.dates.startDate)}</TableCell>
+                    <TableCell>
+                      {supplier.criticality.isCritical && supplier.criticalFields?.regulatoryNotification
+                        ? formatDate(supplier.criticalFields.regulatoryNotification.notificationDate)
+                        : "N/A"}
+                    </TableCell>
                   </TableRow>
 
                   {isExpanded && (
                     <TableRow>
-                      <TableCell colSpan={7} className="bg-muted/30 p-6">
+                      <TableCell colSpan={9} className="bg-muted/30 p-6">
                         <div className="space-y-6">
                           {/* Section 1: Basic Information */}
                           <Card>
@@ -112,6 +134,16 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                 label="Reference Number"
                                 circularRef="54.a"
                                 value={supplier.referenceNumber}
+                              />
+                              <FieldDisplay
+                                label="Status"
+                                circularRef="53"
+                                value={supplier.status}
+                              />
+                              <FieldDisplay
+                                label="Function"
+                                circularRef="54.c"
+                                value={supplier.functionDescription.name}
                               />
                               <FieldDisplay
                                 label="Category"
@@ -160,7 +192,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                 value={supplier.serviceProvider.corporateRegistrationNumber}
                               />
                               <FieldDisplay
-                                label="Legal Entity Identifier (LEI)"
+                                label="Legal Entity Identifier (LEI) (if any)"
                                 circularRef="54.e"
                                 value={supplier.serviceProvider.legalEntityIdentifier}
                               />
@@ -268,40 +300,60 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                             </CardContent>
                           </Card>
 
-                          {/* Section 6: Cloud Services (if applicable) */}
-                          {supplier.cloudService && (
-                            <Card>
-                              <CardHeader>
-                                <CardTitle className="text-lg">
-                                  Cloud Service Information (If Applicable)
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent className="grid gap-4 md:grid-cols-2">
-                                <FieldDisplay
-                                  label="Service Model"
-                                  circularRef="54.h"
-                                  value={supplier.cloudService.serviceModel}
-                                />
-                                <FieldDisplay
-                                  label="Deployment Model"
-                                  circularRef="54.h"
-                                  value={supplier.cloudService.deploymentModel}
-                                />
-                                <FieldDisplay
-                                  label="Data Nature"
-                                  circularRef="54.h"
-                                  value={supplier.cloudService.dataNature}
-                                  className="md:col-span-2"
-                                />
-                                <FieldDisplay
-                                  label="Storage Locations"
-                                  circularRef="54.h"
-                                  value={supplier.cloudService.storageLocations}
-                                  className="md:col-span-2"
-                                />
-                              </CardContent>
-                            </Card>
-                          )}
+                          {/* Section 6: Cloud Service Information */}
+                          <Card>
+                            <CardHeader>
+                              <CardTitle className="text-lg">Cloud Service Information</CardTitle>
+                            </CardHeader>
+                            <CardContent className="grid gap-4 md:grid-cols-2">
+                              <FieldDisplay
+                                label="Cloud Service?"
+                                circularRef="54.h"
+                                value={supplier.cloudService ? "Yes" : "No"}
+                                className="md:col-span-2"
+                              />
+                              {supplier.cloudService && (
+                                <>
+                                  <FieldDisplay
+                                    label="Service Model"
+                                    circularRef="54.h"
+                                    value={supplier.cloudService.serviceModel}
+                                  />
+                                  <FieldDisplay
+                                    label="Deployment Model"
+                                    circularRef="54.h"
+                                    value={supplier.cloudService.deploymentModel}
+                                  />
+                                  {supplier.criticality.isCritical && supplier.cloudService.cloudOfficer && (
+                                    <FieldDisplay
+                                      label="Cloud Officer (if critical)"
+                                      circularRef="54"
+                                      value={supplier.cloudService.cloudOfficer}
+                                    />
+                                  )}
+                                  {supplier.criticality.isCritical && supplier.cloudService.resourceOperator && (
+                                    <FieldDisplay
+                                      label="Resource Operator (if critical)"
+                                      circularRef="54"
+                                      value={supplier.cloudService.resourceOperator}
+                                    />
+                                  )}
+                                  <FieldDisplay
+                                    label="Data Nature"
+                                    circularRef="54.h"
+                                    value={supplier.cloudService.dataNature}
+                                    className="md:col-span-2"
+                                  />
+                                  <FieldDisplay
+                                    label="Storage Locations"
+                                    circularRef="54.h"
+                                    value={supplier.cloudService.storageLocations}
+                                    className="md:col-span-2"
+                                  />
+                                </>
+                              )}
+                            </CardContent>
+                          </Card>
 
                           {/* Section 7: Critical Function Details (only for critical functions) */}
                           {supplier.criticality.isCritical && supplier.criticalFields && (
@@ -360,16 +412,22 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Risk Assessment</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4">
+                                  <CardContent className="grid gap-4 md:grid-cols-2">
                                     <FieldDisplay
                                       label="Last Assessment Date"
                                       circularRef="55.c"
                                       value={supplier.criticalFields.riskAssessment.lastAssessmentDate}
                                     />
                                     <FieldDisplay
-                                      label="Main Results"
+                                      label="Risk"
+                                      circularRef="55.c"
+                                      value={supplier.criticalFields.riskAssessment.risk}
+                                    />
+                                    <FieldDisplay
+                                      label="Summary Results"
                                       circularRef="55.c"
                                       value={supplier.criticalFields.riskAssessment.mainResults}
+                                      className="md:col-span-2"
                                     />
                                   </CardContent>
                                 </Card>
@@ -419,44 +477,57 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                 </Card>
 
                                 {/* Sub-Outsourcing */}
-                                {supplier.criticalFields.subOutsourcing && (
-                                  <Card>
-                                    <CardHeader>
-                                      <CardTitle className="text-lg">Sub-Outsourcing Information</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="space-y-4">
-                                      {supplier.criticalFields.subOutsourcing.subContractors.map(
-                                        (sub, index) => (
-                                          <div
-                                            key={index}
-                                            className="grid gap-4 rounded-lg border p-4 md:grid-cols-2"
-                                          >
-                                            <FieldDisplay
-                                              label="Sub-Contractor Name"
-                                              circularRef="55.g"
-                                              value={sub.name}
-                                            />
-                                            <FieldDisplay
-                                              label="Registration Country"
-                                              circularRef="55.g"
-                                              value={sub.registrationCountry}
-                                            />
-                                            <FieldDisplay
-                                              label="Service Performance Country"
-                                              circularRef="55.g"
-                                              value={sub.servicePerformanceCountry}
-                                            />
-                                            <FieldDisplay
-                                              label="Data Storage Location"
-                                              circularRef="55.g"
-                                              value={sub.dataStorageLocation}
-                                            />
-                                          </div>
-                                        )
-                                      )}
-                                    </CardContent>
-                                  </Card>
-                                )}
+                                <Card>
+                                  <CardHeader>
+                                    <CardTitle className="text-lg">Sub-Outsourcing Information</CardTitle>
+                                  </CardHeader>
+                                  <CardContent className="space-y-4">
+                                    <FieldDisplay
+                                      label="Activities sub-outsourced?"
+                                      circularRef="55.g"
+                                      value={supplier.criticalFields.subOutsourcing ? "Yes" : "No"}
+                                    />
+                                    {supplier.criticalFields.subOutsourcing && (
+                                      <>
+                                        <FieldDisplay
+                                          label="Activity Sub-Outsourced"
+                                          circularRef="55.g"
+                                          value={supplier.criticalFields.subOutsourcing.activityDescription}
+                                          className="col-span-full"
+                                        />
+                                        {supplier.criticalFields.subOutsourcing.subContractors.map(
+                                          (sub, index) => (
+                                            <div
+                                              key={index}
+                                              className="grid gap-4 rounded-lg border p-4 md:grid-cols-2"
+                                            >
+                                              <FieldDisplay
+                                                label="Sub-Contractor Name"
+                                                circularRef="55.g"
+                                                value={sub.name}
+                                              />
+                                              <FieldDisplay
+                                                label="Registration Country"
+                                                circularRef="55.g"
+                                                value={sub.registrationCountry}
+                                              />
+                                              <FieldDisplay
+                                                label="Service Performance Country"
+                                                circularRef="55.g"
+                                                value={sub.servicePerformanceCountry}
+                                              />
+                                              <FieldDisplay
+                                                label="Data Storage Location"
+                                                circularRef="55.g"
+                                                value={sub.dataStorageLocation}
+                                              />
+                                            </div>
+                                          )
+                                        )}
+                                      </>
+                                    )}
+                                  </CardContent>
+                                </Card>
 
                                 {/* Substitutability */}
                                 <Card>
@@ -503,6 +574,14 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                       circularRef="55.k"
                                       value={supplier.criticalFields.estimatedAnnualCost}
                                     />
+                                    {supplier.criticalFields.costComments && (
+                                      <FieldDisplay
+                                        label="Comments (if any)"
+                                        circularRef="55.k"
+                                        value={supplier.criticalFields.costComments}
+                                        className="md:col-span-2"
+                                      />
+                                    )}
                                   </CardContent>
                                 </Card>
 
