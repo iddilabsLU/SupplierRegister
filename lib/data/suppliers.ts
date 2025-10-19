@@ -15,7 +15,7 @@ import {
 export const suppliers: SupplierOutsourcing[] = [
   // SUPPLIER 1: Critical - IT Infrastructure Provider
   {
-    referenceNumber: "OUT-2024-001",
+    referenceNumber: "2024-001",
     status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2022-01-15",
@@ -108,7 +108,7 @@ export const suppliers: SupplierOutsourcing[] = [
 
   // SUPPLIER 2: Non-Critical - Office Cleaning Services
   {
-    referenceNumber: "OUT-2024-002",
+    referenceNumber: "2024-002",
     status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2023-03-01",
@@ -143,7 +143,7 @@ export const suppliers: SupplierOutsourcing[] = [
 
   // SUPPLIER 3: Critical - Payment Processing
   {
-    referenceNumber: "OUT-2024-003",
+    referenceNumber: "2024-003",
     status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2021-06-01",
@@ -236,7 +236,7 @@ export const suppliers: SupplierOutsourcing[] = [
 
   // SUPPLIER 4: Non-Critical - Marketing Services
   {
-    referenceNumber: "OUT-2024-004",
+    referenceNumber: "2024-004",
     status: OutsourcingStatus.NOT_YET_ACTIVE,
     dates: {
       startDate: "2024-01-10",
@@ -272,7 +272,7 @@ export const suppliers: SupplierOutsourcing[] = [
 
   // SUPPLIER 5: Critical - Core Banking Software (SaaS)
   {
-    referenceNumber: "OUT-2024-005",
+    referenceNumber: "2024-005",
     status: OutsourcingStatus.ACTIVE,
     dates: {
       startDate: "2020-09-01",

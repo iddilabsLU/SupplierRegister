@@ -31,6 +31,25 @@ export function formatDate(
 }
 
 /**
+ * Format date to short format (dd/mm/yy)
+ *
+ * @param date - Date string, Date object, or timestamp
+ *
+ * @example
+ * ```ts
+ * formatDateShort("2025-10-06") // "06/10/25"
+ * formatDateShort(new Date(2024, 0, 15)) // "15/01/24"
+ * ```
+ */
+export function formatDateShort(date: string | Date | number): string {
+  const dateObj = typeof date === "string" || typeof date === "number" ? new Date(date) : date
+  const day = String(dateObj.getDate()).padStart(2, '0')
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0')
+  const year = String(dateObj.getFullYear()).slice(-2)
+  return `${day}/${month}/${year}`
+}
+
+/**
  * Format date and time
  *
  * @example

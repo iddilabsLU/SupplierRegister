@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronDown, ChevronRight } from "lucide-react"
+import React, { useState, useEffect } from "react"
+import { MoreVertical, Edit, Copy, Trash2, X, Info } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,9 +14,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { SupplierOutsourcing } from "@/lib/types/supplier"
 import { FieldDisplay } from "./field-display"
-import { formatDate } from "@/lib/utils/formatters"
+import { formatDate, formatDateShort } from "@/lib/utils/formatters"
+import { toast } from "sonner"
 
 interface SupplierRegisterTableProps {
   suppliers: SupplierOutsourcing[]
@@ -24,6 +42,21 @@ interface SupplierRegisterTableProps {
 
 export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [supplierToDelete, setSupplierToDelete] = useState<SupplierOutsourcing | null>(null)
+  const [showHint, setShowHint] = useState(true)
+
+  useEffect(() => {
+    const hideHint = localStorage.getItem("hideTableHint")
+    if (hideHint === "true") {
+      setShowHint(false)
+    }
+  }, [])
+
+  const handleCloseHint = () => {
+    setShowHint(false)
+    localStorage.setItem("hideTableHint", "true")
+  }
 
   const toggleRow = (referenceNumber: string) => {
     const newExpanded = new Set(expandedRows)
@@ -35,68 +68,134 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
     setExpandedRows(newExpanded)
   }
 
+  const handleEdit = (supplier: SupplierOutsourcing) => {
+    toast.info("Edit functionality coming soon", {
+      description: `Editing ${supplier.serviceProvider.name}`,
+    })
+  }
+
+  const handleDuplicate = (supplier: SupplierOutsourcing) => {
+    toast.success("Duplicate functionality coming soon", {
+      description: `Duplicating ${supplier.serviceProvider.name}`,
+    })
+  }
+
+  const handleDeleteClick = (supplier: SupplierOutsourcing) => {
+    setSupplierToDelete(supplier)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleDeleteConfirm = () => {
+    if (supplierToDelete) {
+      toast.success("Supplier deleted", {
+        description: `${supplierToDelete.serviceProvider.name} has been removed from the register.`,
+      })
+      setDeleteDialogOpen(false)
+      setSupplierToDelete(null)
+      // TODO: Actual delete logic will go here when backend is implemented
+    }
+  }
+
   return (
-    <div className="w-full">
+    <div className="w-full space-y-3">
+      {/* Dismissible Hint Banner */}
+      {showHint && (
+        <div className="flex items-center justify-between gap-4 rounded-lg border bg-muted/50 px-4 py-3">
+          <div className="flex items-center gap-2">
+            <Info className="h-4 w-4 text-muted-foreground" />
+            <p className="text-sm text-foreground">
+              <span className="font-medium">Tip:</span> Click on any row to view full outsourcing details
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleCloseHint}
+            className="h-7 w-7 p-0 hover:bg-background"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close hint</span>
+          </Button>
+        </div>
+      )}
+
       <div className="rounded-md border bg-white">
-        <Table>
+        <Table className="w-full table-fixed">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px]"></TableHead>
-              <TableHead className="min-w-[120px]">
-                Ref No. <span className="text-xs text-muted-foreground">(54.a)</span>
-              </TableHead>
-              <TableHead className="min-w-[200px]">
-                Function <span className="text-xs text-muted-foreground">(54.c)</span>
-              </TableHead>
-              <TableHead className="min-w-[180px]">
-                Provider <span className="text-xs text-muted-foreground">(54.e)</span>
-              </TableHead>
-              <TableHead className="min-w-[150px]">
-                Category <span className="text-xs text-muted-foreground">(54.d)</span>
-              </TableHead>
-              <TableHead className="min-w-[130px]">
-                Status <span className="text-xs text-muted-foreground">(53)</span>
-              </TableHead>
-              <TableHead className="min-w-[100px]">
-                Critical <span className="text-xs text-muted-foreground">(54.g)</span>
-              </TableHead>
-              <TableHead className="min-w-[120px]">
-                Start Date <span className="text-xs text-muted-foreground">(54.b)</span>
-              </TableHead>
-              <TableHead className="min-w-[140px]">
-                CSSF Notification <span className="text-xs text-muted-foreground">(55.l)</span>
-              </TableHead>
+              <TableHead className="w-[2.5%]"></TableHead>
+              <TableHead className="w-[6%]">Ref.</TableHead>
+              <TableHead className="w-[17%]">Function</TableHead>
+              <TableHead className="w-[14%]">Provider</TableHead>
+              <TableHead className="w-[12%]">Category</TableHead>
+              <TableHead className="w-[9%]">Status</TableHead>
+              <TableHead className="w-[8%]">Critical</TableHead>
+              <TableHead className="w-[7%]">Start</TableHead>
+              <TableHead className="w-[5%]">CSSF Notif.</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {suppliers.map((supplier) => {
               const isExpanded = expandedRows.has(supplier.referenceNumber)
               return (
-                <>
-                  <TableRow key={supplier.referenceNumber} className="cursor-pointer hover:bg-muted/50">
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleRow(supplier.referenceNumber)}
-                        className="h-8 w-8 p-0"
-                      >
-                        {isExpanded ? (
-                          <ChevronDown className="h-4 w-4" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4" />
-                        )}
-                      </Button>
+                <React.Fragment key={supplier.referenceNumber}>
+                  <TableRow
+                    className="cursor-pointer transition-colors hover:bg-muted/50 even:bg-muted/20"
+                    onClick={() => toggleRow(supplier.referenceNumber)}
+                  >
+                    <TableCell className="align-top">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                            <span className="sr-only">Open menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleEdit(supplier)
+                            }}
+                          >
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit Supplier
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDuplicate(supplier)
+                            }}
+                          >
+                            <Copy className="mr-2 h-4 w-4" />
+                            Duplicate
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDeleteClick(supplier)
+                            }}
+                            className="text-destructive focus:text-destructive"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
-                    <TableCell className="font-medium">{supplier.referenceNumber}</TableCell>
-                    <TableCell className="max-w-[300px]">
-                      <div className="whitespace-normal break-words">
-                        {supplier.functionDescription.name}
-                      </div>
+                    <TableCell className="font-medium whitespace-normal break-words leading-tight align-top">{supplier.referenceNumber}</TableCell>
+                    <TableCell className="whitespace-normal break-words leading-tight align-top">
+                      {supplier.functionDescription.name}
                     </TableCell>
-                    <TableCell>{supplier.serviceProvider.name}</TableCell>
-                    <TableCell>{supplier.category}</TableCell>
-                    <TableCell>
+                    <TableCell className="whitespace-normal break-words leading-tight align-top">{supplier.serviceProvider.name}</TableCell>
+                    <TableCell className="whitespace-normal break-words leading-tight align-top">{supplier.category}</TableCell>
+                    <TableCell className="align-top">
                       <Badge
                         variant={
                           supplier.status === "Active" ? "default" :
@@ -107,15 +206,15 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                         {supplier.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="align-top">
                       <Badge variant={supplier.criticality.isCritical ? "destructive" : "secondary"}>
                         {supplier.criticality.isCritical ? "Critical" : "Non-Critical"}
                       </Badge>
                     </TableCell>
-                    <TableCell>{formatDate(supplier.dates.startDate)}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-sm align-top">{formatDateShort(supplier.dates.startDate)}</TableCell>
+                    <TableCell className="text-sm align-top">
                       {supplier.criticality.isCritical && supplier.criticalFields?.regulatoryNotification
-                        ? formatDate(supplier.criticalFields.regulatoryNotification.notificationDate)
+                        ? formatDateShort(supplier.criticalFields.regulatoryNotification.notificationDate)
                         : "N/A"}
                     </TableCell>
                   </TableRow>
@@ -129,7 +228,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                             <CardHeader>
                               <CardTitle className="text-lg">Basic Information (Mandatory)</CardTitle>
                             </CardHeader>
-                            <CardContent className="grid gap-4 md:grid-cols-2">
+                            <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                               <FieldDisplay
                                 label="Reference Number"
                                 circularRef="54.a"
@@ -154,13 +253,13 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                 label="Function Description"
                                 circularRef="54.c"
                                 value={supplier.functionDescription.description}
-                                className="md:col-span-2"
+                                className="col-span-2"
                               />
                               <FieldDisplay
                                 label="Data Description"
                                 circularRef="54.c"
                                 value={supplier.functionDescription.dataDescription}
-                                className="md:col-span-2"
+                                className="col-span-2"
                               />
                               <FieldDisplay
                                 label="Personal Data Involved"
@@ -172,56 +271,6 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                 circularRef="54.c"
                                 value={supplier.functionDescription.personalDataTransferred}
                               />
-                            </CardContent>
-                          </Card>
-
-                          {/* Section 2: Service Provider Details */}
-                          <Card>
-                            <CardHeader>
-                              <CardTitle className="text-lg">Service Provider Details (Mandatory)</CardTitle>
-                            </CardHeader>
-                            <CardContent className="grid gap-4 md:grid-cols-2">
-                              <FieldDisplay
-                                label="Provider Name"
-                                circularRef="54.e"
-                                value={supplier.serviceProvider.name}
-                              />
-                              <FieldDisplay
-                                label="Corporate Registration Number"
-                                circularRef="54.e"
-                                value={supplier.serviceProvider.corporateRegistrationNumber}
-                              />
-                              <FieldDisplay
-                                label="Legal Entity Identifier (LEI) (if any)"
-                                circularRef="54.e"
-                                value={supplier.serviceProvider.legalEntityIdentifier}
-                              />
-                              <FieldDisplay
-                                label="Parent Company"
-                                circularRef="54.e"
-                                value={supplier.serviceProvider.parentCompany}
-                              />
-                              <FieldDisplay
-                                label="Registered Address"
-                                circularRef="54.e"
-                                value={supplier.serviceProvider.registeredAddress}
-                                className="md:col-span-2"
-                              />
-                              <FieldDisplay
-                                label="Contact Details"
-                                circularRef="54.e"
-                                value={supplier.serviceProvider.contactDetails}
-                                className="md:col-span-2"
-                              />
-                            </CardContent>
-                          </Card>
-
-                          {/* Section 3: Dates & Timeline */}
-                          <Card>
-                            <CardHeader>
-                              <CardTitle className="text-lg">Dates & Timeline (Mandatory)</CardTitle>
-                            </CardHeader>
-                            <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                               <FieldDisplay
                                 label="Start Date"
                                 circularRef="54.b"
@@ -250,12 +299,51 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                             </CardContent>
                           </Card>
 
-                          {/* Section 4: Location Information */}
+                          {/* Section 2: Service Provider Details */}
+                          <Card>
+                            <CardHeader>
+                              <CardTitle className="text-lg">Service Provider Details (Mandatory)</CardTitle>
+                            </CardHeader>
+                            <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
+                              <FieldDisplay
+                                label="Provider Name"
+                                circularRef="54.e"
+                                value={supplier.serviceProvider.name}
+                              />
+                              <FieldDisplay
+                                label="Parent Company"
+                                circularRef="54.e"
+                                value={supplier.serviceProvider.parentCompany}
+                              />
+                              <FieldDisplay
+                                label="Corporate Registration Number"
+                                circularRef="54.e"
+                                value={supplier.serviceProvider.corporateRegistrationNumber}
+                              />
+                              <FieldDisplay
+                                label="Legal Entity Identifier (LEI) (if any)"
+                                circularRef="54.e"
+                                value={supplier.serviceProvider.legalEntityIdentifier}
+                              />
+                              <FieldDisplay
+                                label="Registered Address"
+                                circularRef="54.e"
+                                value={supplier.serviceProvider.registeredAddress}
+                              />
+                              <FieldDisplay
+                                label="Contact Details"
+                                circularRef="54.e"
+                                value={supplier.serviceProvider.contactDetails}
+                              />
+                            </CardContent>
+                          </Card>
+
+                          {/* Section 3: Location Information */}
                           <Card>
                             <CardHeader>
                               <CardTitle className="text-lg">Location Information (Mandatory)</CardTitle>
                             </CardHeader>
-                            <CardContent className="grid gap-4 md:grid-cols-2">
+                            <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                               <FieldDisplay
                                 label="Service Performance Countries"
                                 circularRef="54.f"
@@ -270,7 +358,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                 label="Data Storage Location"
                                 circularRef="54.f"
                                 value={supplier.location.dataStorageLocation}
-                                className="md:col-span-2"
+                                className="col-span-2"
                               />
                             </CardContent>
                           </Card>
@@ -280,7 +368,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                             <CardHeader>
                               <CardTitle className="text-lg">Criticality Assessment (Mandatory)</CardTitle>
                             </CardHeader>
-                            <CardContent className="grid gap-4 md:grid-cols-2">
+                            <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                               <FieldDisplay
                                 label="Is Critical or Important"
                                 circularRef="54.g"
@@ -295,7 +383,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                 label="Criticality Reasons"
                                 circularRef="54.g"
                                 value={supplier.criticality.reasons}
-                                className="md:col-span-2"
+                                className="col-span-2"
                               />
                             </CardContent>
                           </Card>
@@ -305,12 +393,12 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                             <CardHeader>
                               <CardTitle className="text-lg">Cloud Service Information</CardTitle>
                             </CardHeader>
-                            <CardContent className="grid gap-4 md:grid-cols-2">
+                            <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                               <FieldDisplay
                                 label="Cloud Service?"
                                 circularRef="54.h"
                                 value={supplier.cloudService ? "Yes" : "No"}
-                                className="md:col-span-2"
+                                className="col-span-2"
                               />
                               {supplier.cloudService && (
                                 <>
@@ -342,13 +430,11 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                     label="Data Nature"
                                     circularRef="54.h"
                                     value={supplier.cloudService.dataNature}
-                                    className="md:col-span-2"
                                   />
                                   <FieldDisplay
                                     label="Storage Locations"
                                     circularRef="54.h"
                                     value={supplier.cloudService.storageLocations}
-                                    className="md:col-span-2"
                                   />
                                 </>
                               )}
@@ -374,7 +460,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Entities Using the Outsourcing</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4 md:grid-cols-2">
+                                  <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                                     <FieldDisplay
                                       label="In-Scope Entities"
                                       circularRef="55.a"
@@ -393,7 +479,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Group Relationship</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4 md:grid-cols-2">
+                                  <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                                     <FieldDisplay
                                       label="Part of Group"
                                       circularRef="55.b"
@@ -412,7 +498,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Risk Assessment</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4 md:grid-cols-2">
+                                  <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                                     <FieldDisplay
                                       label="Last Assessment Date"
                                       circularRef="55.c"
@@ -427,7 +513,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                       label="Summary Results"
                                       circularRef="55.c"
                                       value={supplier.criticalFields.riskAssessment.mainResults}
-                                      className="md:col-span-2"
+                                      className="col-span-2"
                                     />
                                   </CardContent>
                                 </Card>
@@ -437,7 +523,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Approval & Governance</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4 md:grid-cols-2">
+                                  <CardContent className="grid gap-4 grid-cols-3 [&>*]:min-w-0">
                                     <FieldDisplay
                                       label="Approver Name"
                                       circularRef="55.d"
@@ -452,7 +538,6 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                       label="Governing Law"
                                       circularRef="55.e"
                                       value={supplier.criticalFields.governingLaw}
-                                      className="md:col-span-2"
                                     />
                                   </CardContent>
                                 </Card>
@@ -462,7 +547,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Audit Information</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4 md:grid-cols-2">
+                                  <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                                     <FieldDisplay
                                       label="Last Audit Date"
                                       circularRef="55.f"
@@ -499,7 +584,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                           (sub, index) => (
                                             <div
                                               key={index}
-                                              className="grid gap-4 rounded-lg border p-4 md:grid-cols-2"
+                                              className="grid gap-4 rounded-lg border p-4 grid-cols-2"
                                             >
                                               <FieldDisplay
                                                 label="Sub-Contractor Name"
@@ -534,7 +619,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Substitutability Assessment</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4">
+                                  <CardContent className="grid gap-4 [&>*]:min-w-0">
                                     <FieldDisplay
                                       label="Substitutability Outcome"
                                       circularRef="55.h"
@@ -563,7 +648,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                   <CardHeader>
                                     <CardTitle className="text-lg">Operational Details</CardTitle>
                                   </CardHeader>
-                                  <CardContent className="grid gap-4 md:grid-cols-2">
+                                  <CardContent className="grid gap-4 grid-cols-2 [&>*]:min-w-0">
                                     <FieldDisplay
                                       label="Time-Critical Function"
                                       circularRef="55.j"
@@ -579,7 +664,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                                         label="Comments (if any)"
                                         circularRef="55.k"
                                         value={supplier.criticalFields.costComments}
-                                        className="md:col-span-2"
+                                        className="col-span-2"
                                       />
                                     )}
                                   </CardContent>
@@ -607,12 +692,35 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </React.Fragment>
               )
             })}
           </TableBody>
         </Table>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Supplier?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete{" "}
+              <span className="font-semibold">{supplierToDelete?.serviceProvider.name}</span>? This
+              action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

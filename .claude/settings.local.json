@@ -12,7 +12,13 @@
       "Bash(npx:*)",
       "Bash(npm run dev:*)",
       "Bash(npm run build:*)",
-      "Read(//c/Users/Acca/.claude/**)"
+      "Read(//c/Users/Acca/.claude/**)",
+      "Bash(cmd /c npx -y shadcn@latest add collapsible)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_take_screenshot"
     ],
     "deny": [],
     "ask": []

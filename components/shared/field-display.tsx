@@ -61,12 +61,12 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
 
     // Check if it looks like a date (YYYY-MM-DD format)
     if (/^\d{4}-\d{2}-\d{2}$/.test(strValue)) {
-      displayValue = <span>{formatDate(strValue)}</span>
+      displayValue = <span className="break-words">{formatDate(strValue)}</span>
     } else {
       // Long text gets more spacing
       const isLongText = strValue.length > 100
       displayValue = (
-        <span className={isLongText ? "block text-sm leading-relaxed" : ""}>
+        <span className={isLongText ? "block text-sm leading-relaxed break-words" : "break-words"}>
           {strValue}
         </span>
       )
@@ -74,11 +74,11 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
   }
 
   return (
-    <div className={`space-y-1 ${className}`}>
-      <div className="text-sm font-medium text-foreground">
+    <div className={`space-y-1 min-w-0 ${className}`}>
+      <div className="text-sm font-medium text-foreground break-words whitespace-normal">
         {label} <span className="text-xs text-muted-foreground">({circularRef})</span>
       </div>
-      <div className="text-sm text-foreground">{displayValue}</div>
+      <div className="text-sm text-foreground break-words whitespace-normal">{displayValue}</div>
     </div>
   )
 }

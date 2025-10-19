@@ -12,15 +12,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-primary bg-primary">
-      <div className="container flex h-12 items-center justify-between px-4 md:px-8">
+      <div className="flex h-12 items-center justify-between px-8">
         {/* Logo/Brand */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <Package className="h-5 w-5 text-primary-foreground" />
-          <span className="text-base font-bold text-primary-foreground hidden sm:inline-block">
+          <span className="text-base font-bold text-primary-foreground">
             Supplier Register
-          </span>
-          <span className="text-base font-bold text-primary-foreground sm:hidden">
-            SR
           </span>
         </Link>
 
@@ -31,7 +28,7 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary hidden md:inline-block",
+                "text-sm font-medium transition-colors hover:text-primary",
                 pathname === item.href
                   ? "text-foreground"
                   : "text-muted-foreground"
@@ -40,24 +37,6 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-
-          {/* Mobile Navigation - Simplified */}
-          <div className="md:hidden flex items-center gap-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "text-xs font-medium transition-colors px-2 py-1 rounded-md",
-                  pathname === item.href
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {item.href === "/" ? "Showcase" : "Register"}
-              </Link>
-            ))}
-          </div>
         </nav>
       </div>
     </header>
