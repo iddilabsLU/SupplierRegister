@@ -14,11 +14,11 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
   return (
     <div className="space-y-2">
       {/* Card 1: Reference & Status */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Reference & Status</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
             <FieldDisplay
               label="Reference Number"
@@ -37,11 +37,11 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
       </Card>
 
       {/* Card 2: Timeline & Dates */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Timeline & Dates</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-3 [&>*]:min-w-0">
             <FieldDisplay
               label="Start Date"
@@ -69,11 +69,11 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
       </Card>
 
       {/* Card 3: Function Description */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Function Description</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
             <FieldDisplay
               label="Function Description"
@@ -102,11 +102,11 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
       </Card>
 
       {/* Card 4: Criticality Assessment */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Criticality Assessment</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
             <FieldDisplay
               label="Is Critical or Important"

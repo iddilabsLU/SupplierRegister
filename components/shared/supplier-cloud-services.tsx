@@ -27,11 +27,11 @@ export function SupplierCloudServices({ supplier }: SupplierCloudServicesProps) 
   return (
     <div className="space-y-2">
       {/* Cloud Service Information Card */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Cloud Service Information</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
             <FieldDisplay
               label="Service Model"
@@ -47,13 +47,11 @@ export function SupplierCloudServices({ supplier }: SupplierCloudServicesProps) 
               label="Data Nature"
               circularRef="54.h"
               value={supplier.cloudService.dataNature}
-              className="col-span-2"
             />
             <FieldDisplay
               label="Storage Locations"
               circularRef="54.h"
               value={supplier.cloudService.storageLocations}
-              className="col-span-2"
             />
             {/* Cloud Officer and Resource Operator - only for critical suppliers */}
             {supplier.criticality.isCritical && supplier.cloudService.cloudOfficer && (

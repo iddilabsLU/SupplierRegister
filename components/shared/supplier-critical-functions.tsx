@@ -30,24 +30,22 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
   return (
     <div className="space-y-2">
       {/* Card 1: Entities, Risk & Approval */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Entities, Risk & Approval</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
             {/* Entities Using */}
             <FieldDisplay
               label="In-Scope Entities"
               circularRef="55.a"
               value={criticalFields.entitiesUsing.inScopeEntities}
-              className="col-span-2"
             />
             <FieldDisplay
               label="Group Entities (if any)"
               circularRef="55.a"
               value={criticalFields.entitiesUsing.groupEntities}
-              className="col-span-2"
             />
             {/* Group Relationship */}
             <FieldDisplay
@@ -93,18 +91,12 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
       </Card>
 
       {/* Card 2: Legal, Audit & Regulatory */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Legal, Audit & Regulatory</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
-            <FieldDisplay
-              label="Governing Law"
-              circularRef="55.e"
-              value={criticalFields.governingLaw}
-              className="col-span-2"
-            />
             <FieldDisplay
               label="Last Audit Date"
               circularRef="55.f"
@@ -114,6 +106,11 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               label="Next Scheduled Audit"
               circularRef="55.f"
               value={criticalFields.audit.nextScheduledAudit}
+            />
+            <FieldDisplay
+              label="Governing Law"
+              circularRef="55.e"
+              value={criticalFields.governingLaw}
             />
             {criticalFields.regulatoryNotification && (
               <FieldDisplay
@@ -128,11 +125,11 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
 
       {/* Card 3: Sub-Outsourcing (conditional - only if exists) */}
       {criticalFields.subOutsourcing && (
-        <Card className="bg-white shadow-sm">
-          <CardHeader className="py-2 pb-1">
+        <Card className="bg-white shadow-sm gap-3 py-4">
+          <CardHeader className="pb-0">
             <CardTitle className="text-lg">Sub-Outsourcing Information</CardTitle>
           </CardHeader>
-          <CardContent className="p-3 space-y-2">
+          <CardContent className="space-y-2">
             <FieldDisplay
               label="Activities sub-outsourced?"
               circularRef="55.g"
@@ -147,7 +144,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
             {criticalFields.subOutsourcing.subContractors.map((sub, index) => (
               <div
                 key={index}
-                className="grid gap-2 rounded-lg border p-3 grid-cols-2 [&>*]:min-w-0"
+                className="grid gap-2 rounded-lg border p-2 grid-cols-2 [&>*]:min-w-0"
               >
                 <FieldDisplay
                   label="Sub-Contractor Name"
@@ -176,17 +173,22 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
       )}
 
       {/* Card 4: Substitutability & Operations */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="py-2 pb-1">
+      <Card className="bg-white shadow-sm gap-3 py-4">
+        <CardHeader className="pb-0">
           <CardTitle className="text-lg">Substitutability & Operations</CardTitle>
         </CardHeader>
-        <CardContent className="p-3">
+        <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
             {/* Substitutability */}
             <FieldDisplay
               label="Substitutability Outcome"
               circularRef="55.h"
               value={criticalFields.substitutability.outcome}
+            />
+            <FieldDisplay
+              label="Time-Critical Function"
+              circularRef="55.j"
+              value={criticalFields.isTimeCritical}
             />
             <FieldDisplay
               label="Reintegration Assessment"
@@ -208,11 +210,6 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
             />
             {/* Operations */}
             <FieldDisplay
-              label="Time-Critical Function"
-              circularRef="55.j"
-              value={criticalFields.isTimeCritical}
-            />
-            <FieldDisplay
               label="Estimated Annual Cost"
               circularRef="55.k"
               value={criticalFields.estimatedAnnualCost}
@@ -222,7 +219,6 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
                 label="Comments (if any)"
                 circularRef="55.k"
                 value={criticalFields.costComments}
-                className="col-span-2"
               />
             )}
           </div>
