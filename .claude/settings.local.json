@@ -21,7 +21,9 @@
       "mcp__playwright__browser_take_screenshot",
       "Bash(npm run lint)",
       "Bash(npm run lint -- --fix)",
-      "Bash(cat components/shared/view-segmented-control.tsx)"
+      "Bash(cat components/shared/view-segmented-control.tsx)",
+      "mcp__playwright__browser_close",
+      "mcp__tavily-remote__tavily_search"
     ],
     "deny": [],
     "ask": []
