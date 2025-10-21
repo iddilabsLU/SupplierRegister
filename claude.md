@@ -73,13 +73,18 @@ supplierregister/
 │   └── providers/               # Context providers (theme removed)
 ├── lib/
 │   ├── types/                   # TypeScript types
-│   │   └── supplier.ts          # CSSF-compliant supplier types
+│   │   ├── supplier.ts          # CSSF-compliant supplier types
+│   │   └── filters.ts           # Filter type definitions
 │   ├── data/                    # Dummy data
 │   │   └── suppliers.ts         # 5 sample suppliers (3 critical, 2 non-critical)
 │   ├── utils/                   # Utility functions
 │   │   ├── cn.ts                # Tailwind class merger
 │   │   ├── formatters.ts        # Date, currency formatting
-│   │   └── validators.ts        # Runtime validators
+│   │   ├── validators.ts        # Runtime validators
+│   │   ├── filter-suppliers.ts  # Filtering logic with global search
+│   │   └── highlight-text.tsx   # Text highlighting utility
+│   ├── contexts/                # React contexts
+│   │   └── search-context.tsx   # Search term context for highlighting
 │   ├── validations/             # Zod schemas (for future forms)
 │   └── constants.ts             # App-wide constants
 ├── hooks/                       # Custom React hooks
@@ -223,7 +228,15 @@ This application implements the outsourcing register requirements from CSSF Circ
 
 ### Advanced Filtering System ✅
 - **Quick Filters**: Toggle buttons for Critical and Cloud suppliers
+- **Global Text Search**:
+  - "Search All Fields" filter searches across ALL supplier data
+  - Case-insensitive partial matching (e.g., "aws" finds "AWS", "Amazon Web Services")
+  - Searches in: provider details, function descriptions, locations, dates, cloud services, critical fields, sub-contractors
+  - **Real-time highlighting**: Matching text highlighted in yellow in expanded supplier details
+  - Only 1 text search allowed at a time (automatically replaces previous)
+  - Works alongside other filters (AND logic)
 - **Custom Filters** (up to 3 simultaneous):
+  - Search All Fields (text search - global)
   - Provider Name (text search)
   - Category (dropdown: Cloud, ICT, Payment, etc.)
   - Status (dropdown: Active, Not Yet Active, Terminated)
@@ -274,7 +287,8 @@ This application implements the outsourcing register requirements from CSSF Circ
 **Completed:**
 - ✅ View Navigation System (Segmented control with Register List / New Entry / Dashboard tabs)
 - ✅ Quick Filters (Critical, Cloud)
-- ✅ Custom Filters (9 filter fields, max 3 simultaneous)
+- ✅ Custom Filters (10 filter fields, max 3 simultaneous)
+- ✅ **Global Text Search** with real-time highlighting (Search All Fields filter)
 - ✅ Filter UI with collapsible panel
 - ✅ Active filter badges with remove buttons
 - ✅ Contextual filtering (only shown on Register List view)
@@ -285,9 +299,10 @@ This application implements the outsourcing register requirements from CSSF Circ
 - ✅ Code quality cleanup (ESLint warnings fixed)
 - ✅ Accessibility improvements (WCAG AAA contrast)
 - ✅ UI text size improvements (increased readability across all components)
-- ✅ Three-column card layout with visual alignment
+- ✅ Two-column card layout (max-w-7xl centered)
 - ✅ Enhanced segmented control spacing and sizing
 - ✅ Multi-line text wrapping for "Not Applicable" placeholders
+- ✅ Improved card spacing (16px header-to-content, 12px between fields)
 
 **Next Steps:**
 1. **Add Supplier Form** (High Priority)
@@ -388,18 +403,18 @@ $ npx shadcn@latest add <component-name>
 ### Shared Components (`components/shared/`)
 Custom reusable components specific to this project:
 - `supplier-register-table.tsx` - Main CSSF-compliant register table with expand/collapse
-- `supplier-detail-tabs.tsx` - Tabbed interface for supplier details (Basic Info, Provider Details, Cloud Services, Critical Functions)
-- `supplier-detail-tab-nav.tsx` - Tab navigation bar with enhanced spacing (max-w-5xl, gap-1, px-4 py-2)
-- `supplier-basic-info.tsx` - Basic Info tab content (4 cards with 3-column layout)
-- `supplier-provider-details.tsx` - Provider Details tab content (2 cards with 3-column layout)
-- `supplier-cloud-services.tsx` - Cloud Services tab content (conditional display)
-- `supplier-critical-functions.tsx` - Critical Functions tab content (Point 55 fields)
-- `field-display.tsx` - Displays fields with CSSF annotations (text-base labels/values)
+- `supplier-detail-tabs.tsx` - Tabbed interface for supplier details (wraps tabs with SearchProvider)
+- `supplier-detail-tab-nav.tsx` - Tab navigation bar with enhanced spacing
+- `supplier-basic-info.tsx` - Basic Info tab content (4 cards, 2-column layout, uses search context)
+- `supplier-provider-details.tsx` - Provider Details tab content (2 cards, 2-column layout, uses search context)
+- `supplier-cloud-services.tsx` - Cloud Services tab content (conditional display, uses search context)
+- `supplier-critical-functions.tsx` - Critical Functions tab content (Point 55 fields, uses search context)
+- `field-display.tsx` - Displays fields with CSSF annotations and text highlighting support
 - `not-applicable-placeholder.tsx` - N/A placeholder with multi-line centered text
 - `icon-badge.tsx` - Icon container with variants
 - `view-segmented-control.tsx` - Tab navigation control (Register List / New Entry / Dashboard)
 - `placeholder-view.tsx` - Reusable "Coming Soon" placeholder for future features
-- `filter-panel.tsx` - Collapsible filter panel with quick and custom filters
+- `filter-panel.tsx` - Collapsible filter panel with quick/custom filters (enforces 1 text search limit)
 - `quick-filters.tsx` - Critical and Cloud toggle buttons
 - `custom-filter-row.tsx` - Individual filter row with field/value inputs
 - `active-filter-badges.tsx` - Display active filters as removable badges
@@ -563,8 +578,8 @@ import { FileText, Building2, AlertTriangle } from "lucide-react"
 ---
 
 **Last Updated:** 2025-10-21
-**Project Status:** Phase 1 - Frontend Demo (88% Complete)
-**Recent Updates:** UI text size improvements, three-column card layout, enhanced segmented control spacing, multi-line placeholder text
+**Project Status:** Phase 1 - Frontend Demo (92% Complete)
+**Recent Updates:** Global text search with highlighting, two-column layout (max-w-7xl centered), improved spacing (16px header-to-content, 12px between fields)
 **Next Priority:** Add/Edit Supplier Form Implementation (to replace "New Entry" placeholder)
 **Future Phase:** Desktop application with Tauri + SQLite
 

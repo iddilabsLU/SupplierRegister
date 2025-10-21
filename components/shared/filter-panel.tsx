@@ -46,9 +46,20 @@ export function FilterPanel({
   }
 
   const handleFieldChange = (filterId: string, field: FilterFieldType | "") => {
-    const updatedFilters = customFilters.map((filter) =>
+    // If selecting "searchAllFields", remove any existing search filters first
+    let updatedFilters = customFilters.map((filter) =>
       filter.id === filterId ? { ...filter, field, value: "" } : filter
     )
+
+    // Enforce "only 1 text search" rule
+    if (field === "searchAllFields") {
+      updatedFilters = updatedFilters.map((filter) =>
+        filter.id !== filterId && filter.field === "searchAllFields"
+          ? { ...filter, field: "", value: "" }
+          : filter
+      )
+    }
+
     onCustomFiltersChange(updatedFilters)
   }
 

@@ -1,18 +1,26 @@
 import { Badge } from "@/components/ui/badge"
 import { formatCurrency, formatDate } from "@/lib/utils/formatters"
+import { highlightText } from "@/lib/utils/highlight-text"
 
 interface FieldDisplayProps {
   label: string
   circularRef: string
   value: string | number | boolean | string[] | undefined
   className?: string
+  searchTerm?: string
 }
 
 /**
  * Displays a field with its CSSF Circular reference
  * Handles different data types and formatting
  */
-export function FieldDisplay({ label, circularRef, value, className = "" }: FieldDisplayProps) {
+export function FieldDisplay({
+  label,
+  circularRef,
+  value,
+  className = "",
+  searchTerm = "",
+}: FieldDisplayProps) {
   // Handle undefined/null values
   if (value === undefined || value === null) {
     return (
@@ -42,7 +50,7 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
         <div className="flex flex-wrap gap-1">
           {value.map((item, index) => (
             <Badge key={index} variant="outline" className="text-sm">
-              {item}
+              {searchTerm ? highlightText(item, searchTerm) : item}
             </Badge>
           ))}
         </div>
@@ -61,13 +69,18 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
 
     // Check if it looks like a date (YYYY-MM-DD format)
     if (/^\d{4}-\d{2}-\d{2}$/.test(strValue)) {
-      displayValue = <span className="break-words">{formatDate(strValue)}</span>
+      const formattedDate = formatDate(strValue)
+      displayValue = (
+        <span className="break-words">
+          {searchTerm ? highlightText(formattedDate, searchTerm) : formattedDate}
+        </span>
+      )
     } else {
       // Long text gets more spacing
       const isLongText = strValue.length > 100
       displayValue = (
         <span className={isLongText ? "block text-base leading-relaxed break-words" : "break-words"}>
-          {strValue}
+          {searchTerm ? highlightText(strValue, searchTerm) : strValue}
         </span>
       )
     }

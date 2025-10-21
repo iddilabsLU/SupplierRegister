@@ -121,4 +121,9 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Search highlighting */
+  mark {
+    @apply bg-yellow-200 text-foreground rounded px-0.5 transition-colors duration-200;
+  }
 }

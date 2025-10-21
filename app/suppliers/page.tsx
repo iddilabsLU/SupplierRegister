@@ -37,6 +37,12 @@ export default function SuppliersPage() {
     return filterSuppliers(suppliers, quickFilters, customFilters)
   }, [quickFilters, customFilters])
 
+  // Extract search term from customFilters for highlighting
+  const searchTerm = useMemo(() => {
+    const searchFilter = customFilters.find((f) => f.field === "searchAllFields" && f.value)
+    return searchFilter?.value || ""
+  }, [customFilters])
+
   // Statistics (kept for future Dashboard tab)
   const totalCount = suppliers.length
   const filteredCount = filteredSuppliers.length
@@ -114,7 +120,7 @@ export default function SuppliersPage() {
 
             {/* Register Table or Empty State */}
             {filteredCount > 0 ? (
-              <SupplierRegisterTable suppliers={filteredSuppliers} />
+              <SupplierRegisterTable suppliers={filteredSuppliers} searchTerm={searchTerm} />
             ) : (
               <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/30 p-12 text-center">
                 <AlertCircle className="h-12 w-12 text-muted-foreground/50 mb-4" />

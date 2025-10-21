@@ -36,9 +36,10 @@ import { toast } from "sonner"
 
 interface SupplierRegisterTableProps {
   suppliers: SupplierOutsourcing[]
+  searchTerm?: string
 }
 
-export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps) {
+export function SupplierRegisterTable({ suppliers, searchTerm = "" }: SupplierRegisterTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [supplierToDelete, setSupplierToDelete] = useState<SupplierOutsourcing | null>(null)
@@ -220,7 +221,7 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                   {isExpanded && (
                     <TableRow>
                       <TableCell colSpan={9} className="bg-muted/30 p-6">
-                        <SupplierDetailTabs supplier={supplier} />
+                        <SupplierDetailTabs supplier={supplier} searchTerm={searchTerm} />
                       </TableCell>
                     </TableRow>
                   )}

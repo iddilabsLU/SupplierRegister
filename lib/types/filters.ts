@@ -3,6 +3,7 @@
  */
 
 export type FilterFieldType =
+  | "searchAllFields"
   | "providerName"
   | "category"
   | "status"
@@ -38,6 +39,11 @@ export interface FilterFieldOption {
 
 // Available filter field options with their metadata
 export const FILTER_FIELD_OPTIONS: FilterFieldOption[] = [
+  {
+    value: "searchAllFields",
+    label: "Search All Fields",
+    inputType: "text",
+  },
   {
     value: "providerName",
     label: "Provider Name",
