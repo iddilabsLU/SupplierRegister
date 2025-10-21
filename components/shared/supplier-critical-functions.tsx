@@ -32,7 +32,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
       {/* Card 1: Entities, Risk & Approval */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Entities, Risk & Approval</CardTitle>
+          <CardTitle className="text-xl">Entities, Risk & Approval</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
@@ -93,7 +93,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
       {/* Card 2: Legal, Audit & Regulatory */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Legal, Audit & Regulatory</CardTitle>
+          <CardTitle className="text-xl">Legal, Audit & Regulatory</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
@@ -127,7 +127,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
       {criticalFields.subOutsourcing && (
         <Card className="bg-white shadow-sm gap-3 py-4">
           <CardHeader className="pb-0">
-            <CardTitle className="text-lg">Sub-Outsourcing Information</CardTitle>
+            <CardTitle className="text-xl">Sub-Outsourcing Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <FieldDisplay
@@ -175,7 +175,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
       {/* Card 4: Substitutability & Operations */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Substitutability & Operations</CardTitle>
+          <CardTitle className="text-xl">Substitutability & Operations</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">

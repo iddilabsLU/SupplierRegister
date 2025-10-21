@@ -122,14 +122,14 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
           <TableHeader>
             <TableRow>
               <TableHead className="w-[2.5%]" />
-              <TableHead className="w-[6%]">Ref.</TableHead>
-              <TableHead className="w-[17%]">Function</TableHead>
-              <TableHead className="w-[14%]">Provider</TableHead>
-              <TableHead className="w-[12%]">Category</TableHead>
-              <TableHead className="w-[9%]">Status</TableHead>
-              <TableHead className="w-[8%]">Critical</TableHead>
-              <TableHead className="w-[7%]">Start</TableHead>
-              <TableHead className="w-[5%]">CSSF Notif.</TableHead>
+              <TableHead className="w-[6%] text-base">Ref.</TableHead>
+              <TableHead className="w-[17%] text-base">Function</TableHead>
+              <TableHead className="w-[14%] text-base">Provider</TableHead>
+              <TableHead className="w-[12%] text-base">Category</TableHead>
+              <TableHead className="w-[9%] text-base">Status</TableHead>
+              <TableHead className="w-[8%] text-base">Critical</TableHead>
+              <TableHead className="w-[7%] text-base">Start</TableHead>
+              <TableHead className="w-[5%] text-base">CSSF Notif.</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -187,12 +187,12 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
-                    <TableCell className="font-medium whitespace-normal break-words leading-tight align-top">{supplier.referenceNumber}</TableCell>
-                    <TableCell className="whitespace-normal break-words leading-tight align-top">
+                    <TableCell className="font-medium whitespace-normal break-words leading-tight align-top text-base">{supplier.referenceNumber}</TableCell>
+                    <TableCell className="whitespace-normal break-words leading-tight align-top text-base">
                       {supplier.functionDescription.name}
                     </TableCell>
-                    <TableCell className="whitespace-normal break-words leading-tight align-top">{supplier.serviceProvider.name}</TableCell>
-                    <TableCell className="whitespace-normal break-words leading-tight align-top">{supplier.category}</TableCell>
+                    <TableCell className="whitespace-normal break-words leading-tight align-top text-base">{supplier.serviceProvider.name}</TableCell>
+                    <TableCell className="whitespace-normal break-words leading-tight align-top text-base">{supplier.category}</TableCell>
                     <TableCell className="align-top">
                       <Badge
                         variant={
@@ -209,8 +209,8 @@ export function SupplierRegisterTable({ suppliers }: SupplierRegisterTableProps)
                         {supplier.criticality.isCritical ? "Critical" : "Non-Critical"}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm align-top">{formatDateShort(supplier.dates.startDate)}</TableCell>
-                    <TableCell className="text-sm align-top">
+                    <TableCell className="text-base align-top">{formatDateShort(supplier.dates.startDate)}</TableCell>
+                    <TableCell className="text-base align-top">
                       {supplier.criticality.isCritical && supplier.criticalFields?.regulatoryNotification
                         ? formatDateShort(supplier.criticalFields.regulatoryNotification.notificationDate)
                         : "N/A"}

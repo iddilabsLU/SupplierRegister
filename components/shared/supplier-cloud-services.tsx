@@ -29,7 +29,7 @@ export function SupplierCloudServices({ supplier }: SupplierCloudServicesProps) 
       {/* Cloud Service Information Card */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Cloud Service Information</CardTitle>
+          <CardTitle className="text-xl">Cloud Service Information</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">

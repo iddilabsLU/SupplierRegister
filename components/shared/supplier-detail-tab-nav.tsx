@@ -69,7 +69,7 @@ export function SupplierDetailTabNav({
   return (
     <div className="flex justify-center w-full">
       <nav
-        className="inline-flex items-center rounded-md bg-secondary/20 border border-border p-0.5 gap-0.5 w-full max-w-4xl"
+        className="inline-flex items-center rounded-md bg-secondary/20 border border-border p-0.5 gap-1.5 w-full max-w-7xl"
         role="tablist"
         aria-label="Supplier detail sections"
       >
@@ -86,7 +86,7 @@ export function SupplierDetailTabNav({
               aria-label={ariaLabel}
               onClick={() => onTabChange(tab.value)}
               className={cn(
-                "px-3 py-1.5 text-sm font-medium rounded-sm transition-all duration-200 flex-1",
+                "px-6 py-1.5 text-sm font-medium rounded-sm transition-all duration-200 flex-1",
                 isActive &&
                   !isDisabled &&
                   "bg-white text-foreground border border-primary/30 shadow-sm font-semibold",

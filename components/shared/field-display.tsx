@@ -17,10 +17,10 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
   if (value === undefined || value === null) {
     return (
       <div className={`space-y-1 ${className}`}>
-        <div className="text-sm font-medium text-muted-foreground">
-          {label} <span className="text-xs">({circularRef})</span>
+        <div className="text-base font-medium text-muted-foreground">
+          {label} <span className="text-sm">({circularRef})</span>
         </div>
-        <div className="text-sm text-muted-foreground italic">Not provided</div>
+        <div className="text-base text-muted-foreground italic">Not provided</div>
       </div>
     )
   }
@@ -30,7 +30,7 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
 
   if (typeof value === "boolean") {
     displayValue = (
-      <Badge variant={value ? "default" : "secondary"} className="text-xs">
+      <Badge variant={value ? "default" : "secondary"} className="text-sm">
         {value ? "Yes" : "No"}
       </Badge>
     )
@@ -41,7 +41,7 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
       displayValue = (
         <div className="flex flex-wrap gap-1">
           {value.map((item, index) => (
-            <Badge key={index} variant="outline" className="text-xs">
+            <Badge key={index} variant="outline" className="text-sm">
               {item}
             </Badge>
           ))}
@@ -66,7 +66,7 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
       // Long text gets more spacing
       const isLongText = strValue.length > 100
       displayValue = (
-        <span className={isLongText ? "block text-sm leading-relaxed break-words" : "break-words"}>
+        <span className={isLongText ? "block text-base leading-relaxed break-words" : "break-words"}>
           {strValue}
         </span>
       )
@@ -75,10 +75,10 @@ export function FieldDisplay({ label, circularRef, value, className = "" }: Fiel
 
   return (
     <div className={`space-y-1 min-w-0 ${className}`}>
-      <div className="text-sm font-medium text-foreground break-words whitespace-normal">
-        {label} <span className="text-xs text-muted-foreground">({circularRef})</span>
+      <div className="text-base font-medium text-foreground break-words whitespace-normal">
+        {label} <span className="text-sm text-muted-foreground">({circularRef})</span>
       </div>
-      <div className="text-sm text-foreground break-words whitespace-normal">{displayValue}</div>
+      <div className="text-base text-foreground break-words whitespace-normal">{displayValue}</div>
     </div>
   )
 }

@@ -31,11 +31,17 @@ export function NotApplicablePlaceholder({
     >
       <Icon className={`${iconSize} text-muted-foreground/60 mb-3`} />
       <h4
-        className={`${type === "cloud" ? "text-sm" : "text-base"} font-semibold text-foreground mb-2`}
+        className={`${type === "cloud" ? "text-sm" : "text-base"} font-semibold text-foreground mb-2 text-center`}
       >
         {title}
       </h4>
-      <p className="text-sm text-muted-foreground text-center max-w-lg mb-3">{description}</p>
+      <div className="text-sm text-muted-foreground text-center max-w-2xl mx-auto mb-3 leading-relaxed">
+        {description.split('. ').map((sentence, index, array) => (
+          <p key={index} className={index < array.length - 1 ? "mb-1" : ""}>
+            {sentence}{index < array.length - 1 ? '.' : ''}
+          </p>
+        ))}
+      </div>
       <div className="flex gap-2">
         {additionalBadge && (
           <Badge variant="secondary" className="text-xs">

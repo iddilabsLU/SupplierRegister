@@ -16,22 +16,24 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
       {/* Card 1: Reference & Status */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Reference & Status</CardTitle>
+          <CardTitle className="text-xl">Reference & Status</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
+          <div className="grid gap-2 grid-cols-3 [&>*]:min-w-0">
             <FieldDisplay
               label="Reference Number"
               circularRef="54.a"
               value={supplier.referenceNumber}
             />
             <FieldDisplay label="Status" circularRef="53" value={supplier.status} />
+            <div></div>
             <FieldDisplay
               label="Function Name"
               circularRef="54.c"
               value={supplier.functionDescription.name}
             />
             <FieldDisplay label="Category" circularRef="54.d" value={supplier.category} />
+            <div></div>
           </div>
         </CardContent>
       </Card>
@@ -39,7 +41,7 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
       {/* Card 2: Timeline & Dates */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Timeline & Dates</CardTitle>
+          <CardTitle className="text-xl">Timeline & Dates</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-3 [&>*]:min-w-0">
@@ -71,7 +73,7 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
       {/* Card 3: Function Description */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Function Description</CardTitle>
+          <CardTitle className="text-xl">Function Description</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
@@ -104,7 +106,7 @@ export function SupplierBasicInfo({ supplier }: SupplierBasicInfoProps) {
       {/* Card 4: Criticality Assessment */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Criticality Assessment</CardTitle>
+          <CardTitle className="text-xl">Criticality Assessment</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">

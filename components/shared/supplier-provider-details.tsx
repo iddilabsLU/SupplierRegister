@@ -16,10 +16,10 @@ export function SupplierProviderDetails({ supplier }: SupplierProviderDetailsPro
       {/* Card 1: Service Provider Information */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Service Provider Information</CardTitle>
+          <CardTitle className="text-xl">Service Provider Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-2 grid-cols-2 [&>*]:min-w-0">
+          <div className="grid gap-2 grid-cols-3 [&>*]:min-w-0">
             <FieldDisplay
               label="Provider Name"
               circularRef="54.e"
@@ -30,6 +30,7 @@ export function SupplierProviderDetails({ supplier }: SupplierProviderDetailsPro
               circularRef="54.e"
               value={supplier.serviceProvider.parentCompany}
             />
+            <div></div>
             <FieldDisplay
               label="Corporate Registration Number"
               circularRef="54.e"
@@ -40,6 +41,7 @@ export function SupplierProviderDetails({ supplier }: SupplierProviderDetailsPro
               circularRef="54.e"
               value={supplier.serviceProvider.legalEntityIdentifier}
             />
+            <div></div>
             <FieldDisplay
               label="Registered Address"
               circularRef="54.e"
@@ -50,6 +52,7 @@ export function SupplierProviderDetails({ supplier }: SupplierProviderDetailsPro
               circularRef="54.e"
               value={supplier.serviceProvider.contactDetails}
             />
+            <div></div>
           </div>
         </CardContent>
       </Card>
@@ -57,7 +60,7 @@ export function SupplierProviderDetails({ supplier }: SupplierProviderDetailsPro
       {/* Card 2: Location Information */}
       <Card className="bg-white shadow-sm gap-3 py-4">
         <CardHeader className="pb-0">
-          <CardTitle className="text-lg">Location Information</CardTitle>
+          <CardTitle className="text-xl">Location Information</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 grid-cols-3 [&>*]:min-w-0">

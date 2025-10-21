@@ -197,15 +197,19 @@ This application implements the outsourcing register requirements from CSSF Circ
 
 ### Supplier Register Table ✅
 - **Expandable Rows**: Click anywhere on row to expand/collapse full supplier details
+- **Tabbed Detail View**: Four-tab navigation system (Basic Info, Provider Details, Cloud Services, Critical Functions)
 - **CSSF Annotations**: All fields labeled with circular reference points (54.a, 55.c, etc.)
 - **Conditional Display**:
   - Cloud service fields only shown when applicable
   - Sub-outsourcing details only shown when applicable
   - Critical fields only shown for critical suppliers
+  - "Not Applicable" placeholders with multi-line centered text
 - **Actions Menu**: Edit, Duplicate, Delete with confirmation dialog (UI only - shows toast notifications)
 - **User Hint**: Dismissible hint explaining how to expand rows (stored in localStorage)
-- **Desktop-First Design**: Optimized for desktop viewing
+- **Desktop-First Design**: Optimized for desktop viewing with enhanced text sizes
 - **Dummy Data**: 5 sample suppliers (3 critical, 2 non-critical)
+- **Improved Typography**: text-base (16px) for table content, text-xl (20px) for card titles, text-base for field labels/values
+- **Three-Column Layout**: Reference & Status and Service Provider Information cards use 3-column grid with empty 3rd column for visual alignment
 
 ### View Navigation System ✅
 - **Segmented Control**: Tab-based navigation with 3 views
@@ -280,6 +284,10 @@ This application implements the outsourcing register requirements from CSSF Circ
 - ✅ Toast notifications
 - ✅ Code quality cleanup (ESLint warnings fixed)
 - ✅ Accessibility improvements (WCAG AAA contrast)
+- ✅ UI text size improvements (increased readability across all components)
+- ✅ Three-column card layout with visual alignment
+- ✅ Enhanced segmented control spacing and sizing
+- ✅ Multi-line text wrapping for "Not Applicable" placeholders
 
 **Next Steps:**
 1. **Add Supplier Form** (High Priority)
@@ -380,7 +388,14 @@ $ npx shadcn@latest add <component-name>
 ### Shared Components (`components/shared/`)
 Custom reusable components specific to this project:
 - `supplier-register-table.tsx` - Main CSSF-compliant register table with expand/collapse
-- `field-display.tsx` - Displays fields with CSSF annotations
+- `supplier-detail-tabs.tsx` - Tabbed interface for supplier details (Basic Info, Provider Details, Cloud Services, Critical Functions)
+- `supplier-detail-tab-nav.tsx` - Tab navigation bar with enhanced spacing (max-w-5xl, gap-1, px-4 py-2)
+- `supplier-basic-info.tsx` - Basic Info tab content (4 cards with 3-column layout)
+- `supplier-provider-details.tsx` - Provider Details tab content (2 cards with 3-column layout)
+- `supplier-cloud-services.tsx` - Cloud Services tab content (conditional display)
+- `supplier-critical-functions.tsx` - Critical Functions tab content (Point 55 fields)
+- `field-display.tsx` - Displays fields with CSSF annotations (text-base labels/values)
+- `not-applicable-placeholder.tsx` - N/A placeholder with multi-line centered text
 - `icon-badge.tsx` - Icon container with variants
 - `view-segmented-control.tsx` - Tab navigation control (Register List / New Entry / Dashboard)
 - `placeholder-view.tsx` - Reusable "Coming Soon" placeholder for future features
@@ -547,8 +562,9 @@ import { FileText, Building2, AlertTriangle } from "lucide-react"
 
 ---
 
-**Last Updated:** 2025-10-20
-**Project Status:** Phase 1 - Frontend Demo (85% Complete)
+**Last Updated:** 2025-10-21
+**Project Status:** Phase 1 - Frontend Demo (88% Complete)
+**Recent Updates:** UI text size improvements, three-column card layout, enhanced segmented control spacing, multi-line placeholder text
 **Next Priority:** Add/Edit Supplier Form Implementation (to replace "New Entry" placeholder)
 **Future Phase:** Desktop application with Tauri + SQLite
 
