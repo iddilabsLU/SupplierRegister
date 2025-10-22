@@ -6,14 +6,19 @@ import { SupplierRegisterTable } from "@/components/shared/supplier-register-tab
 import { FilterPanel } from "@/components/shared/filter-panel"
 import { ViewSegmentedControl, type ViewType } from "@/components/shared/view-segmented-control"
 import { PlaceholderView } from "@/components/shared/placeholder-view"
-import { suppliers } from "@/lib/data/suppliers"
-import { AlertCircle, FileText, BarChart3 } from "lucide-react"
+import { SupplierForm } from "@/components/shared/forms/supplier-form"
+import { suppliers as initialSuppliers } from "@/lib/data/suppliers"
+import { AlertCircle, BarChart3 } from "lucide-react"
 import type { QuickFilters, CustomFilter } from "@/lib/types/filters"
+import type { SupplierOutsourcing } from "@/lib/types/supplier"
 import { filterSuppliers } from "@/lib/utils/filter-suppliers"
 
 export default function SuppliersPage() {
   // View state
   const [activeView, setActiveView] = useState<ViewType>("list")
+
+  // Suppliers state (client-side - will be replaced with API calls in future)
+  const [suppliers, setSuppliers] = useState<SupplierOutsourcing[]>(initialSuppliers)
 
   // Filter state
   const [quickFilters, setQuickFilters] = useState<QuickFilters>({
@@ -35,7 +40,7 @@ export default function SuppliersPage() {
   // Apply filters
   const filteredSuppliers = useMemo(() => {
     return filterSuppliers(suppliers, quickFilters, customFilters)
-  }, [quickFilters, customFilters])
+  }, [suppliers, quickFilters, customFilters])
 
   // Extract search term from customFilters for highlighting
   const searchTerm = useMemo(() => {
@@ -81,6 +86,17 @@ export default function SuppliersPage() {
     } else {
       setCustomFilters(filters)
     }
+  }
+
+  // Handle saving new supplier
+  const handleSaveSupplier = (supplier: SupplierOutsourcing) => {
+    setSuppliers([...suppliers, supplier])
+    setActiveView("list")
+  }
+
+  // Handle cancel form
+  const handleCancelForm = () => {
+    setActiveView("list")
   }
 
   return (
@@ -135,10 +151,10 @@ export default function SuppliersPage() {
 
         {/* New Entry View */}
         {activeView === "new" && (
-          <PlaceholderView
-            icon={FileText}
-            title="Coming Soon - Add Supplier"
-            description="The Add Supplier form will appear here. You'll be able to create new outsourcing arrangements with full CSSF compliance validation."
+          <SupplierForm
+            existingSuppliers={suppliers}
+            onSave={handleSaveSupplier}
+            onCancel={handleCancelForm}
           />
         )}
 

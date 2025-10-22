@@ -23,7 +23,9 @@
       "Bash(npm run lint -- --fix)",
       "Bash(cat components/shared/view-segmented-control.tsx)",
       "mcp__playwright__browser_close",
-      "mcp__tavily-remote__tavily_search"
+      "mcp__tavily-remote__tavily_search",
+      "Bash(timeout 5 bash:*)",
+      "Bash(timeout 10 bash:*)"
     ],
     "deny": [],
     "ask": []

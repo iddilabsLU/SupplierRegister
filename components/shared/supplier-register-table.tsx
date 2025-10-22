@@ -188,7 +188,19 @@ export function SupplierRegisterTable({ suppliers, searchTerm = "" }: SupplierRe
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
-                    <TableCell className="font-medium whitespace-normal break-words leading-tight align-top text-base">{supplier.referenceNumber}</TableCell>
+                    <TableCell className="font-medium whitespace-normal break-words leading-tight align-top text-base">
+                      <div className="flex items-center gap-2">
+                        {supplier.referenceNumber}
+                        {supplier.incompleteFields && supplier.incompleteFields.length > 0 && (
+                          <span
+                            className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-destructive text-destructive-foreground text-xs font-bold"
+                            title={`${supplier.incompleteFields.length} incomplete mandatory field(s)`}
+                          >
+                            !
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell className="whitespace-normal break-words leading-tight align-top text-base">
                       {supplier.functionDescription.name}
                     </TableCell>

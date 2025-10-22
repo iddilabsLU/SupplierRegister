@@ -40,6 +40,7 @@ export enum SubstitutabilityOutcome {
 }
 
 export enum OutsourcingStatus {
+  DRAFT = "Draft",
   ACTIVE = "Active",
   NOT_YET_ACTIVE = "Not Yet Active",
   TERMINATED = "Terminated",
@@ -155,8 +156,8 @@ export interface CriticalOutsourcingFields {
 
   // 55.g - Sub-Outsourcing Information (where applicable)
   subOutsourcing?: {
-    activityDescription: string
     subContractors: Array<{
+      activityDescription: string
       name: string
       registrationCountry: string
       servicePerformanceCountry: string
@@ -191,4 +192,8 @@ export interface CriticalOutsourcingFields {
 export interface SupplierOutsourcing extends MandatoryOutsourcingFields {
   // Critical fields are optional - only present if criticality.isCritical is true
   criticalFields?: CriticalOutsourcingFields
+
+  // Incomplete fields tracking - array of field paths that are mandatory but not filled
+  // Used to show red "!" indicator in register and for future dashboard/filter functionality
+  incompleteFields?: string[]
 }

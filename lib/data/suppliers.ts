@@ -18,6 +18,7 @@ export const suppliers: SupplierOutsourcing[] = [
   {
     referenceNumber: "2024-001",
     status: OutsourcingStatus.ACTIVE,
+    incompleteFields: [], // All fields complete
     dates: {
       startDate: "2022-01-15",
       nextRenewalDate: "2025-01-15",
@@ -82,9 +83,9 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-06-20",
       },
       subOutsourcing: {
-        activityDescription: "Physical data center infrastructure and network connectivity services",
         subContractors: [
           {
+            activityDescription: "Physical data center infrastructure and network connectivity services",
             name: "SecureNet Data Centers GmbH",
             registrationCountry: "Germany",
             servicePerformanceCountry: "Germany",
@@ -111,6 +112,7 @@ export const suppliers: SupplierOutsourcing[] = [
   {
     referenceNumber: "2024-002",
     status: OutsourcingStatus.ACTIVE,
+    incompleteFields: [], // All fields complete
     dates: {
       startDate: "2023-03-01",
       nextRenewalDate: "2025-03-01",
@@ -146,6 +148,7 @@ export const suppliers: SupplierOutsourcing[] = [
   {
     referenceNumber: "2024-003",
     status: OutsourcingStatus.ACTIVE,
+    incompleteFields: [], // All fields complete
     dates: {
       startDate: "2021-06-01",
       nextRenewalDate: "2026-06-01",
@@ -210,9 +213,9 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-05-10",
       },
       subOutsourcing: {
-        activityDescription: "International wire transfer messaging and settlement services via SWIFT network",
         subContractors: [
           {
+            activityDescription: "International wire transfer messaging and settlement services via SWIFT network",
             name: "SWIFT Belgium",
             registrationCountry: "Belgium",
             servicePerformanceCountry: "Belgium",
@@ -239,6 +242,7 @@ export const suppliers: SupplierOutsourcing[] = [
   {
     referenceNumber: "2024-004",
     status: OutsourcingStatus.NOT_YET_ACTIVE,
+    incompleteFields: [], // All fields complete
     dates: {
       startDate: "2024-01-10",
       nextRenewalDate: "2025-01-10",
@@ -275,6 +279,7 @@ export const suppliers: SupplierOutsourcing[] = [
   {
     referenceNumber: "2024-005",
     status: OutsourcingStatus.ACTIVE,
+    incompleteFields: [], // All fields complete
     dates: {
       startDate: "2020-09-01",
       nextRenewalDate: "2025-09-01",
@@ -338,9 +343,9 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-02-15",
       },
       subOutsourcing: {
-        activityDescription: "Cloud infrastructure hosting and managed database services for core banking platform",
         subContractors: [
           {
+            activityDescription: "Cloud infrastructure hosting and managed database services for core banking platform",
             name: "AWS Europe (Luxembourg) S.à r.l.",
             registrationCountry: "Luxembourg",
             servicePerformanceCountry: "Luxembourg",

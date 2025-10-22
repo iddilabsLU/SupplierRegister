@@ -149,18 +149,18 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               value="Yes"
               searchTerm={searchTerm}
             />
-            <FieldDisplay
-              label="Activity Sub-Outsourced"
-              circularRef="55.g"
-              value={criticalFields.subOutsourcing.activityDescription}
-              className="col-span-full"
-              searchTerm={searchTerm}
-            />
             {criticalFields.subOutsourcing.subContractors.map((sub, index) => (
               <div
                 key={index}
                 className="grid gap-3 rounded-lg border p-2 grid-cols-2 [&>*]:min-w-0"
               >
+                <FieldDisplay
+                  label="Activity Sub-Outsourced"
+                  circularRef="55.g"
+                  value={sub.activityDescription}
+                  className="col-span-2"
+                  searchTerm={searchTerm}
+                />
                 <FieldDisplay
                   label="Sub-Contractor Name"
                   circularRef="55.g"

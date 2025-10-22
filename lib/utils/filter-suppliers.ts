@@ -180,8 +180,8 @@ function searchAllFields(supplier: SupplierOutsourcing, searchTerm: string): boo
 
     // Sub-outsourcing
     if (cf.subOutsourcing) {
-      if (contains(cf.subOutsourcing.activityDescription)) return true
       cf.subOutsourcing.subContractors.forEach((sub) => {
+        if (contains(sub.activityDescription)) return true
         if (contains(sub.name)) return true
         if (contains(sub.registrationCountry)) return true
         if (contains(sub.servicePerformanceCountry)) return true
