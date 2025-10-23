@@ -40,24 +40,28 @@ export function SupplierCloudServices({ supplier }: SupplierCloudServicesProps) 
               circularRef="54.h"
               value={supplier.cloudService.serviceModel}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("cloudService.serviceModel")}
             />
             <FieldDisplay
               label="Deployment Model"
               circularRef="54.h"
               value={supplier.cloudService.deploymentModel}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("cloudService.deploymentModel")}
             />
             <FieldDisplay
               label="Data Nature"
               circularRef="54.h"
               value={supplier.cloudService.dataNature}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("cloudService.dataNature")}
             />
             <FieldDisplay
               label="Storage Locations"
               circularRef="54.h"
               value={supplier.cloudService.storageLocations}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("cloudService.storageLocations")}
             />
             {/* Cloud Officer and Resource Operator - only for critical suppliers */}
             {supplier.criticality.isCritical && supplier.cloudService.cloudOfficer && (
@@ -66,6 +70,7 @@ export function SupplierCloudServices({ supplier }: SupplierCloudServicesProps) 
                 circularRef="54"
                 value={supplier.cloudService.cloudOfficer}
                 searchTerm={searchTerm}
+                isPending={supplier.pendingFields?.includes("cloudService.cloudOfficer")}
               />
             )}
             {supplier.criticality.isCritical && supplier.cloudService.resourceOperator && (
@@ -74,6 +79,7 @@ export function SupplierCloudServices({ supplier }: SupplierCloudServicesProps) 
                 circularRef="54"
                 value={supplier.cloudService.resourceOperator}
                 searchTerm={searchTerm}
+                isPending={supplier.pendingFields?.includes("cloudService.resourceOperator")}
               />
             )}
           </div>

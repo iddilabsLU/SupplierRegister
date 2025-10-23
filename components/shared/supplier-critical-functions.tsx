@@ -44,12 +44,14 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               circularRef="55.a"
               value={criticalFields.entitiesUsing.inScopeEntities}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.entitiesUsing.inScopeEntities")}
             />
             <FieldDisplay
               label="Group Entities (if any)"
               circularRef="55.a"
               value={criticalFields.entitiesUsing.groupEntities}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.entitiesUsing.groupEntities")}
             />
             {/* Group Relationship */}
             <FieldDisplay
@@ -57,11 +59,13 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               circularRef="55.b"
               value={criticalFields.groupRelationship.isPartOfGroup}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.groupRelationship.isPartOfGroup")}
             />
             <FieldDisplay
               label="Owned by Group"
               circularRef="55.b"
               value={criticalFields.groupRelationship.isOwnedByGroup}
+              isPending={supplier.pendingFields?.includes("criticalFields.groupRelationship.isOwnedByGroup")}
             />
             {/* Risk Assessment */}
             <FieldDisplay
@@ -69,12 +73,14 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               circularRef="55.c"
               value={criticalFields.riskAssessment.risk}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.riskAssessment.risk")}
             />
             <FieldDisplay
               label="Last Assessment Date"
               circularRef="55.c"
               value={criticalFields.riskAssessment.lastAssessmentDate}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.riskAssessment.lastAssessmentDate")}
             />
             <FieldDisplay
               label="Summary Results"
@@ -82,6 +88,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               value={criticalFields.riskAssessment.mainResults}
               className="col-span-2"
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.riskAssessment.mainResults")}
             />
             {/* Approval */}
             <FieldDisplay
@@ -89,12 +96,14 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               circularRef="55.d"
               value={criticalFields.approval.approverName}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.approval.approverName")}
             />
             <FieldDisplay
               label="Approver Role"
               circularRef="55.d"
               value={criticalFields.approval.approverRole}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.approval.approverRole")}
             />
           </div>
         </CardContent>
@@ -112,17 +121,20 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               circularRef="55.f"
               value={criticalFields.audit.lastAuditDate}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.audit.lastAuditDate")}
             />
             <FieldDisplay
               label="Next Scheduled Audit"
               circularRef="55.f"
               value={criticalFields.audit.nextScheduledAudit}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.audit.nextScheduledAudit")}
             />
             <FieldDisplay
               label="Governing Law"
               circularRef="55.e"
               value={criticalFields.governingLaw}
+              isPending={supplier.pendingFields?.includes("criticalFields.governingLaw")}
             />
             {criticalFields.regulatoryNotification && (
               <FieldDisplay
@@ -130,6 +142,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
                 circularRef="55.l"
                 value={criticalFields.regulatoryNotification.notificationDate}
                 searchTerm={searchTerm}
+                isPending={supplier.pendingFields?.includes("criticalFields.regulatoryNotification.notificationDate")}
               />
             )}
           </div>
@@ -148,6 +161,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               circularRef="55.g"
               value="Yes"
               searchTerm={searchTerm}
+              isPending={false}
             />
             {criticalFields.subOutsourcing.subContractors.map((sub, index) => (
               <div
@@ -160,30 +174,35 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
                   value={sub.activityDescription}
                   className="col-span-2"
                   searchTerm={searchTerm}
+                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.activityDescription`)}
                 />
                 <FieldDisplay
                   label="Sub-Contractor Name"
                   circularRef="55.g"
                   value={sub.name}
                   searchTerm={searchTerm}
+                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.name`)}
                 />
                 <FieldDisplay
                   label="Registration Country"
                   circularRef="55.g"
                   value={sub.registrationCountry}
                   searchTerm={searchTerm}
+                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.registrationCountry`)}
                 />
                 <FieldDisplay
                   label="Service Performance Country"
                   circularRef="55.g"
                   value={sub.servicePerformanceCountry}
                   searchTerm={searchTerm}
+                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.servicePerformanceCountry`)}
                 />
                 <FieldDisplay
                   label="Data Storage Location"
                   circularRef="55.g"
                   value={sub.dataStorageLocation}
                   searchTerm={searchTerm}
+                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.dataStorageLocation`)}
                 />
               </div>
             ))}
@@ -204,12 +223,14 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               circularRef="55.h"
               value={criticalFields.substitutability.outcome}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.substitutability.outcome")}
             />
             <FieldDisplay
               label="Time-Critical Function"
               circularRef="55.j"
               value={criticalFields.isTimeCritical}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.isTimeCritical")}
             />
             <FieldDisplay
               label="Reintegration Assessment"
@@ -217,6 +238,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               value={criticalFields.substitutability.reintegrationAssessment}
               className="col-span-2"
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.substitutability.reintegrationAssessment")}
             />
             <FieldDisplay
               label="Discontinuation Impact"
@@ -224,6 +246,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               value={criticalFields.substitutability.discontinuationImpact}
               className="col-span-2"
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.substitutability.discontinuationImpact")}
             />
             <FieldDisplay
               label="Alternative Providers"
@@ -231,18 +254,21 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               value={criticalFields.alternativeProviders}
               className="col-span-2"
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("criticalFields.alternativeProviders")}
             />
             {/* Operations */}
             <FieldDisplay
               label="Estimated Annual Cost"
               circularRef="55.k"
               value={criticalFields.estimatedAnnualCost}
+              isPending={supplier.pendingFields?.includes("criticalFields.estimatedAnnualCost")}
             />
             {criticalFields.costComments && (
               <FieldDisplay
                 label="Comments (if any)"
                 circularRef="55.k"
                 value={criticalFields.costComments}
+                isPending={supplier.pendingFields?.includes("criticalFields.costComments")}
               />
             )}
           </div>

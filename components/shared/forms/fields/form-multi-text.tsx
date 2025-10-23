@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Plus, X } from "lucide-react"
+import { PendingToggle } from "../pending-toggle"
 import { useFieldArray, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
 interface FormMultiTextProps<TFieldValues extends FieldValues> {
@@ -16,6 +17,8 @@ interface FormMultiTextProps<TFieldValues extends FieldValues> {
   tooltip?: string
   className?: string
   addButtonLabel?: string
+  toggleFieldPending?: (fieldPath: string) => void
+  isFieldPending?: (fieldPath: string) => boolean
 }
 
 /**
@@ -44,6 +47,8 @@ export function FormMultiText<TFieldValues extends FieldValues>({
   tooltip,
   className = "",
   addButtonLabel = "Add",
+  toggleFieldPending,
+  isFieldPending,
 }: FormMultiTextProps<TFieldValues>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -53,16 +58,25 @@ export function FormMultiText<TFieldValues extends FieldValues>({
 
   return (
     <FormItem className={className}>
-      <FormLabel className="text-base">
-        {label}
-        {circularRef && <span className="text-sm text-muted-foreground ml-1">({circularRef})</span>}
-        {required && <span className="text-destructive ml-1">*</span>}
-        {tooltip && (
-          <span className="text-xs text-muted-foreground ml-2" title={tooltip}>
-            ⓘ
-          </span>
+      <div className="flex items-center gap-2">
+        <FormLabel className="text-base">
+          {label}
+          {circularRef && <span className="text-sm text-muted-foreground ml-1">({circularRef})</span>}
+          {required && <span className="text-destructive ml-1">*</span>}
+          {tooltip && (
+            <span className="text-xs text-muted-foreground ml-2" title={tooltip}>
+              ⓘ
+            </span>
+          )}
+        </FormLabel>
+        {toggleFieldPending && isFieldPending && (
+          <PendingToggle
+            fieldPath={name as string}
+            isPending={isFieldPending(name as string)}
+            onToggle={toggleFieldPending}
+          />
         )}
-      </FormLabel>
+      </div>
       <div className="space-y-2">
         {fields.map((field, index) => (
           <FormField

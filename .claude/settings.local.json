@@ -25,7 +25,9 @@
       "mcp__playwright__browser_close",
       "mcp__tavily-remote__tavily_search",
       "Bash(timeout 5 bash:*)",
-      "Bash(timeout 10 bash:*)"
+      "Bash(timeout 10 bash:*)",
+      "Bash(node:*)",
+      "Read(//c/**)"
     ],
     "deny": [],
     "ask": []

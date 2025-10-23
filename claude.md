@@ -65,7 +65,27 @@ supplierregister/
 │   ├── shared/                  # Custom reusable components
 │   │   ├── supplier-register-table.tsx    # Main register table
 │   │   ├── field-display.tsx              # CSSF-compliant field display
-│   │   └── icon-badge.tsx
+│   │   ├── icon-badge.tsx                 # Icon container with variants
+│   │   ├── view-segmented-control.tsx     # Tab navigation control
+│   │   ├── filter-panel.tsx               # Filtering system
+│   │   └── forms/                         # Form components
+│   │       ├── supplier-form.tsx          # Main form container
+│   │       ├── supplier-form-tab-nav.tsx  # Form tab navigation
+│   │       ├── supplier-form-basic-info.tsx    # Basic Info tab
+│   │       ├── supplier-form-provider.tsx      # Service Provider tab
+│   │       ├── supplier-form-cloud.tsx         # Cloud Services tab
+│   │       ├── supplier-form-critical.tsx      # Critical Functions tab
+│   │       ├── form-actions.tsx                # Form action buttons
+│   │       ├── incomplete-fields-dialog.tsx    # Confirmation dialog
+│   │       ├── pending-toggle.tsx              # Pending field toggle button
+│   │       └── fields/                         # Form field components
+│   │           ├── form-text-input.tsx         # Text input field
+│   │           ├── form-select.tsx             # Select dropdown field
+│   │           ├── form-textarea.tsx           # Textarea field
+│   │           ├── form-radio-group.tsx        # Radio group field
+│   │           ├── form-date-picker.tsx        # Date picker field
+│   │           ├── form-multi-text.tsx         # Multi-text input field
+│   │           └── form-sub-contractor.tsx     # Sub-contractor field group
 │   ├── layouts/                 # Layout components
 │   │   ├── header.tsx
 │   │   ├── footer.tsx
@@ -82,10 +102,13 @@ supplierregister/
 │   │   ├── formatters.ts        # Date, currency formatting
 │   │   ├── validators.ts        # Runtime validators
 │   │   ├── filter-suppliers.ts  # Filtering logic with global search
-│   │   └── highlight-text.tsx   # Text highlighting utility
+│   │   ├── highlight-text.tsx   # Text highlighting utility
+│   │   ├── check-completeness.ts        # Mandatory field completeness checker
+│   │   └── pending-field-resolver.ts    # Custom Zod resolver for pending fields
 │   ├── contexts/                # React contexts
 │   │   └── search-context.tsx   # Search term context for highlighting
-│   ├── validations/             # Zod schemas (for future forms)
+│   ├── validations/             # Zod schemas
+│   │   └── supplier-schema.ts   # Supplier form validation schema
 │   └── constants.ts             # App-wide constants
 ├── hooks/                       # Custom React hooks
 │   ├── use-media-query.ts
@@ -219,12 +242,46 @@ This application implements the outsourcing register requirements from CSSF Circ
 ### View Navigation System ✅
 - **Segmented Control**: Tab-based navigation with 3 views
   - **Register List**: Main supplier table with filtering
-  - **New Entry**: Add new supplier form (placeholder - to be implemented)
+  - **New Entry**: Fully functional supplier form for adding new suppliers
   - **Dashboard**: Analytics and insights (placeholder - to be implemented)
 - **Centered Layout**: Control positioned between page header and content
 - **Accessible Design**: WCAG AAA contrast ratios, clear active state
 - **Semantic Colors**: Uses project color tokens (primary/primary-foreground)
 - **Smooth Transitions**: No layout shifts when switching between views
+
+### Add Supplier Form ✅
+- **Multi-Tab Form**: 4-tab navigation system with conditional visibility
+  - **Basic Information**: Reference, status, function details, dates, criticality assessment
+  - **Service Provider**: Provider details, location information
+  - **Cloud Services**: Cloud-specific fields (only shown when Category = Cloud)
+  - **Critical Functions**: Point 55 fields (only shown when Is Critical = Yes)
+- **Form Validation**: React Hook Form + Zod with custom pending field resolver
+- **All Tabs Rendered**: All tabs always rendered in DOM for proper validation across all fields
+- **Real-Time Tab Enabling**: Cloud and Critical tabs enable/disable based on form values
+- **Validation Highlighting**: Red error messages appear in all tabs when validation fails
+- **Auto-Scroll**: Automatically scrolls to first error field on validation failure
+- **Form Actions**:
+  - **Cancel**: Confirms before discarding changes
+  - **Save as Draft**: Saves with status "Draft", auto-marks all empty required fields as pending
+  - **Save Supplier**: Full validation, shows confirmation dialog if fields are missing
+- **Auto-Generated Reference**: Next available reference number auto-filled
+- **Toast Notifications**: Success/error feedback for all actions
+
+### Pending Fields Feature ✅
+- **Mark Fields as Pending**: Amber pin icon button next to each form field
+- **Toggle Functionality**: Click to mark/unmark field as pending (skips validation)
+- **Visual Indicators**:
+  - Amber pin icon 📌 next to pending fields in form
+  - Amber badge with count in register table (e.g., "2 pending fields")
+- **Skip Validation**: Pending fields bypass required field validation
+- **Auto-Mark on Draft**: "Save as Draft" automatically marks all empty required fields as pending
+- **Submission Confirmation Dialog**: When submitting with missing non-pending fields:
+  - Lists all incomplete mandatory fields with CSSF references
+  - Two options:
+    - **Mark as Pending & Submit**: Marks fields as pending and saves supplier
+    - **Go Back to Form**: Returns to form with red validation highlighting
+- **Pending Field Resolver**: Custom Zod resolver that filters validation errors for pending fields
+- **Persistent State**: Pending fields saved with supplier data for later completion
 
 ### Advanced Filtering System ✅
 - **Quick Filters**: Toggle buttons for Critical and Cloud suppliers
@@ -303,47 +360,42 @@ This application implements the outsourcing register requirements from CSSF Circ
 - ✅ Enhanced segmented control spacing and sizing
 - ✅ Multi-line text wrapping for "Not Applicable" placeholders
 - ✅ Improved card spacing (16px header-to-content, 12px between fields)
+- ✅ **Add Supplier Form** - Multi-tab form with React Hook Form + Zod validation
+- ✅ **Pending Fields Feature** - Mark fields as pending, skip validation, auto-mark on draft
+- ✅ **Form Validation** - All tabs rendered for validation, red error highlighting
+- ✅ **Submission Confirmation Dialog** - Warn about missing fields before save
+- ✅ **Save as Draft** - Auto-marks empty required fields as pending
 
 **Next Steps:**
-1. **Add Supplier Form** (High Priority)
-   - Multi-step form with validation (React Hook Form + Zod)
-   - Step 1: Basic Info (reference, provider, function)
-   - Step 2: Dates & Location
-   - Step 3: Criticality Assessment
-   - Step 4: Cloud Service (conditional)
-   - Step 5: Critical Fields (conditional)
-   - Preview before submission
-   - Store in client-side state (sessionStorage or React Context)
-
-2. **Edit Supplier** (High Priority)
+1. **Edit Supplier** (High Priority)
    - Reuse add form with pre-filled data
    - Update supplier in client-side state
 
-3. **Duplicate Supplier** (Medium Priority)
+2. **Duplicate Supplier** (Medium Priority)
    - Clone supplier data
    - Auto-increment reference number
    - Open in edit mode
 
-4. **Export Functionality** (Medium Priority)
+3. **Export Functionality** (Medium Priority)
    - Export to Excel (.xlsx) using SheetJS or similar
    - Export to PDF using jsPDF or react-pdf
    - Export filtered results only
    - Include all CSSF fields with proper labels
 
-5. **Data Persistence** (Medium Priority)
+4. **Data Persistence** (Medium Priority)
    - Session-based state management (per-user session without login)
    - Option 1: sessionStorage (simple, temporary)
    - Option 2: localStorage (persistent across sessions)
    - Option 3: Demo pop-up on first add/delete explaining limitations
 
-6. **Dashboard/Analytics** (Low Priority)
+5. **Dashboard/Analytics** (Low Priority)
    - Pie chart: Critical vs Non-Critical
    - Bar chart: Suppliers by Category
    - Risk distribution chart
    - Cloud services overview
    - Timeline of upcoming renewals/audits
 
-7. **Enhanced UX** (Low Priority)
+6. **Enhanced UX** (Low Priority)
    - Sort table columns (provider name, status, criticality, risk)
    - Column visibility toggle
    - Bulk actions (select multiple, delete multiple)
@@ -402,6 +454,8 @@ $ npx shadcn@latest add <component-name>
 
 ### Shared Components (`components/shared/`)
 Custom reusable components specific to this project:
+
+**Register Table & Display:**
 - `supplier-register-table.tsx` - Main CSSF-compliant register table with expand/collapse
 - `supplier-detail-tabs.tsx` - Tabbed interface for supplier details (wraps tabs with SearchProvider)
 - `supplier-detail-tab-nav.tsx` - Tab navigation bar with enhanced spacing
@@ -412,12 +466,36 @@ Custom reusable components specific to this project:
 - `field-display.tsx` - Displays fields with CSSF annotations and text highlighting support
 - `not-applicable-placeholder.tsx` - N/A placeholder with multi-line centered text
 - `icon-badge.tsx` - Icon container with variants
+
+**Form Components (`forms/`):**
+- `supplier-form.tsx` - Main form container with tab management and validation
+- `supplier-form-tab-nav.tsx` - Form tab navigation with conditional tab visibility
+- `supplier-form-basic-info.tsx` - Basic Information tab with 4 card sections
+- `supplier-form-provider.tsx` - Service Provider tab with 2 card sections
+- `supplier-form-cloud.tsx` - Cloud Services tab (conditional, Point 54.h)
+- `supplier-form-critical.tsx` - Critical Functions tab (conditional, Point 55)
+- `form-actions.tsx` - Form action buttons (Cancel, Save as Draft, Save Supplier)
+- `incomplete-fields-dialog.tsx` - Confirmation dialog for missing fields
+- `pending-toggle.tsx` - Amber pin button for marking fields as pending
+
+**Form Field Components (`forms/fields/`):**
+- `form-text-input.tsx` - Text input with CSSF annotations and pending toggle
+- `form-select.tsx` - Select dropdown with validation
+- `form-textarea.tsx` - Textarea with character limits
+- `form-radio-group.tsx` - Radio button group
+- `form-date-picker.tsx` - Date picker with calendar UI
+- `form-multi-text.tsx` - Dynamic multi-text input (countries, locations, etc.)
+- `form-sub-contractor.tsx` - Sub-contractor detail entry group
+
+**Navigation & Filtering:**
 - `view-segmented-control.tsx` - Tab navigation control (Register List / New Entry / Dashboard)
 - `placeholder-view.tsx` - Reusable "Coming Soon" placeholder for future features
 - `filter-panel.tsx` - Collapsible filter panel with quick/custom filters (enforces 1 text search limit)
 - `quick-filters.tsx` - Critical and Cloud toggle buttons
 - `custom-filter-row.tsx` - Individual filter row with field/value inputs
 - `active-filter-badges.tsx` - Display active filters as removable badges
+
+**Other:**
 - `data-table.tsx` - Generic data table component (from boilerplate)
 - `file-upload.tsx` - File upload component (from boilerplate)
 - `theme-toggle.tsx` - Theme toggle component (legacy, dark mode removed)
@@ -560,27 +638,41 @@ import { FileText, Building2, AlertTriangle } from "lucide-react"
 ## 🐛 Known Issues
 
 ### Functional (Non-Critical)
-- Delete action shows toast but doesn't actually remove supplier from state (intentional - demo only)
-- Edit action shows toast but doesn't open form (not yet implemented)
-- Duplicate action shows toast but doesn't clone supplier (not yet implemented)
+- **Delete action**: Shows toast but doesn't actually remove supplier from state (intentional - demo only, persistent storage not yet implemented)
+- **Edit action**: Shows toast but doesn't open form (Edit Supplier feature not yet implemented - see Roadmap)
+- **Duplicate action**: Shows toast but doesn't clone supplier (Duplicate Supplier feature not yet implemented - see Roadmap)
+
+### Technical Notes
+- Form uses client-side state only (no backend persistence)
+- All data resets on page refresh (intentional for demo)
+- Pending fields persist in supplier data but require manual completion later
 
 ---
 
 ## 📊 Project Metrics
 
-- **Total Components**: 40+ (25+ shadcn/ui + 15+ custom)
-- **Lines of Code**: ~3,500+ (excluding dependencies)
+- **Total Components**: 65+ (25+ shadcn/ui + 40+ custom, including 25+ form components)
+- **Lines of Code**: ~8,000+ (excluding dependencies)
 - **TypeScript Coverage**: 100%
 - **Build Status**: ✅ Successful (no ESLint warnings)
 - **Bundle Size**: TBD (run `npm run build` and check `.next/analyze`)
 - **Lighthouse Score**: TBD (test on Vercel deployment)
+- **Form Fields**: 50+ CSSF-compliant fields across 4 tabs
+- **Validation Rules**: 40+ Zod schema validations with pending field support
 
 ---
 
-**Last Updated:** 2025-10-21
-**Project Status:** Phase 1 - Frontend Demo (92% Complete)
-**Recent Updates:** Global text search with highlighting, two-column layout (max-w-7xl centered), improved spacing (16px header-to-content, 12px between fields)
-**Next Priority:** Add/Edit Supplier Form Implementation (to replace "New Entry" placeholder)
+**Last Updated:** 2025-10-23
+**Project Status:** Phase 1 - Frontend Demo with Full Form Implementation (95% Complete)
+**Recent Updates:**
+- ✅ **Add Supplier Form** - Complete 4-tab form with React Hook Form + Zod validation
+- ✅ **Pending Fields Feature** - Mark fields as pending, skip validation, auto-mark on draft, amber badges
+- ✅ **Form Validation** - All tabs rendered for validation, red error highlighting across all tabs
+- ✅ **Submission Dialog** - Confirmation prompt when submitting with missing fields
+- ✅ **Save as Draft** - Auto-marks empty required fields as pending
+- ✅ **Bug Fixes** - Fixed pending field badges, validation across hidden tabs, completeness checking
+
+**Next Priority:** Edit Supplier functionality (reuse form with pre-filled data) + Data Persistence (sessionStorage/localStorage)
 **Future Phase:** Desktop application with Tauri + SQLite
 
 **Created with Claude Code**

@@ -3,6 +3,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { CalendarIcon } from "lucide-react"
+import { PendingToggle } from "../pending-toggle"
 import type { Control, FieldPath, FieldValues } from "react-hook-form"
 
 interface FormDatePickerProps<TFieldValues extends FieldValues> {
@@ -13,6 +14,8 @@ interface FormDatePickerProps<TFieldValues extends FieldValues> {
   required?: boolean
   tooltip?: string
   className?: string
+  toggleFieldPending?: (fieldPath: string) => void
+  isFieldPending?: (fieldPath: string) => boolean
 }
 
 /**
@@ -37,6 +40,8 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
   required = false,
   tooltip,
   className = "",
+  toggleFieldPending,
+  isFieldPending,
 }: FormDatePickerProps<TFieldValues>) {
   return (
     <FormField
@@ -44,16 +49,25 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className={className}>
-          <FormLabel className="text-base">
-            {label}
-            {circularRef && <span className="text-sm text-muted-foreground ml-1">({circularRef})</span>}
-            {required && <span className="text-destructive ml-1">*</span>}
-            {tooltip && (
-              <span className="text-xs text-muted-foreground ml-2" title={tooltip}>
-                ⓘ
-              </span>
+          <div className="flex items-center gap-2">
+            <FormLabel className="text-base">
+              {label}
+              {circularRef && <span className="text-sm text-muted-foreground ml-1">({circularRef})</span>}
+              {required && <span className="text-destructive ml-1">*</span>}
+              {tooltip && (
+                <span className="text-xs text-muted-foreground ml-2" title={tooltip}>
+                  ⓘ
+                </span>
+              )}
+            </FormLabel>
+            {toggleFieldPending && isFieldPending && (
+              <PendingToggle
+                fieldPath={name as string}
+                isPending={isFieldPending(name as string)}
+                onToggle={toggleFieldPending}
+              />
             )}
-          </FormLabel>
+          </div>
           <FormControl>
             <div className="relative">
               <Input

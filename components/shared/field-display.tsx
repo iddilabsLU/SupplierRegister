@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge"
+import { Pin } from "lucide-react"
 import { formatCurrency, formatDate } from "@/lib/utils/formatters"
 import { highlightText } from "@/lib/utils/highlight-text"
 
@@ -8,6 +9,7 @@ interface FieldDisplayProps {
   value: string | number | boolean | string[] | undefined
   className?: string
   searchTerm?: string
+  isPending?: boolean
 }
 
 /**
@@ -20,13 +22,20 @@ export function FieldDisplay({
   value,
   className = "",
   searchTerm = "",
+  isPending = false,
 }: FieldDisplayProps) {
   // Handle undefined/null values
   if (value === undefined || value === null) {
     return (
-      <div className={`space-y-1 ${className}`}>
-        <div className="text-base font-medium text-muted-foreground">
-          {label} <span className="text-sm">({circularRef})</span>
+      <div className={`space-y-1 min-w-0 ${isPending ? "rounded-md bg-amber-50 border border-amber-200 p-3" : ""} ${className}`}>
+        <div className="text-base font-medium text-foreground break-words whitespace-normal flex items-center gap-2">
+          {label} <span className="text-sm text-muted-foreground">({circularRef})</span>
+          {isPending && (
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-700 text-xs font-medium border border-amber-300">
+              <Pin className="h-3 w-3 fill-amber-600" />
+              Pending
+            </span>
+          )}
         </div>
         <div className="text-base text-muted-foreground italic">Not provided</div>
       </div>
@@ -87,9 +96,15 @@ export function FieldDisplay({
   }
 
   return (
-    <div className={`space-y-1 min-w-0 ${className}`}>
-      <div className="text-base font-medium text-foreground break-words whitespace-normal">
+    <div className={`space-y-1 min-w-0 ${isPending ? "rounded-md bg-amber-50 border border-amber-200 p-3" : ""} ${className}`}>
+      <div className="text-base font-medium text-foreground break-words whitespace-normal flex items-center gap-2">
         {label} <span className="text-sm text-muted-foreground">({circularRef})</span>
+        {isPending && (
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-700 text-xs font-medium border border-amber-300">
+            <Pin className="h-3 w-3 fill-amber-600" />
+            Pending
+          </span>
+        )}
       </div>
       <div className="text-base text-foreground break-words whitespace-normal">{displayValue}</div>
     </div>

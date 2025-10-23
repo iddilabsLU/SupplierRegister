@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+
 import { Form } from "@/components/ui/form"
 import { SupplierFormTabNav, type FormTabType } from "./supplier-form-tab-nav"
 import { SupplierFormBasicInfo } from "./supplier-form-basic-info"
@@ -13,6 +13,7 @@ import { IncompleteFieldsDialog } from "./incomplete-fields-dialog"
 import { FormActions } from "./form-actions"
 import { supplierFormSchema, type SupplierFormData } from "@/lib/validations/supplier-schema"
 import { checkIncompleteFields, generateNextReferenceNumber } from "@/lib/utils/check-completeness"
+import { createPendingFieldResolver } from "@/lib/utils/pending-field-resolver"
 import { OutsourcingCategory, OutsourcingStatus } from "@/lib/types/supplier"
 import type { SupplierOutsourcing } from "@/lib/types/supplier"
 import { toast } from "sonner"
@@ -45,10 +46,11 @@ export function SupplierForm({
   const [hasSubOutsourcing, setHasSubOutsourcing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDraftSaving, setIsDraftSaving] = useState(false)
+  const [pendingFields, setPendingFields] = useState<string[]>(initialData?.pendingFields || [])
 
   // Initialize form with React Hook Form
   const form = useForm<SupplierFormData>({
-    resolver: zodResolver(supplierFormSchema),
+    resolver: createPendingFieldResolver(supplierFormSchema, () => pendingFields),
     mode: "onBlur",
     defaultValues: initialData || {
       referenceNumber: generateNextReferenceNumber(existingSuppliers),
@@ -96,11 +98,27 @@ export function SupplierForm({
   const showCloudTab = category === OutsourcingCategory.CLOUD
   const showCriticalTab = isCritical === true
 
+  // Pending fields helper functions
+  const toggleFieldPending = (fieldPath: string) => {
+    setPendingFields((prev) => {
+      if (prev.includes(fieldPath)) {
+        // Remove from pending
+        return prev.filter((path) => path !== fieldPath)
+      } else {
+        // Add to pending
+        return [...prev, fieldPath]
+      }
+    })
+  }
+
+  const isFieldPending = (fieldPath: string): boolean => {
+    return pendingFields.includes(fieldPath)
+  }
 
   // Handle form submission
   const onSubmit = (data: SupplierFormData) => {
     // Run completeness check
-    const completenessResult = checkIncompleteFields(data as Partial<SupplierOutsourcing>)
+    const completenessResult = checkIncompleteFields(data as Partial<SupplierOutsourcing>, pendingFields)
 
     if (!completenessResult.isComplete) {
       // Show incomplete fields dialog
@@ -136,10 +154,13 @@ export function SupplierForm({
   }
 
   // Save supplier (called after confirmation or if complete)
-  const saveSupplier = (data: SupplierFormData, incompleteFields: string[], isDraft: boolean = false) => {
+  const saveSupplier = (data: SupplierFormData, incompleteFields: string[], isDraft: boolean = false, pendingFieldsOverride?: string[]) => {
     setIsSubmitting(true)
 
     try {
+      // Use override if provided, otherwise use state
+      const finalPendingFields = pendingFieldsOverride !== undefined ? pendingFieldsOverride : pendingFields
+
       // Transform form data to SupplierOutsourcing
       const supplier: SupplierOutsourcing = {
         referenceNumber: data.referenceNumber!,
@@ -189,6 +210,7 @@ export function SupplierForm({
           : undefined,
         criticalFields: data.criticalFields as any || undefined,
         incompleteFields: incompleteFields.length > 0 ? incompleteFields : undefined,
+        pendingFields: finalPendingFields.length > 0 ? finalPendingFields : undefined,
       } as SupplierOutsourcing
 
       // Call parent save handler
@@ -199,12 +221,22 @@ export function SupplierForm({
 
       // Show success toast based on action type
       if (isDraft) {
-        toast.success("Draft saved successfully", {
-          description: "You can continue editing this supplier later.",
-        })
+        if (finalPendingFields.length > 0) {
+          toast.success("Draft saved", {
+            description: `${finalPendingFields.length} field(s) marked as pending for later completion.`,
+          })
+        } else {
+          toast.success("Draft saved successfully", {
+            description: "You can continue editing this supplier later.",
+          })
+        }
       } else if (incompleteFields.length > 0) {
         toast.success("Supplier saved as draft", {
           description: `${incompleteFields.length} mandatory field(s) still need to be completed.`,
+        })
+      } else if (finalPendingFields.length > 0) {
+        toast.success("Supplier saved", {
+          description: `${finalPendingFields.length} field(s) marked as pending. You can complete them later.`,
         })
       } else {
         toast.success("Supplier saved successfully", {
@@ -221,11 +253,21 @@ export function SupplierForm({
     }
   }
 
-  // Handle dialog confirmation
+  // Handle dialog confirmation - mark incomplete fields as pending
   const handleIncompleteConfirm = () => {
     if (pendingData) {
-      const completenessResult = checkIncompleteFields(pendingData as Partial<SupplierOutsourcing>)
-      saveSupplier(pendingData, completenessResult.incomplete)
+      // Get current incomplete fields (not marked as pending)
+      const completenessResult = checkIncompleteFields(pendingData as Partial<SupplierOutsourcing>, pendingFields)
+
+      // Mark all incomplete fields as pending
+      const updatedPendingFields = [...pendingFields, ...completenessResult.incomplete]
+
+      // Update state for current session
+      setPendingFields(updatedPendingFields)
+
+      // Save supplier with updated pending fields (no incomplete fields since they're all pending now)
+      saveSupplier(pendingData, [], false, updatedPendingFields)
+
       setShowIncompleteDialog(false)
       setPendingData(null)
     }
@@ -238,14 +280,23 @@ export function SupplierForm({
       // Get current form data without validation
       const formData = form.getValues()
 
+      // Check for incomplete required fields
+      const completenessResult = checkIncompleteFields(formData as Partial<SupplierOutsourcing>, [])
+
+      // Auto-mark all incomplete fields as pending
+      const fieldsToMarkPending = completenessResult.incomplete
+
+      // Update the pendingFields state (for the current form session)
+      setPendingFields(fieldsToMarkPending)
+
       // Force status to "Draft"
       const draftData = {
         ...formData,
         status: OutsourcingStatus.DRAFT,
       }
 
-      // Save directly without any validation checks, passing isDraft=true
-      saveSupplier(draftData, [], true)
+      // Save with auto-marked pending fields
+      saveSupplier(draftData, [], true, fieldsToMarkPending)
     } catch (error) {
       console.error("Failed to save draft:", error)
       toast.error("Failed to save draft", {
@@ -264,27 +315,7 @@ export function SupplierForm({
     }
   }
 
-  // Render active tab content
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case "basic-info":
-        return <SupplierFormBasicInfo control={form.control} />
-      case "provider":
-        return <SupplierFormProvider control={form.control} />
-      case "cloud":
-        return <SupplierFormCloud control={form.control} isCritical={isCritical === true} />
-      case "critical":
-        return (
-          <SupplierFormCritical
-            control={form.control}
-            hasSubOutsourcing={hasSubOutsourcing}
-            onSubOutsourcingChange={setHasSubOutsourcing}
-          />
-        )
-      default:
-        return null
-    }
-  }
+
 
   return (
     <>
@@ -298,8 +329,40 @@ export function SupplierForm({
             showCriticalTab={showCriticalTab}
           />
 
-          {/* Tab Content */}
-          <div className="min-h-[400px]">{renderTabContent()}</div>
+          {/* Tab Content - All tabs always rendered for validation */}
+          <div className="min-h-[400px] relative">
+            <div className={activeTab === "basic-info" ? "relative z-10" : "absolute top-0 left-0 w-full opacity-0 pointer-events-none z-0"}>
+              <SupplierFormBasicInfo
+                control={form.control}
+                toggleFieldPending={toggleFieldPending}
+                isFieldPending={isFieldPending}
+              />
+            </div>
+            <div className={activeTab === "provider" ? "relative z-10" : "absolute top-0 left-0 w-full opacity-0 pointer-events-none z-0"}>
+              <SupplierFormProvider
+                control={form.control}
+                toggleFieldPending={toggleFieldPending}
+                isFieldPending={isFieldPending}
+              />
+            </div>
+            <div className={activeTab === "cloud" ? "relative z-10" : "absolute top-0 left-0 w-full opacity-0 pointer-events-none z-0"}>
+              <SupplierFormCloud
+                control={form.control}
+                isCritical={isCritical === true}
+                toggleFieldPending={toggleFieldPending}
+                isFieldPending={isFieldPending}
+              />
+            </div>
+            <div className={activeTab === "critical" ? "relative z-10" : "absolute top-0 left-0 w-full opacity-0 pointer-events-none z-0"}>
+              <SupplierFormCritical
+                control={form.control}
+                hasSubOutsourcing={hasSubOutsourcing}
+                onSubOutsourcingChange={setHasSubOutsourcing}
+                toggleFieldPending={toggleFieldPending}
+                isFieldPending={isFieldPending}
+              />
+            </div>
+          </div>
 
           {/* Form Actions */}
           <FormActions

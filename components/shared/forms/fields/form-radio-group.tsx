@@ -3,6 +3,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { PendingToggle } from "../pending-toggle"
 import type { Control, FieldPath, FieldValues } from "react-hook-form"
 
 interface FormRadioGroupProps<TFieldValues extends FieldValues> {
@@ -13,6 +14,8 @@ interface FormRadioGroupProps<TFieldValues extends FieldValues> {
   required?: boolean
   tooltip?: string
   className?: string
+  toggleFieldPending?: (fieldPath: string) => void
+  isFieldPending?: (fieldPath: string) => boolean
 }
 
 /**
@@ -37,6 +40,8 @@ export function FormRadioGroup<TFieldValues extends FieldValues>({
   required = false,
   tooltip,
   className = "",
+  toggleFieldPending,
+  isFieldPending,
 }: FormRadioGroupProps<TFieldValues>) {
   return (
     <FormField
@@ -44,16 +49,25 @@ export function FormRadioGroup<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className={className}>
-          <FormLabel className="text-base">
-            {label}
-            {circularRef && <span className="text-sm text-muted-foreground ml-1">({circularRef})</span>}
-            {required && <span className="text-destructive ml-1">*</span>}
-            {tooltip && (
-              <span className="text-xs text-muted-foreground ml-2" title={tooltip}>
-                ⓘ
-              </span>
+          <div className="flex items-center gap-2">
+            <FormLabel className="text-base">
+              {label}
+              {circularRef && <span className="text-sm text-muted-foreground ml-1">({circularRef})</span>}
+              {required && <span className="text-destructive ml-1">*</span>}
+              {tooltip && (
+                <span className="text-xs text-muted-foreground ml-2" title={tooltip}>
+                  ⓘ
+                </span>
+              )}
+            </FormLabel>
+            {toggleFieldPending && isFieldPending && (
+              <PendingToggle
+                fieldPath={name as string}
+                isPending={isFieldPending(name as string)}
+                onToggle={toggleFieldPending}
+              />
             )}
-          </FormLabel>
+          </div>
           <FormControl>
             <RadioGroup
               onValueChange={(value) => {

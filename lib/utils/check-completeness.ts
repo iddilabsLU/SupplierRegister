@@ -21,14 +21,22 @@ export interface CompletenessCheckResult {
  * - Point 55: Additional fields if critical/important function
  *
  * @param data - Partial supplier data from form
+ * @param pendingFields - Optional array of field paths marked as pending (will skip validation for these fields)
  * @returns Result object with incomplete field paths and labels
  */
-export function checkIncompleteFields(data: Partial<SupplierOutsourcing>): CompletenessCheckResult {
+export function checkIncompleteFields(
+  data: Partial<SupplierOutsourcing>,
+  pendingFields: string[] = []
+): CompletenessCheckResult {
   const incomplete: string[] = []
   const labels: string[] = []
 
-  // Helper function to add incomplete field
+  // Helper function to add incomplete field (skip if field is pending)
   const addIncomplete = (path: string, label: string) => {
+    // Skip validation if field is marked as pending
+    if (pendingFields.includes(path)) {
+      return
+    }
     incomplete.push(path)
     labels.push(label)
   }

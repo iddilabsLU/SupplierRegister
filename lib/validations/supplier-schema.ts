@@ -31,17 +31,14 @@ export const supplierFormSchema = z.object({
     .object({
       startDate: z
         .string()
-        .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-        .optional(),
+        .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" }),
       nextRenewalDate: z
         .string()
-        .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-        .optional()
+        .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" })
         .or(z.literal("")),
       endDate: z
         .string()
-        .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-        .optional()
+        .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" })
         .or(z.literal("")),
       serviceProviderNoticePeriod: z.string().optional().or(z.literal("")),
       entityNoticePeriod: z.string().optional().or(z.literal("")),
@@ -97,16 +94,15 @@ export const supplierFormSchema = z.object({
   // 54.i - Criticality Assessment Date
   criticalityAssessmentDate: z
     .string()
-    .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-    .optional(),
+    .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" }),
 
   // 54.h - Cloud Service Information (conditional)
   cloudService: z
     .object({
       serviceModel: z.nativeEnum(CloudServiceModel).optional(),
       deploymentModel: z.nativeEnum(DeploymentModel).optional(),
-      dataNature: z.string().min(10, "Data nature must be at least 10 characters").optional(),
-      storageLocations: z.array(z.string().min(1)).min(1, "At least one location is required").optional(),
+      dataNature: z.string().optional(),
+      storageLocations: z.array(z.string().min(1)).optional(),
       cloudOfficer: z.string().optional().or(z.literal("")),
       resourceOperator: z.string().optional().or(z.literal("")),
     })
@@ -119,7 +115,7 @@ export const supplierFormSchema = z.object({
       // 55.a - Entities Using
       entitiesUsing: z
         .object({
-          inScopeEntities: z.array(z.string().min(1)).min(1, "At least one entity is required").optional(),
+          inScopeEntities: z.array(z.string().min(1)).optional(),
           groupEntities: z.array(z.string().min(1)).optional(),
         })
         .optional(),
@@ -138,35 +134,32 @@ export const supplierFormSchema = z.object({
           risk: z.nativeEnum(RiskLevel).optional(),
           lastAssessmentDate: z
             .string()
-            .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-            .optional(),
-          mainResults: z.string().min(10, "Assessment results must be at least 10 characters").optional(),
+            .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" }),
+          mainResults: z.string().optional(),
         })
         .optional(),
 
       // 55.d - Approval
       approval: z
         .object({
-          approverName: z.string().min(1, "Approver name is required").optional(),
-          approverRole: z.string().min(1, "Approver role is required").optional(),
+          approverName: z.string().optional(),
+          approverRole: z.string().optional(),
         })
         .optional(),
 
       // 55.e - Governing Law
-      governingLaw: z.string().min(1, "Governing law is required").optional(),
+      governingLaw: z.string().optional(),
 
       // 55.f - Audit Information
       audit: z
         .object({
           lastAuditDate: z
             .string()
-            .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-            .optional()
+            .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" })
             .or(z.literal("")),
           nextScheduledAudit: z
             .string()
-            .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-            .optional()
+            .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" })
             .or(z.literal("")),
         })
         .optional(),
@@ -209,13 +202,13 @@ export const supplierFormSchema = z.object({
         .optional(),
 
       // 55.i - Alternative Service Providers
-      alternativeProviders: z.array(z.string().min(1)).min(1, "At least one alternative provider is required").optional(),
+      alternativeProviders: z.array(z.string().min(1)).optional(),
 
       // 55.j - Time Criticality
       isTimeCritical: z.boolean().optional(),
 
       // 55.k - Cost Information
-      estimatedAnnualCost: z.number().min(0, "Cost must be a positive number").optional(),
+      estimatedAnnualCost: z.number().optional(),
       costComments: z.string().optional().or(z.literal("")),
 
       // 55.l - Regulatory Notification
@@ -223,8 +216,7 @@ export const supplierFormSchema = z.object({
         .object({
           notificationDate: z
             .string()
-            .regex(dateRegex, "Invalid date format (use YYYY-MM-DD)")
-            .optional(),
+            .optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), { message: "Invalid date format (use YYYY-MM-DD)" }),
         })
         .optional()
         .nullable(),

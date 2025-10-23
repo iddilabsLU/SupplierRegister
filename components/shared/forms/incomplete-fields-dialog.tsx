@@ -59,19 +59,24 @@ export function IncompleteFieldsDialog({
 
         <div className="rounded-md bg-yellow-50 border border-yellow-200 p-3">
           <p className="text-sm text-foreground">
-            You can save this supplier as a <strong>draft</strong>, but these fields should be completed for
-            full CSSF compliance. The supplier will be marked with a{" "}
-            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-destructive text-destructive-foreground text-xs font-bold">
-              !
-            </span>{" "}
-            indicator in the register.
+            <strong>Options:</strong>
           </p>
+          <ul className="text-sm text-foreground mt-2 space-y-1 ml-4">
+            <li className="flex items-start gap-2">
+              <span className="text-yellow-600 mt-0.5">•</span>
+              <span><strong>Mark as Pending & Submit:</strong> Save the supplier and mark these fields with an amber pin icon 📌. You can fill them later.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-yellow-600 mt-0.5">•</span>
+              <span><strong>Go Back to Form:</strong> Return to the form to fill the missing fields now (they will be highlighted in red).</span>
+            </li>
+          </ul>
         </div>
 
         <AlertDialogFooter>
           <AlertDialogCancel>Go Back to Form</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} className="bg-yellow-600 hover:bg-yellow-700">
-            Save as Draft
+            Mark as Pending & Submit
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

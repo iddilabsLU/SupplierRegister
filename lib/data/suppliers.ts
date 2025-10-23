@@ -19,6 +19,7 @@ export const suppliers: SupplierOutsourcing[] = [
     referenceNumber: "2024-001",
     status: OutsourcingStatus.ACTIVE,
     incompleteFields: [], // All fields complete
+    pendingFields: ["serviceProvider.parentCompany", "dates.endDate"], // 2 fields pending completion
     dates: {
       startDate: "2022-01-15",
       nextRenewalDate: "2025-01-15",
@@ -113,6 +114,7 @@ export const suppliers: SupplierOutsourcing[] = [
     referenceNumber: "2024-002",
     status: OutsourcingStatus.ACTIVE,
     incompleteFields: [], // All fields complete
+    pendingFields: [], // Non-critical supplier - no pending fields
     dates: {
       startDate: "2023-03-01",
       nextRenewalDate: "2025-03-01",
@@ -149,6 +151,7 @@ export const suppliers: SupplierOutsourcing[] = [
     referenceNumber: "2024-003",
     status: OutsourcingStatus.ACTIVE,
     incompleteFields: [], // All fields complete
+    pendingFields: [], // No pending fields
     dates: {
       startDate: "2021-06-01",
       nextRenewalDate: "2026-06-01",
@@ -243,6 +246,7 @@ export const suppliers: SupplierOutsourcing[] = [
     referenceNumber: "2024-004",
     status: OutsourcingStatus.NOT_YET_ACTIVE,
     incompleteFields: [], // All fields complete
+    pendingFields: [], // Non-critical supplier - no pending fields
     dates: {
       startDate: "2024-01-10",
       nextRenewalDate: "2025-01-10",
@@ -280,6 +284,7 @@ export const suppliers: SupplierOutsourcing[] = [
     referenceNumber: "2024-005",
     status: OutsourcingStatus.ACTIVE,
     incompleteFields: [], // All fields complete
+    pendingFields: [], // No pending fields
     dates: {
       startDate: "2020-09-01",
       nextRenewalDate: "2025-09-01",

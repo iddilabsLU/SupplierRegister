@@ -12,13 +12,15 @@ import type { SupplierFormData } from "@/lib/validations/supplier-schema"
 
 interface SupplierFormBasicInfoProps {
   control: Control<SupplierFormData>
+  toggleFieldPending: (fieldPath: string) => void
+  isFieldPending: (fieldPath: string) => boolean
 }
 
 /**
  * Tab 1: Basic Information
  * Contains: Reference & Status, Timeline & Dates, Function Description, Criticality Assessment
  */
-export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
+export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPending }: SupplierFormBasicInfoProps) {
   // Category options
   const categoryOptions = Object.values(OutsourcingCategory).map((cat) => ({
     value: cat,
@@ -47,6 +49,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               circularRef="54.a"
               placeholder="e.g., 2024-006"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormSelect
               control={control}
@@ -56,6 +60,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               options={statusOptions}
               placeholder="Select status"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextInput
               control={control}
@@ -64,6 +70,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               circularRef="54.c"
               placeholder="e.g., Cloud Hosting Infrastructure"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormSelect
               control={control}
@@ -73,6 +81,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               options={categoryOptions}
               placeholder="Select category"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
           </div>
         </CardContent>
@@ -91,20 +101,33 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               label="Start Date"
               circularRef="54.b"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormDatePicker
               control={control}
               name="dates.nextRenewalDate"
               label="Next Renewal Date"
               circularRef="54.b"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
-            <FormDatePicker control={control} name="dates.endDate" label="End Date" circularRef="54.b" />
+            <FormDatePicker
+              control={control}
+              name="dates.endDate"
+              label="End Date"
+              circularRef="54.b"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
+            />
             <FormTextInput
               control={control}
               name="dates.serviceProviderNoticePeriod"
               label="Service Provider Notice Period"
               circularRef="54.b"
               placeholder="e.g., 90 days"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextInput
               control={control}
@@ -112,6 +135,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               label="Entity Notice Period"
               circularRef="54.b"
               placeholder="e.g., 180 days"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
           </div>
         </CardContent>
@@ -133,6 +158,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               rows={4}
               required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextarea
               control={control}
@@ -143,6 +170,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               rows={3}
               required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormRadioGroup
               control={control}
@@ -150,6 +179,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               label="Personal Data Involved"
               circularRef="54.c"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormRadioGroup
               control={control}
@@ -157,6 +188,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               label="Personal Data Transferred"
               circularRef="54.c"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
           </div>
         </CardContent>
@@ -176,6 +209,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               circularRef="54.g"
               tooltip="Functions essential to business operations"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormDatePicker
               control={control}
@@ -183,6 +218,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               label="Assessment Date"
               circularRef="54.i"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextarea
               control={control}
@@ -193,6 +230,8 @@ export function SupplierFormBasicInfo({ control }: SupplierFormBasicInfoProps) {
               rows={4}
               required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
           </div>
         </CardContent>

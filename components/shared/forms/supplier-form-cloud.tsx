@@ -12,6 +12,8 @@ import type { SupplierFormData } from "@/lib/validations/supplier-schema"
 interface SupplierFormCloudProps {
   control: Control<SupplierFormData>
   isCritical: boolean
+  toggleFieldPending: (fieldPath: string) => void
+  isFieldPending: (fieldPath: string) => boolean
 }
 
 /**
@@ -20,7 +22,7 @@ interface SupplierFormCloudProps {
  * Only shown when Category = Cloud OR manually enabled
  * Cloud Officer/Resource Operator fields only shown if critical
  */
-export function SupplierFormCloud({ control, isCritical }: SupplierFormCloudProps) {
+export function SupplierFormCloud({ control, isCritical, toggleFieldPending, isFieldPending }: SupplierFormCloudProps) {
   // Service Model options
   const serviceModelOptions = Object.values(CloudServiceModel)
     .filter((model) => model !== CloudServiceModel.NOT_APPLICABLE)
@@ -54,6 +56,8 @@ export function SupplierFormCloud({ control, isCritical }: SupplierFormCloudProp
               options={serviceModelOptions}
               placeholder="Select service model"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormSelect
               control={control}
@@ -63,6 +67,8 @@ export function SupplierFormCloud({ control, isCritical }: SupplierFormCloudProp
               options={deploymentModelOptions}
               placeholder="Select deployment model"
               required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextarea
               control={control}
@@ -73,6 +79,8 @@ export function SupplierFormCloud({ control, isCritical }: SupplierFormCloudProp
               rows={3}
               required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormMultiText
               control={control}
@@ -84,6 +92,8 @@ export function SupplierFormCloud({ control, isCritical }: SupplierFormCloudProp
               required
               addButtonLabel="Add Location"
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
 
             {/* Conditional fields - only for critical functions */}
@@ -100,6 +110,8 @@ export function SupplierFormCloud({ control, isCritical }: SupplierFormCloudProp
                   label="Cloud Officer"
                   circularRef="54.h"
                   placeholder="e.g., Jean Dupont"
+                  toggleFieldPending={toggleFieldPending}
+                  isFieldPending={isFieldPending}
                 />
                 <FormTextInput
                   control={control}
@@ -107,6 +119,8 @@ export function SupplierFormCloud({ control, isCritical }: SupplierFormCloudProp
                   label="Resource Operator"
                   circularRef="54.h"
                   placeholder="e.g., CloudTech Operations S.A."
+                  toggleFieldPending={toggleFieldPending}
+                  isFieldPending={isFieldPending}
                 />
               </>
             )}
