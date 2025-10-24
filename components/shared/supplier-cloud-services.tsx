@@ -63,25 +63,20 @@ export function SupplierCloudServices({ supplier }: SupplierCloudServicesProps) 
               searchTerm={searchTerm}
               isPending={supplier.pendingFields?.includes("cloudService.storageLocations")}
             />
-            {/* Cloud Officer and Resource Operator - only for critical suppliers */}
-            {supplier.criticality.isCritical && supplier.cloudService.cloudOfficer && (
-              <FieldDisplay
-                label="Cloud Officer (if critical)"
-                circularRef="54"
-                value={supplier.cloudService.cloudOfficer}
-                searchTerm={searchTerm}
-                isPending={supplier.pendingFields?.includes("cloudService.cloudOfficer")}
-              />
-            )}
-            {supplier.criticality.isCritical && supplier.cloudService.resourceOperator && (
-              <FieldDisplay
-                label="Resource Operator (if critical)"
-                circularRef="54"
-                value={supplier.cloudService.resourceOperator}
-                searchTerm={searchTerm}
-                isPending={supplier.pendingFields?.includes("cloudService.resourceOperator")}
-              />
-            )}
+            <FieldDisplay
+              label="Cloud Officer (if any)"
+              circularRef="54.h"
+              value={supplier.cloudService.cloudOfficer}
+              searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("cloudService.cloudOfficer")}
+            />
+            <FieldDisplay
+              label="Resource Operator (if any)"
+              circularRef="54.h"
+              value={supplier.cloudService.resourceOperator}
+              searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("cloudService.resourceOperator")}
+            />
           </div>
         </CardContent>
       </Card>

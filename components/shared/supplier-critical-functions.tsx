@@ -45,13 +45,7 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
               value={criticalFields.entitiesUsing.inScopeEntities}
               searchTerm={searchTerm}
               isPending={supplier.pendingFields?.includes("criticalFields.entitiesUsing.inScopeEntities")}
-            />
-            <FieldDisplay
-              label="Group Entities (if any)"
-              circularRef="55.a"
-              value={criticalFields.entitiesUsing.groupEntities}
-              searchTerm={searchTerm}
-              isPending={supplier.pendingFields?.includes("criticalFields.entitiesUsing.groupEntities")}
+              className="col-span-2"
             />
             {/* Group Relationship */}
             <FieldDisplay

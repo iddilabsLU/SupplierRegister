@@ -116,7 +116,6 @@ export const supplierFormSchema = z.object({
       entitiesUsing: z
         .object({
           inScopeEntities: z.array(z.string().min(1)).optional(),
-          groupEntities: z.array(z.string().min(1)).optional(),
         })
         .optional(),
 

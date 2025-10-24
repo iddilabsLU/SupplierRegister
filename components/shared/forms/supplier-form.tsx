@@ -1,9 +1,19 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Form } from "@/components/ui/form"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { SupplierFormTabNav, type FormTabType } from "./supplier-form-tab-nav"
 import { SupplierFormBasicInfo } from "./supplier-form-basic-info"
 import { SupplierFormProvider } from "./supplier-form-provider"
@@ -14,6 +24,7 @@ import { FormActions } from "./form-actions"
 import { supplierFormSchema, type SupplierFormData } from "@/lib/validations/supplier-schema"
 import { checkIncompleteFields, generateNextReferenceNumber } from "@/lib/utils/check-completeness"
 import { createPendingFieldResolver } from "@/lib/utils/pending-field-resolver"
+import { createEmptyCloudService, createEmptyCriticalFields, normalizeFormData } from "@/lib/utils/form-helpers"
 import { OutsourcingCategory, OutsourcingStatus } from "@/lib/types/supplier"
 import type { SupplierOutsourcing } from "@/lib/types/supplier"
 import { toast } from "sonner"
@@ -41,6 +52,7 @@ export function SupplierForm({
 }: SupplierFormProps) {
   const [activeTab, setActiveTab] = useState<FormTabType>("basic-info")
   const [showIncompleteDialog, setShowIncompleteDialog] = useState(false)
+  const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [incompleteFieldLabels, setIncompleteFieldLabels] = useState<string[]>([])
   const [pendingData, setPendingData] = useState<SupplierFormData | null>(null)
   const [hasSubOutsourcing, setHasSubOutsourcing] = useState(false)
@@ -54,8 +66,9 @@ export function SupplierForm({
     mode: "onBlur",
     defaultValues: initialData || {
       referenceNumber: generateNextReferenceNumber(existingSuppliers),
-      status: OutsourcingStatus.NOT_YET_ACTIVE,
-      criticalityAssessmentDate: new Date().toISOString().split("T")[0],
+      status: undefined, // ✅ NO DEFAULT - user must select
+      criticalityAssessmentDate: "", // ✅ EMPTY STRING - user must select date
+      category: undefined, // ✅ NO DEFAULT - user must select
       dates: {
         startDate: "",
         nextRenewalDate: "",
@@ -67,11 +80,11 @@ export function SupplierForm({
         name: "",
         description: "",
         dataDescription: "",
-        personalDataInvolved: false,
-        personalDataTransferred: false,
+        personalDataInvolved: undefined, // ✅ NO DEFAULT - user must select
+        personalDataTransferred: undefined, // ✅ NO DEFAULT - user must select
       },
       criticality: {
-        isCritical: false,
+        isCritical: undefined, // ✅ NO DEFAULT - user must select
         reasons: "",
       },
       serviceProvider: {
@@ -83,10 +96,12 @@ export function SupplierForm({
         parentCompany: "",
       },
       location: {
-        servicePerformanceCountries: [""],
+        servicePerformanceCountries: [], // ✅ EMPTY ARRAY - user must add countries
         dataLocationCountry: "",
         dataStorageLocation: "",
       },
+      cloudService: createEmptyCloudService(), // ✅ Always initialized to prevent React warnings
+      criticalFields: createEmptyCriticalFields(), // ✅ Always initialized to prevent React warnings
     },
   })
 
@@ -97,6 +112,42 @@ export function SupplierForm({
   // Determine tab visibility
   const showCloudTab = category === OutsourcingCategory.CLOUD
   const showCriticalTab = isCritical === true
+
+  // Watch category changes and reset cloudService data when switching away from Cloud
+  useEffect(() => {
+    if (category !== OutsourcingCategory.CLOUD) {
+      // If category is NOT Cloud, reset cloud service data to empty
+      const currentCloudService = form.getValues("cloudService")
+      // Only reset if it has data (to avoid unnecessary re-renders)
+      if (
+        currentCloudService?.serviceModel ||
+        currentCloudService?.deploymentModel ||
+        currentCloudService?.dataNature ||
+        currentCloudService?.storageLocations?.length ||
+        currentCloudService?.cloudOfficer ||
+        currentCloudService?.resourceOperator
+      ) {
+        form.setValue("cloudService", createEmptyCloudService())
+      }
+    }
+  }, [category, form])
+
+  // Watch isCritical changes and reset criticalFields data when switching to not critical
+  useEffect(() => {
+    if (isCritical !== true) {
+      // If NOT critical, reset critical fields data to empty
+      const currentCriticalFields = form.getValues("criticalFields")
+      // Only reset if it has data (to avoid unnecessary re-renders)
+      if (
+        currentCriticalFields?.entitiesUsing?.inScopeEntities?.length ||
+        currentCriticalFields?.governingLaw ||
+        currentCriticalFields?.approval?.approverName
+        // Check a few key fields to see if there's any data
+      ) {
+        form.setValue("criticalFields", createEmptyCriticalFields())
+      }
+    }
+  }, [isCritical, form])
 
   // Pending fields helper functions
   const toggleFieldPending = (fieldPath: string) => {
@@ -115,8 +166,33 @@ export function SupplierForm({
     return pendingFields.includes(fieldPath)
   }
 
-  // Handle form submission
+  // Handle Save Supplier button click (does NOT trigger full Zod validation)
+  const handleSaveSupplier = () => {
+    // Step 1: Get form data without triggering validation
+    const formData = form.getValues()
+
+    // Step 2: Normalize data (ensure cloudService and criticalFields exist)
+    const normalizedData = normalizeFormData(formData)
+
+    // Step 3: Check completeness (mandatory fields)
+    // Note: Invalid data (e.g., partial dates) is already caught by onBlur validation
+    const completenessResult = checkIncompleteFields(normalizedData as Partial<SupplierOutsourcing>, pendingFields)
+
+    if (!completenessResult.isComplete) {
+      // Show incomplete fields dialog
+      setIncompleteFieldLabels(completenessResult.labels)
+      setPendingData(normalizedData)
+      setShowIncompleteDialog(true)
+      return
+    }
+
+    // Step 4: All mandatory fields complete - save directly
+    saveSupplier(normalizedData, [])
+  }
+
+  // OLD onSubmit - kept for onBlur validation (not used by Save Supplier button anymore)
   const onSubmit = (data: SupplierFormData) => {
+    // This is now only called by onBlur validation, not by Save Supplier button
     // Run completeness check
     const completenessResult = checkIncompleteFields(data as Partial<SupplierOutsourcing>, pendingFields)
 
@@ -132,7 +208,7 @@ export function SupplierForm({
     saveSupplier(data, [])
   }
 
-  // Handle validation errors (Zod validation failures)
+  // Handle validation errors (Zod validation failures) - only for onBlur validation now
   const onError = () => {
     // Get the first error field
     const errors = form.formState.errors
@@ -198,17 +274,61 @@ export function SupplierForm({
           reasons: data.criticality?.reasons || "",
         },
         criticalityAssessmentDate: data.criticalityAssessmentDate || "",
-        cloudService: data.cloudService
-          ? {
-              serviceModel: data.cloudService.serviceModel!,
-              deploymentModel: data.cloudService.deploymentModel!,
-              dataNature: data.cloudService.dataNature!,
-              storageLocations: data.cloudService.storageLocations!,
-              cloudOfficer: data.cloudService.cloudOfficer,
-              resourceOperator: data.cloudService.resourceOperator,
-            }
-          : undefined,
-        criticalFields: data.criticalFields as any || undefined,
+        cloudService:
+          data.category === OutsourcingCategory.CLOUD && data.cloudService
+            ? {
+                serviceModel: data.cloudService.serviceModel!,
+                deploymentModel: data.cloudService.deploymentModel!,
+                dataNature: data.cloudService.dataNature!,
+                storageLocations: data.cloudService.storageLocations!,
+                cloudOfficer: data.cloudService.cloudOfficer,
+                resourceOperator: data.cloudService.resourceOperator,
+              }
+            : undefined,
+        criticalFields:
+          data.criticality?.isCritical === true && data.criticalFields
+            ? {
+                entitiesUsing: {
+                  inScopeEntities: data.criticalFields.entitiesUsing?.inScopeEntities || [],
+                },
+                groupRelationship: {
+                  isPartOfGroup: data.criticalFields.groupRelationship?.isPartOfGroup ?? undefined,
+                  isOwnedByGroup: data.criticalFields.groupRelationship?.isOwnedByGroup ?? undefined,
+                },
+                riskAssessment: {
+                  risk: data.criticalFields.riskAssessment?.risk,
+                  lastAssessmentDate: data.criticalFields.riskAssessment?.lastAssessmentDate || "",
+                  mainResults: data.criticalFields.riskAssessment?.mainResults || "",
+                },
+                approval: {
+                  approverName: data.criticalFields.approval?.approverName || "",
+                  approverRole: data.criticalFields.approval?.approverRole || "",
+                },
+                governingLaw: data.criticalFields.governingLaw || "",
+                audit: {
+                  lastAuditDate: data.criticalFields.audit?.lastAuditDate || "",
+                  nextScheduledAudit: data.criticalFields.audit?.nextScheduledAudit || "",
+                },
+                subOutsourcing: data.criticalFields.subOutsourcing
+                  ? {
+                      activityDescription: data.criticalFields.subOutsourcing.activityDescription || "",
+                      subContractors: data.criticalFields.subOutsourcing.subContractors || [],
+                    }
+                  : undefined,
+                substitutability: {
+                  outcome: data.criticalFields.substitutability?.outcome,
+                  reintegrationAssessment: data.criticalFields.substitutability?.reintegrationAssessment || "",
+                  discontinuationImpact: data.criticalFields.substitutability?.discontinuationImpact || "",
+                },
+                alternativeProviders: data.criticalFields.alternativeProviders || [],
+                isTimeCritical: data.criticalFields.isTimeCritical ?? undefined,
+                estimatedAnnualCost: data.criticalFields.estimatedAnnualCost ?? undefined,
+                costComments: data.criticalFields.costComments || "",
+                regulatoryNotification: {
+                  notificationDate: data.criticalFields.regulatoryNotification?.notificationDate || "",
+                },
+              }
+            : undefined,
         incompleteFields: incompleteFields.length > 0 ? incompleteFields : undefined,
         pendingFields: finalPendingFields.length > 0 ? finalPendingFields : undefined,
       } as SupplierOutsourcing
@@ -256,8 +376,11 @@ export function SupplierForm({
   // Handle dialog confirmation - mark incomplete fields as pending
   const handleIncompleteConfirm = () => {
     if (pendingData) {
+      // Normalize data first (data was already normalized when dialog opened, but be safe)
+      const normalizedData = normalizeFormData(pendingData)
+
       // Get current incomplete fields (not marked as pending)
-      const completenessResult = checkIncompleteFields(pendingData as Partial<SupplierOutsourcing>, pendingFields)
+      const completenessResult = checkIncompleteFields(normalizedData as Partial<SupplierOutsourcing>, pendingFields)
 
       // Mark all incomplete fields as pending
       const updatedPendingFields = [...pendingFields, ...completenessResult.incomplete]
@@ -266,37 +389,44 @@ export function SupplierForm({
       setPendingFields(updatedPendingFields)
 
       // Save supplier with updated pending fields (no incomplete fields since they're all pending now)
-      saveSupplier(pendingData, [], false, updatedPendingFields)
+      saveSupplier(normalizedData, [], false, updatedPendingFields)
 
       setShowIncompleteDialog(false)
       setPendingData(null)
     }
   }
 
-  // Handle save as draft (no validation)
+  // Handle save as draft (no validation, auto-marks empty fields as pending)
   const handleSaveAsDraft = () => {
     setIsDraftSaving(true)
     try {
-      // Get current form data without validation
+      // Step 1: Get current form data without validation
       const formData = form.getValues()
 
-      // Check for incomplete required fields
-      const completenessResult = checkIncompleteFields(formData as Partial<SupplierOutsourcing>, [])
+      // Step 2: Normalize data (ensure cloudService and criticalFields exist)
+      const normalizedData = normalizeFormData(formData)
 
-      // Auto-mark all incomplete fields as pending
-      const fieldsToMarkPending = completenessResult.incomplete
+      // Step 3: Check for incomplete required fields (pass empty pending array to find ALL incomplete)
+      const completenessResult = checkIncompleteFields(normalizedData as Partial<SupplierOutsourcing>, [])
 
-      // Update the pendingFields state (for the current form session)
-      setPendingFields(fieldsToMarkPending)
+      // Step 4: Merge existing pending fields (manually marked by user) + new incomplete fields (empty)
+      // This preserves fields marked as pending even if filled (uncertain data)
+      const combinedPendingFields = [...pendingFields, ...completenessResult.incomplete]
 
-      // Force status to "Draft"
+      // Step 5: Remove duplicates
+      const uniquePendingFields = [...new Set(combinedPendingFields)]
+
+      // Step 6: Update the pendingFields state (for the current form session)
+      setPendingFields(uniquePendingFields)
+
+      // Step 7: Force status to "Draft"
       const draftData = {
-        ...formData,
+        ...normalizedData,
         status: OutsourcingStatus.DRAFT,
       }
 
-      // Save with auto-marked pending fields
-      saveSupplier(draftData, [], true, fieldsToMarkPending)
+      // Step 8: Save with merged pending fields (manual + auto-marked)
+      saveSupplier(draftData, [], true, uniquePendingFields)
     } catch (error) {
       console.error("Failed to save draft:", error)
       toast.error("Failed to save draft", {
@@ -308,11 +438,14 @@ export function SupplierForm({
   }
 
   // Handle cancel
-  const handleCancel = () => {
-    if (window.confirm("Are you sure you want to cancel? Unsaved changes will be lost.")) {
-      sessionStorage.removeItem(DRAFT_STORAGE_KEY)
-      onCancel()
-    }
+  const handleCancelClick = () => {
+    setShowCancelDialog(true)
+  }
+
+  const handleCancelConfirm = () => {
+    sessionStorage.removeItem(DRAFT_STORAGE_KEY)
+    setShowCancelDialog(false)
+    onCancel()
   }
 
 
@@ -320,7 +453,7 @@ export function SupplierForm({
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           {/* Tab Navigation */}
           <SupplierFormTabNav
             activeTab={activeTab}
@@ -348,7 +481,6 @@ export function SupplierForm({
             <div className={activeTab === "cloud" ? "relative z-10" : "absolute top-0 left-0 w-full opacity-0 pointer-events-none z-0"}>
               <SupplierFormCloud
                 control={form.control}
-                isCritical={isCritical === true}
                 toggleFieldPending={toggleFieldPending}
                 isFieldPending={isFieldPending}
               />
@@ -366,7 +498,8 @@ export function SupplierForm({
 
           {/* Form Actions */}
           <FormActions
-            onCancel={handleCancel}
+            onCancel={handleCancelClick}
+            onSave={handleSaveSupplier}
             onSaveAsDraft={handleSaveAsDraft}
             isSubmitting={isSubmitting}
             isDraftSaving={isDraftSaving}
@@ -381,6 +514,27 @@ export function SupplierForm({
         incompleteFields={incompleteFieldLabels}
         onConfirm={handleIncompleteConfirm}
       />
+
+      {/* Cancel Confirmation Dialog */}
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard Changes?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to cancel? All unsaved changes will be lost. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continue Editing</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleCancelConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Discard Changes
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

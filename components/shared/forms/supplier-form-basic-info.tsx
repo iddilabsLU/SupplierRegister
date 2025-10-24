@@ -48,7 +48,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               label="Reference Number"
               circularRef="54.a"
               placeholder="e.g., 2024-006"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -59,7 +58,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               circularRef="53"
               options={statusOptions}
               placeholder="Select status"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -69,7 +67,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               label="Function Name"
               circularRef="54.c"
               placeholder="e.g., Cloud Hosting Infrastructure"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -80,7 +77,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               circularRef="54.d"
               options={categoryOptions}
               placeholder="Select category"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -100,7 +96,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               name="dates.startDate"
               label="Start Date"
               circularRef="54.b"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -156,7 +151,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               circularRef="54.c"
               placeholder="Describe the outsourced function in detail"
               rows={4}
-              required
               className="col-span-2"
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
@@ -168,7 +162,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               circularRef="54.c"
               placeholder="Describe the data processed or accessed"
               rows={3}
-              required
               className="col-span-2"
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
@@ -178,7 +171,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               name="functionDescription.personalDataInvolved"
               label="Personal Data Involved"
               circularRef="54.c"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -187,7 +179,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               name="functionDescription.personalDataTransferred"
               label="Personal Data Transferred"
               circularRef="54.c"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -208,7 +199,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               label="Is Critical or Important"
               circularRef="54.g"
               tooltip="Functions essential to business operations"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -217,7 +207,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               name="criticalityAssessmentDate"
               label="Assessment Date"
               circularRef="54.i"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -228,7 +217,6 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               circularRef="54.g"
               placeholder="Explain why this function is or is not critical"
               rows={4}
-              required
               className="col-span-2"
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}

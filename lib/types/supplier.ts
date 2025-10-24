@@ -123,7 +123,6 @@ export interface CriticalOutsourcingFields {
   // 55.a - Entities Using the Outsourcing
   entitiesUsing: {
     inScopeEntities: string[]
-    groupEntities?: string[]
   }
 
   // 55.b - Group Relationship

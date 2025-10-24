@@ -33,7 +33,6 @@ export function SupplierFormProvider({ control, toggleFieldPending, isFieldPendi
               label="Provider Name"
               circularRef="54.e"
               placeholder="e.g., CloudTech Solutions S.A."
-              required
               className="col-span-2"
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
@@ -44,7 +43,6 @@ export function SupplierFormProvider({ control, toggleFieldPending, isFieldPendi
               label="Corporate Registration Number"
               circularRef="54.e"
               placeholder="e.g., B123456"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />
@@ -64,7 +62,6 @@ export function SupplierFormProvider({ control, toggleFieldPending, isFieldPendi
               circularRef="54.e"
               placeholder="e.g., 15 Avenue de la Liberté, L-1931 Luxembourg"
               rows={2}
-              required
               className="col-span-2"
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
@@ -76,7 +73,6 @@ export function SupplierFormProvider({ control, toggleFieldPending, isFieldPendi
               circularRef="54.e"
               placeholder="Email, phone, website"
               rows={2}
-              required
               className="col-span-2"
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
@@ -109,7 +105,6 @@ export function SupplierFormProvider({ control, toggleFieldPending, isFieldPendi
               circularRef="54.f"
               placeholder="e.g., Luxembourg"
               tooltip="Add all countries where the service is performed"
-              required
               addButtonLabel="Add Country"
               className="col-span-2"
               toggleFieldPending={toggleFieldPending}
@@ -121,7 +116,6 @@ export function SupplierFormProvider({ control, toggleFieldPending, isFieldPendi
               label="Data Location Country"
               circularRef="54.f"
               placeholder="e.g., Luxembourg"
-              required
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
             />

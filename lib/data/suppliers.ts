@@ -63,7 +63,6 @@ export const suppliers: SupplierOutsourcing[] = [
     criticalFields: {
       entitiesUsing: {
         inScopeEntities: ["BankCorp S.A.", "BankCorp Investment Services S.A."],
-        groupEntities: ["BankCorp Asset Management S.A."],
       },
       groupRelationship: {
         isPartOfGroup: false,
