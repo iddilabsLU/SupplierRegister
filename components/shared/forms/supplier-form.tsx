@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Form } from "@/components/ui/form"
 import {
@@ -23,7 +24,6 @@ import { IncompleteFieldsDialog } from "./incomplete-fields-dialog"
 import { FormActions } from "./form-actions"
 import { supplierFormSchema, type SupplierFormData } from "@/lib/validations/supplier-schema"
 import { checkIncompleteFields, generateNextReferenceNumber } from "@/lib/utils/check-completeness"
-import { createPendingFieldResolver } from "@/lib/utils/pending-field-resolver"
 import { createEmptyCloudService, createEmptyCriticalFields, normalizeFormData } from "@/lib/utils/form-helpers"
 import { OutsourcingCategory, OutsourcingStatus } from "@/lib/types/supplier"
 import type { SupplierOutsourcing } from "@/lib/types/supplier"
@@ -62,7 +62,7 @@ export function SupplierForm({
 
   // Initialize form with React Hook Form
   const form = useForm<SupplierFormData>({
-    resolver: createPendingFieldResolver(supplierFormSchema, () => pendingFields),
+    resolver: zodResolver(supplierFormSchema),
     mode: "onBlur",
     defaultValues: initialData || {
       referenceNumber: generateNextReferenceNumber(existingSuppliers),
@@ -190,44 +190,6 @@ export function SupplierForm({
     saveSupplier(normalizedData, [])
   }
 
-  // OLD onSubmit - kept for onBlur validation (not used by Save Supplier button anymore)
-  const onSubmit = (data: SupplierFormData) => {
-    // This is now only called by onBlur validation, not by Save Supplier button
-    // Run completeness check
-    const completenessResult = checkIncompleteFields(data as Partial<SupplierOutsourcing>, pendingFields)
-
-    if (!completenessResult.isComplete) {
-      // Show incomplete fields dialog
-      setIncompleteFieldLabels(completenessResult.labels)
-      setPendingData(data)
-      setShowIncompleteDialog(true)
-      return
-    }
-
-    // All mandatory fields complete - save directly
-    saveSupplier(data, [])
-  }
-
-  // Handle validation errors (Zod validation failures) - only for onBlur validation now
-  const onError = () => {
-    // Get the first error field
-    const errors = form.formState.errors
-    const firstErrorField = Object.keys(errors)[0]
-
-    if (firstErrorField) {
-      // Find the first error element and scroll to it
-      const firstErrorElement = document.getElementsByName(firstErrorField)[0]
-      if (firstErrorElement) {
-        firstErrorElement.scrollIntoView({ behavior: "smooth", block: "center" })
-        firstErrorElement.focus()
-      }
-    }
-
-    // Show toast message
-    toast.error("Please fill all required fields", {
-      description: "Some required fields are missing or have invalid values. Please check the form and try again.",
-    })
-  }
 
   // Save supplier (called after confirmation or if complete)
   const saveSupplier = (data: SupplierFormData, incompleteFields: string[], isDraft: boolean = false, pendingFieldsOverride?: string[]) => {
@@ -311,7 +273,6 @@ export function SupplierForm({
                 },
                 subOutsourcing: data.criticalFields.subOutsourcing
                   ? {
-                      activityDescription: data.criticalFields.subOutsourcing.activityDescription || "",
                       subContractors: data.criticalFields.subOutsourcing.subContractors || [],
                     }
                   : undefined,
