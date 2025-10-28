@@ -27,7 +27,8 @@
       "Bash(timeout 5 bash:*)",
       "Bash(timeout 10 bash:*)",
       "Bash(node:*)",
-      "Read(//c/**)"
+      "Read(//c/**)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
