@@ -43,3 +43,7 @@ next-env.d.ts
 # Moat task system
 .moat/
 .claude/commands/
+
+#Claude context
+/claude.md
+/context/
