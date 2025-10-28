@@ -9,10 +9,13 @@ import { PlaceholderView } from "@/components/shared/placeholder-view"
 import { SupplierForm } from "@/components/shared/forms/supplier-form"
 import { DemoBanner } from "@/components/shared/demo-banner"
 import { useSessionStorage } from "@/hooks/use-session-storage"
+import { toast } from "sonner"
 import { AlertCircle, BarChart3 } from "lucide-react"
 import type { QuickFilters, CustomFilter } from "@/lib/types/filters"
 import type { SupplierOutsourcing } from "@/lib/types/supplier"
+import { OutsourcingStatus } from "@/lib/types/supplier"
 import { filterSuppliers } from "@/lib/utils/filter-suppliers"
+import { generateNextReferenceNumber } from "@/lib/utils/check-completeness"
 
 export default function SuppliersPage() {
   // View state
@@ -119,6 +122,19 @@ export default function SuppliersPage() {
     setSuppliers(suppliers.filter((s) => s.referenceNumber !== supplier.referenceNumber))
   }
 
+  // Handle duplicate supplier
+  const handleDuplicateSupplier = (supplier: SupplierOutsourcing) => {
+    const duplicatedData: SupplierOutsourcing = {
+      ...supplier,
+      referenceNumber: generateNextReferenceNumber(suppliers),
+      status: OutsourcingStatus.DRAFT,
+    }
+    setSuppliers([...suppliers, duplicatedData])
+    toast.success("Supplier duplicated", {
+      description: `Created ${duplicatedData.referenceNumber} based on ${supplier.referenceNumber}`,
+    })
+  }
+
   // Handle cancel form
   const handleCancelForm = () => {
     setEditingSupplier(null)
@@ -169,6 +185,7 @@ export default function SuppliersPage() {
                 suppliers={filteredSuppliers}
                 searchTerm={searchTerm}
                 onEdit={handleEditSupplier}
+                onDuplicate={handleDuplicateSupplier}
                 onDelete={handleDeleteSupplier}
               />
             ) : (

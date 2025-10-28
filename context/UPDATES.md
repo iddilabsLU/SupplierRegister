@@ -71,6 +71,20 @@ When `/docs-sync` is run:
 - **Docs to Update:** CLAUDE.md, ROADMAP.md
 - **Additional Notes:** All banners now use sessionStorage for dismissal (reset on tab close). Successfully tested: add/edit persist on refresh, delete pending implementation, data resets on tab close.
 
+### ✅ Delete Supplier Functionality (2025-10-28)
+- **User Impact:** Users can now delete suppliers from the register table. Clicking the delete button shows a confirmation dialog with supplier details, and upon confirmation, the supplier is permanently removed from the list. Changes persist across page refreshes during the session.
+- **Technical Details:**
+  - Added `handleDeleteSupplier` function in `app/suppliers/page.tsx` (filters suppliers by reference number)
+  - Wired `onDelete` prop to `SupplierRegisterTable` component
+  - Fixed toast notification in `components/shared/supplier-register-table.tsx` (moved outside if/else to always show)
+  - Delete functionality integrates with existing sessionStorage persistence (auto-saves)
+  - Confirmation dialog and toast notification already existed, just needed wiring
+- **Validation Change:** NO
+- **Architecture Change:** NO (used existing UI components and state patterns)
+- **Commit:** 813d3ca " feature: Implement delete supplier functionality"
+- **Docs to Update:** CLAUDE.md, ROADMAP.md
+- **Additional Notes:** Fixed bug where toast notification wasn't appearing because it was inside else block. All tests passed: basic delete, persistence on refresh, reset on tab close, delete with filters, delete multiple suppliers, delete while row expanded.
+
 ---
 
 ## In Progress
