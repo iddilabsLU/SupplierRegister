@@ -20,6 +20,9 @@ export default function SuppliersPage() {
   // Suppliers state (client-side - will be replaced with API calls in future)
   const [suppliers, setSuppliers] = useState<SupplierOutsourcing[]>(initialSuppliers)
 
+  // Edit state
+  const [editingSupplier, setEditingSupplier] = useState<SupplierOutsourcing | null>(null)
+
   // Filter state
   const [quickFilters, setQuickFilters] = useState<QuickFilters>({
     critical: false,
@@ -91,11 +94,28 @@ export default function SuppliersPage() {
   // Handle saving new supplier
   const handleSaveSupplier = (supplier: SupplierOutsourcing) => {
     setSuppliers([...suppliers, supplier])
+    setEditingSupplier(null)
+    setActiveView("list")
+  }
+
+  // Handle edit supplier click
+  const handleEditSupplier = (supplier: SupplierOutsourcing) => {
+    setEditingSupplier(supplier)
+    setActiveView("new")
+  }
+
+  // Handle updating existing supplier
+  const handleUpdateSupplier = (updatedSupplier: SupplierOutsourcing) => {
+    setSuppliers(
+      suppliers.map((s) => (s.referenceNumber === updatedSupplier.referenceNumber ? updatedSupplier : s))
+    )
+    setEditingSupplier(null)
     setActiveView("list")
   }
 
   // Handle cancel form
   const handleCancelForm = () => {
+    setEditingSupplier(null)
     setActiveView("list")
   }
 
@@ -136,7 +156,11 @@ export default function SuppliersPage() {
 
             {/* Register Table or Empty State */}
             {filteredCount > 0 ? (
-              <SupplierRegisterTable suppliers={filteredSuppliers} searchTerm={searchTerm} />
+              <SupplierRegisterTable
+                suppliers={filteredSuppliers}
+                searchTerm={searchTerm}
+                onEdit={handleEditSupplier}
+              />
             ) : (
               <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/30 p-12 text-center">
                 <AlertCircle className="h-12 w-12 text-muted-foreground/50 mb-4" />
@@ -153,8 +177,10 @@ export default function SuppliersPage() {
         {activeView === "new" && (
           <SupplierForm
             existingSuppliers={suppliers}
-            onSave={handleSaveSupplier}
+            onSave={editingSupplier ? handleUpdateSupplier : handleSaveSupplier}
             onCancel={handleCancelForm}
+            initialData={editingSupplier || undefined}
+            mode={editingSupplier ? "edit" : "add"}
           />
         )}
 

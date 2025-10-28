@@ -48,7 +48,7 @@ export function SupplierForm({
   onSave,
   onCancel,
   initialData,
-  mode = "add", // eslint-disable-line @typescript-eslint/no-unused-vars
+  mode = "add",
 }: SupplierFormProps) {
   const [activeTab, setActiveTab] = useState<FormTabType>("basic-info")
   const [showIncompleteDialog, setShowIncompleteDialog] = useState(false)
@@ -300,27 +300,29 @@ export function SupplierForm({
       // Clear draft
       sessionStorage.removeItem(DRAFT_STORAGE_KEY)
 
-      // Show success toast based on action type
+      // Show success toast based on action type and mode
+      const actionVerb = mode === "edit" ? "updated" : "saved"
+
       if (isDraft) {
         if (finalPendingFields.length > 0) {
-          toast.success("Draft saved", {
+          toast.success(`Draft ${actionVerb}`, {
             description: `${finalPendingFields.length} field(s) marked as pending for later completion.`,
           })
         } else {
-          toast.success("Draft saved successfully", {
+          toast.success(`Draft ${actionVerb} successfully`, {
             description: "You can continue editing this supplier later.",
           })
         }
       } else if (incompleteFields.length > 0) {
-        toast.success("Supplier saved as draft", {
+        toast.success(`Supplier ${actionVerb} as draft`, {
           description: `${incompleteFields.length} mandatory field(s) still need to be completed.`,
         })
       } else if (finalPendingFields.length > 0) {
-        toast.success("Supplier saved", {
+        toast.success(`Supplier ${actionVerb}`, {
           description: `${finalPendingFields.length} field(s) marked as pending. You can complete them later.`,
         })
       } else {
-        toast.success("Supplier saved successfully", {
+        toast.success(`Supplier ${actionVerb} successfully`, {
           description: "All mandatory fields are complete.",
         })
       }
@@ -398,7 +400,7 @@ export function SupplierForm({
     }
   }
 
-  // Handle cancel
+  // Handle cancel - always show confirmation dialog
   const handleCancelClick = () => {
     setShowCancelDialog(true)
   }
@@ -430,6 +432,7 @@ export function SupplierForm({
                 control={form.control}
                 toggleFieldPending={toggleFieldPending}
                 isFieldPending={isFieldPending}
+                mode={mode}
               />
             </div>
             <div className={activeTab === "provider" ? "relative z-10" : "absolute top-0 left-0 w-full opacity-0 pointer-events-none z-0"}>
@@ -464,6 +467,7 @@ export function SupplierForm({
             onSaveAsDraft={handleSaveAsDraft}
             isSubmitting={isSubmitting}
             isDraftSaving={isDraftSaving}
+            mode={mode}
           />
         </form>
       </Form>

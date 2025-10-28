@@ -37,9 +37,18 @@ import { toast } from "sonner"
 interface SupplierRegisterTableProps {
   suppliers: SupplierOutsourcing[]
   searchTerm?: string
+  onEdit?: (supplier: SupplierOutsourcing) => void
+  onDuplicate?: (supplier: SupplierOutsourcing) => void
+  onDelete?: (supplier: SupplierOutsourcing) => void
 }
 
-export function SupplierRegisterTable({ suppliers, searchTerm = "" }: SupplierRegisterTableProps) {
+export function SupplierRegisterTable({
+  suppliers,
+  searchTerm = "",
+  onEdit,
+  onDuplicate,
+  onDelete,
+}: SupplierRegisterTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [supplierToDelete, setSupplierToDelete] = useState<SupplierOutsourcing | null>(null)
@@ -68,15 +77,23 @@ export function SupplierRegisterTable({ suppliers, searchTerm = "" }: SupplierRe
   }
 
   const handleEdit = (supplier: SupplierOutsourcing) => {
-    toast.info("Edit functionality coming soon", {
-      description: `Editing ${supplier.serviceProvider.name}`,
-    })
+    if (onEdit) {
+      onEdit(supplier)
+    } else {
+      toast.info("Edit functionality coming soon", {
+        description: `Editing ${supplier.serviceProvider.name}`,
+      })
+    }
   }
 
   const handleDuplicate = (supplier: SupplierOutsourcing) => {
-    toast.success("Duplicate functionality coming soon", {
-      description: `Duplicating ${supplier.serviceProvider.name}`,
-    })
+    if (onDuplicate) {
+      onDuplicate(supplier)
+    } else {
+      toast.success("Duplicate functionality coming soon", {
+        description: `Duplicating ${supplier.serviceProvider.name}`,
+      })
+    }
   }
 
   const handleDeleteClick = (supplier: SupplierOutsourcing) => {
@@ -86,12 +103,15 @@ export function SupplierRegisterTable({ suppliers, searchTerm = "" }: SupplierRe
 
   const handleDeleteConfirm = () => {
     if (supplierToDelete) {
-      toast.success("Supplier deleted", {
-        description: `${supplierToDelete.serviceProvider.name} has been removed from the register.`,
-      })
+      if (onDelete) {
+        onDelete(supplierToDelete)
+      } else {
+        toast.success("Supplier deleted", {
+          description: `${supplierToDelete.serviceProvider.name} has been removed from the register.`,
+        })
+      }
       setDeleteDialogOpen(false)
       setSupplierToDelete(null)
-      // TODO: Actual delete logic will go here when backend is implemented
     }
   }
 

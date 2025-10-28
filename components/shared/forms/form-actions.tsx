@@ -10,6 +10,7 @@ interface FormActionsProps {
   isSubmitting: boolean
   isDraftSaving?: boolean
   submitLabel?: string
+  mode?: "add" | "edit"
 }
 
 /**
@@ -23,9 +24,14 @@ export function FormActions({
   onSaveAsDraft,
   isSubmitting,
   isDraftSaving = false,
-  submitLabel = "Save Supplier",
+  submitLabel,
+  mode = "add",
 }: FormActionsProps) {
   const isAnyActionInProgress = isSubmitting || isDraftSaving
+
+  // Determine button text based on mode
+  const defaultSubmitLabel = mode === "edit" ? "Update Supplier" : "Save Supplier"
+  const finalSubmitLabel = submitLabel || defaultSubmitLabel
 
   return (
     <div className="sticky bottom-0 z-10 bg-background pt-6 pb-4 border-t">
@@ -50,7 +56,7 @@ export function FormActions({
           )}
           <Button type="button" onClick={onSave} disabled={isAnyActionInProgress}>
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {submitLabel}
+            {finalSubmitLabel}
           </Button>
         </div>
       </div>

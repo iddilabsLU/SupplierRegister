@@ -145,6 +145,36 @@ Entries are organized by sync date (when documentation was updated), not feature
 
 ---
 
+## Documentation Sync: 2025-10-28 (Evening)
+
+**Features Processed:** 1
+**Documentation Updated:** CLAUDE.md, ROADMAP.md
+**Sync Duration:** ~5 minutes
+
+---
+
+### ✅ Edit Supplier Feature (2025-10-28)
+- **User Impact:** Users can edit existing suppliers from the register table by clicking the Edit button. The form opens with all fields pre-filled, reference number is locked, and pending fields are preserved. After saving, changes override the previous supplier data in the table.
+- **Technical Details:**
+  - Modified `app/suppliers/page.tsx` (added edit state, handleEditSupplier, handleUpdateSupplier handlers)
+  - Modified `supplier-register-table.tsx` (added onEdit prop, wired Edit button to call parent handler)
+  - Modified `supplier-form.tsx` (activated mode prop, updated toast messages for edit/add modes, simplified cancel dialog)
+  - Modified `form-actions.tsx` (changed button text to "Update Supplier" when mode="edit")
+  - Modified `supplier-form-basic-info.tsx` (passed mode prop to make reference number read-only)
+  - Modified `form-text-input.tsx` (added disabled prop support)
+- **Validation Change:** NO - Reused existing two-layer validation system without modifications
+- **Architecture Change:** NO - Reused existing form component with conditional mode prop
+- **Commit:** Not committed yet (changes in working directory)
+- **Docs to Update:** CLAUDE.md, ROADMAP.md
+- **Additional Notes:**
+  - Reference number field is read-only (disabled) in edit mode to prevent duplicates
+  - Pending fields are preserved from original supplier
+  - Cancel dialog simplified to always show confirmation (cleaner UX)
+  - Cloud/critical data clearing already existed (no changes needed)
+  - All 10 test scenarios passed successfully
+
+---
+
 <!-- Future syncs will be appended below -->
 <!-- /docs-sync automatically adds entries here -->
 

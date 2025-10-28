@@ -35,25 +35,26 @@ $ npm run lint         # Check code quality
 
 ---
 
-## ✅ Current Status (Updated: 2025-10-25)
+## ✅ Current Status (Updated: 2025-10-28)
 
 **Phase 1: Frontend Demo - COMPLETE** ✅
 
 ### What Works:
 - **Supplier Register Table** - View, filter, search 73 CSSF-compliant fields
 - **Add Supplier Form** - Complete 4-tab form with pending fields feature
+- **Edit Supplier** - Edit existing suppliers, form pre-fills with data, reference locked
 - **Validation System** - Two-layer approach (see `context/VALIDATION.md`)
 - **Filtering** - Quick filters, custom filters, global text search with highlighting
 - **Pending Fields** - Mark incomplete fields, auto-mark on draft, skip validation
 - **Build & Deployment** - All TypeScript errors fixed, ready for Vercel
 
-### Recent Changes (Oct 25, 2025):
+### Recent Changes:
+- ✅ **Edit Supplier** (Oct 28) - Users can edit suppliers, reference number locked, pending fields preserved
 - ✅ **Removed Zod content validation** - No more red borders on blur
 - ✅ **Fixed 4 Vercel build errors** - TypeScript, unused functions resolved
 - ✅ **Validation happens ONLY on save** - Dialog shows missing fields
 - ✅ **All 73 fields work with pending feature** - Amber badges, skip validation
 - ✅ **Group Entities field removed** - Per CSSF requirements
-- ✅ **All fields made mandatory** - Except LEI and Parent Company
 
 ---
 
@@ -70,8 +71,8 @@ For detailed information, see these files:
 
 ## 🎯 Next Priorities
 
-1. **Edit Supplier** (High Priority) - Reuse form with pre-filled data
-2. **Data Persistence** (High Priority) - localStorage or sessionStorage
+1. **Data Persistence** (High Priority) - sessionStorage for demo
+2. **Delete Supplier** (Medium Priority) - Remove suppliers with confirmation
 3. **Duplicate Supplier** (Medium) - Clone with new reference number
 4. **Export** (Medium) - Excel/PDF export
 5. **Dashboard** (Low) - Analytics and charts
@@ -123,7 +124,7 @@ See `context/workflows/DEPLOY.md` for Vercel checklist
 
 ## 🐛 Known Issues
 
-- **Edit/Duplicate/Delete actions** - UI only (not functional yet)
+- **Duplicate/Delete actions** - UI only (not functional yet)
 - **Data resets on refresh** - No persistence yet (sessionStorage planned)
 - **Dashboard view** - Placeholder only
 

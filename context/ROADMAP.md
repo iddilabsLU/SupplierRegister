@@ -6,12 +6,13 @@ This document outlines the planned features and priorities for the Supplier Regi
 
 ## Current Status
 
-**Phase 1: Frontend Demo - 95% COMPLETE** ✅
+**Phase 1: Frontend Demo - 97% COMPLETE** ✅
 
 ### What's Working:
 - ✅ Supplier Register Table with expand/collapse rows
 - ✅ 4-tab detail view (Basic Info, Provider, Cloud, Critical)
 - ✅ **Add Supplier Form** - Complete 4-tab form with all 73 CSSF fields
+- ✅ **Edit Supplier Form** - Edit existing suppliers with pre-filled data
 - ✅ **Pending Fields Feature** - Mark incomplete fields, skip validation, amber badges
 - ✅ **Form Validation** - Two-layer system (see `VALIDATION.md`)
 - ✅ **Save as Draft** - Auto-marks empty required fields as pending
@@ -20,7 +21,6 @@ This document outlines the planned features and priorities for the Supplier Regi
 - ✅ **CSSF Compliance** - All 73 fields from Circular 22/806 Points 53, 54, 55
 
 ### What's NOT Working:
-- ❌ **Edit Supplier** - Shows toast but doesn't open form (UI only)
 - ❌ **Duplicate Supplier** - Shows toast but doesn't clone (UI only)
 - ❌ **Delete Supplier** - Shows toast but doesn't remove (UI only)
 - ❌ **Data Persistence** - All data resets on page refresh (no storage yet)
@@ -30,64 +30,7 @@ This document outlines the planned features and priorities for the Supplier Regi
 
 ## Phase 1: Frontend Completion
 
-### 1. Edit Supplier (HIGH PRIORITY) 🔥
-
-**Goal:** Allow users to edit existing supplier data
-
-**Implementation:**
-- Reuse existing `supplier-form.tsx` component
-- Add "Edit Mode" state to form context
-- Pre-fill form with existing supplier data
-- Change "Save Supplier" button to "Update Supplier"
-- Update supplier in client-side state (replace old entry)
-- Show success toast: "Supplier {referenceNumber} updated successfully"
-
-**Technical Details:**
-```typescript
-// components/shared/forms/supplier-form.tsx
-interface SupplierFormProps {
-  mode: "add" | "edit"           // New prop
-  existingData?: SupplierOutsourcing  // Pre-fill data for edit mode
-}
-
-// When Edit button clicked in register table:
-1. Set mode = "edit"
-2. Pass supplier data to form
-3. Navigate to "New Entry" view
-4. Form pre-fills all fields
-5. Pending fields remain pending (preserve amber badges)
-```
-
-**Validation:**
-- Use same two-layer validation as Add form
-- Respect existing pending fields
-- Allow adding/removing pending fields
-- Show confirmation dialog if new required fields are empty
-
-**User Flow:**
-```
-1. User clicks "Edit" button in actions menu
-2. View switches to "New Entry" (form view)
-3. Form opens with all fields pre-filled
-4. Form title shows "Edit Supplier - {referenceNumber}"
-5. User modifies fields
-6. User clicks "Update Supplier"
-7. Validation runs (same as add)
-8. Supplier updated in state
-9. View switches back to "Register List"
-10. Toast: "Supplier 2024-001 updated successfully"
-```
-
-**Files to Modify:**
-- `components/shared/forms/supplier-form.tsx` - Add mode prop, conditional logic
-- `components/shared/supplier-register-table.tsx` - Wire up Edit button
-- `components/shared/view-segmented-control.tsx` - Support programmatic view switching
-
-**Estimated Effort:** 2-3 hours
-
----
-
-### 2. Data Persistence (HIGH PRIORITY) 🔥
+### 1. Data Persistence (HIGH PRIORITY) 🔥
 
 **Goal:** Preserve supplier data across page refreshes
 
@@ -170,7 +113,7 @@ Download the desktop version for persistent storage."
 
 ---
 
-### 3. Duplicate Supplier (MEDIUM PRIORITY)
+### 2. Duplicate Supplier (MEDIUM PRIORITY)
 
 **Goal:** Clone existing supplier with new reference number
 
@@ -202,7 +145,7 @@ Download the desktop version for persistent storage."
 
 ---
 
-### 4. Delete Supplier (MEDIUM PRIORITY)
+### 3. Delete Supplier (MEDIUM PRIORITY)
 
 **Goal:** Remove supplier from register
 
@@ -231,7 +174,7 @@ Download the desktop version for persistent storage."
 
 ---
 
-### 5. Dashboard View (LOW PRIORITY)
+### 4. Dashboard View (LOW PRIORITY)
 
 **Goal:** Analytics and insights for compliance officers
 
@@ -281,7 +224,7 @@ Download the desktop version for persistent storage."
 
 ---
 
-### 6. Export Functionality (MEDIUM PRIORITY)
+### 5. Export Functionality (MEDIUM PRIORITY)
 
 **Goal:** Export supplier data to Excel/PDF
 
@@ -435,7 +378,7 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 
 | Feature | Priority | Effort | Impact | Status |
 |---------|----------|--------|--------|--------|
-| Edit Supplier | 🔥 High | 2-3h | High | Pending |
+| Edit Supplier | 🔥 High | 2h | High | ✅ Done |
 | Data Persistence | 🔥 High | 1-2h | High | Pending |
 | Duplicate Supplier | 🔸 Medium | 1h | Medium | Pending |
 | Delete Supplier | 🔸 Medium | 30m | Medium | Pending |
@@ -447,31 +390,29 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 
 ## Next Steps (Immediate)
 
-Based on user request: **"edit supplier then data persistence"**
+Based on roadmap priorities: **"data persistence then delete supplier"**
 
-### Step 1: Edit Supplier (This Week)
-1. Add mode prop to `supplier-form.tsx`
-2. Pre-fill form with existing data
-3. Wire up Edit button in register table
-4. Test with all 73 fields
-5. Verify pending fields are preserved
-
-### Step 2: Data Persistence (This Week)
+### Step 1: Data Persistence (Next Priority)
 1. Create `session-storage.ts` utility
 2. Create demo banner component
 3. Load suppliers on mount
 4. Save on every add/edit/delete
 5. Test refresh behavior
 
-### Step 3: Test & Polish
-1. Test Edit → Save flow
-2. Test Edit → Save as Draft flow
-3. Verify sessionStorage limits
-4. Test across Chrome, Firefox, Edge
-5. Update CLAUDE.md with new status
+### Step 2: Delete Supplier (After Persistence)
+1. Wire up Delete button with confirmation
+2. Remove from suppliers array
+3. Update sessionStorage
+4. Test edge cases
+
+### Step 3: Duplicate Supplier
+1. Clone supplier data
+2. Generate new reference number
+3. Open form in add mode with pre-filled data
+4. Allow modifications before saving
 
 ---
 
-**Last Updated:** 2025-10-25
-**Next Priority:** Edit Supplier functionality
-**Related Files:** CLAUDE.md, VALIDATION.md, supplier-form.tsx
+**Last Updated:** 2025-10-28
+**Next Priority:** Data Persistence (sessionStorage)
+**Related Files:** CLAUDE.md, VALIDATION.md, app/suppliers/page.tsx

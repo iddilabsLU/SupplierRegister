@@ -14,13 +14,19 @@ interface SupplierFormBasicInfoProps {
   control: Control<SupplierFormData>
   toggleFieldPending: (fieldPath: string) => void
   isFieldPending: (fieldPath: string) => boolean
+  mode?: "add" | "edit"
 }
 
 /**
  * Tab 1: Basic Information
  * Contains: Reference & Status, Timeline & Dates, Function Description, Criticality Assessment
  */
-export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPending }: SupplierFormBasicInfoProps) {
+export function SupplierFormBasicInfo({
+  control,
+  toggleFieldPending,
+  isFieldPending,
+  mode = "add",
+}: SupplierFormBasicInfoProps) {
   // Category options
   const categoryOptions = Object.values(OutsourcingCategory).map((cat) => ({
     value: cat,
@@ -50,6 +56,7 @@ export function SupplierFormBasicInfo({ control, toggleFieldPending, isFieldPend
               placeholder="e.g., 2024-006"
               toggleFieldPending={toggleFieldPending}
               isFieldPending={isFieldPending}
+              disabled={mode === "edit"}
             />
             <FormSelect
               control={control}

@@ -16,6 +16,7 @@ interface FormTextInputProps<TFieldValues extends FieldValues> {
   className?: string
   toggleFieldPending?: (fieldPath: string) => void
   isFieldPending?: (fieldPath: string) => boolean
+  disabled?: boolean
 }
 
 /**
@@ -43,6 +44,7 @@ export function FormTextInput<TFieldValues extends FieldValues>({
   className = "",
   toggleFieldPending,
   isFieldPending,
+  disabled = false,
 }: FormTextInputProps<TFieldValues>) {
   return (
     <FormField
@@ -70,7 +72,7 @@ export function FormTextInput<TFieldValues extends FieldValues>({
             )}
           </div>
           <FormControl>
-            <Input placeholder={placeholder} {...field} className="text-base" />
+            <Input placeholder={placeholder} {...field} className="text-base" disabled={disabled} />
           </FormControl>
           <FormMessage />
         </FormItem>
