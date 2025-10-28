@@ -7,7 +7,8 @@ import { FilterPanel } from "@/components/shared/filter-panel"
 import { ViewSegmentedControl, type ViewType } from "@/components/shared/view-segmented-control"
 import { PlaceholderView } from "@/components/shared/placeholder-view"
 import { SupplierForm } from "@/components/shared/forms/supplier-form"
-import { suppliers as initialSuppliers } from "@/lib/data/suppliers"
+import { DemoBanner } from "@/components/shared/demo-banner"
+import { useSessionStorage } from "@/hooks/use-session-storage"
 import { AlertCircle, BarChart3 } from "lucide-react"
 import type { QuickFilters, CustomFilter } from "@/lib/types/filters"
 import type { SupplierOutsourcing } from "@/lib/types/supplier"
@@ -17,8 +18,8 @@ export default function SuppliersPage() {
   // View state
   const [activeView, setActiveView] = useState<ViewType>("list")
 
-  // Suppliers state (client-side - will be replaced with API calls in future)
-  const [suppliers, setSuppliers] = useState<SupplierOutsourcing[]>(initialSuppliers)
+  // Suppliers state with sessionStorage persistence
+  const [suppliers, setSuppliers] = useSessionStorage()
 
   // Edit state
   const [editingSupplier, setEditingSupplier] = useState<SupplierOutsourcing | null>(null)
@@ -132,6 +133,9 @@ export default function SuppliersPage() {
 
         {/* View Segmented Control */}
         <ViewSegmentedControl activeView={activeView} onViewChange={setActiveView} />
+
+        {/* Demo Banner */}
+        <DemoBanner />
 
         {/* Register List View */}
         {activeView === "list" && (

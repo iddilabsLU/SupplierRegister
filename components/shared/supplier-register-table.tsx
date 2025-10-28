@@ -55,7 +55,7 @@ export function SupplierRegisterTable({
   const [showHint, setShowHint] = useState(true)
 
   useEffect(() => {
-    const hideHint = localStorage.getItem("hideTableHint")
+    const hideHint = sessionStorage.getItem("hideTableHint")
     if (hideHint === "true") {
       setShowHint(false)
     }
@@ -63,7 +63,7 @@ export function SupplierRegisterTable({
 
   const handleCloseHint = () => {
     setShowHint(false)
-    localStorage.setItem("hideTableHint", "true")
+    sessionStorage.setItem("hideTableHint", "true")
   }
 
   const toggleRow = (referenceNumber: string) => {
