@@ -105,11 +105,10 @@ export function SupplierRegisterTable({
     if (supplierToDelete) {
       if (onDelete) {
         onDelete(supplierToDelete)
-      } else {
-        toast.success("Supplier deleted", {
-          description: `${supplierToDelete.serviceProvider.name} has been removed from the register.`,
-        })
       }
+      toast.success("Supplier deleted", {
+        description: `${supplierToDelete.serviceProvider.name} has been removed from the register.`,
+      })
       setDeleteDialogOpen(false)
       setSupplierToDelete(null)
     }

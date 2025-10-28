@@ -57,7 +57,19 @@ When `/docs-sync` is run:
 <!-- Claude Code: Add completed features here via /log-update -->
 <!-- These will be processed by /docs-sync and moved to COMPLETED.md -->
 
-*No completed features pending documentation.*
+### ✅ SessionStorage Data Persistence (2025-10-28)
+- **User Impact:** Changes to suppliers (add, edit, delete) now persist when refreshing the page. Data survives refreshes during the session but resets to default when the browser tab is closed, providing a clean demo experience.
+- **Technical Details:**
+  - Created `lib/utils/session-storage.ts` (save/load/clear supplier utilities)
+  - Created `hooks/use-session-storage.ts` (React hook with automatic persistence on state changes)
+  - Created `components/shared/demo-banner.tsx` (dismissible banner explaining demo mode)
+  - Modified `app/suppliers/page.tsx` (integrated useSessionStorage hook)
+  - Modified `components/shared/supplier-register-table.tsx` (changed table hint banner from localStorage to sessionStorage for consistency)
+- **Validation Change:** NO
+- **Architecture Change:** NO (added utility layer, no structural changes)
+- **Commit:** a01dffb4 "feature: Add sessionStorage data persistence for supplier register"
+- **Docs to Update:** CLAUDE.md, ROADMAP.md
+- **Additional Notes:** All banners now use sessionStorage for dismissal (reset on tab close). Successfully tested: add/edit persist on refresh, delete pending implementation, data resets on tab close.
 
 ---
 

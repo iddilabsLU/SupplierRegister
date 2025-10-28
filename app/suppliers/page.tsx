@@ -114,6 +114,11 @@ export default function SuppliersPage() {
     setActiveView("list")
   }
 
+  // Handle delete supplier
+  const handleDeleteSupplier = (supplier: SupplierOutsourcing) => {
+    setSuppliers(suppliers.filter((s) => s.referenceNumber !== supplier.referenceNumber))
+  }
+
   // Handle cancel form
   const handleCancelForm = () => {
     setEditingSupplier(null)
@@ -164,6 +169,7 @@ export default function SuppliersPage() {
                 suppliers={filteredSuppliers}
                 searchTerm={searchTerm}
                 onEdit={handleEditSupplier}
+                onDelete={handleDeleteSupplier}
               />
             ) : (
               <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/30 p-12 text-center">
