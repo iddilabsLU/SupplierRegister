@@ -123,7 +123,6 @@ export interface CriticalOutsourcingFields {
   // 55.a - Entities Using the Outsourcing
   entitiesUsing: {
     inScopeEntities: string[]
-    groupEntities?: string[]
   }
 
   // 55.b - Group Relationship
@@ -196,4 +195,9 @@ export interface SupplierOutsourcing extends MandatoryOutsourcingFields {
   // Incomplete fields tracking - array of field paths that are mandatory but not filled
   // Used to show red "!" indicator in register and for future dashboard/filter functionality
   incompleteFields?: string[]
+
+  // Pending fields tracking - array of field paths that are marked as "to be completed later"
+  // Pending fields skip validation and are highlighted in amber in the register view
+  // Field path examples: "referenceNumber", "dates.startDate", "serviceProvider.name", "criticalFields.riskAssessment.risk"
+  pendingFields?: string[]
 }

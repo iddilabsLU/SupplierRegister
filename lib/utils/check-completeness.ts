@@ -1,4 +1,5 @@
 import type { SupplierOutsourcing } from "@/lib/types/supplier"
+import { OutsourcingCategory } from "@/lib/types/supplier"
 
 /**
  * Result of completeness check
@@ -21,14 +22,22 @@ export interface CompletenessCheckResult {
  * - Point 55: Additional fields if critical/important function
  *
  * @param data - Partial supplier data from form
+ * @param pendingFields - Optional array of field paths marked as pending (will skip validation for these fields)
  * @returns Result object with incomplete field paths and labels
  */
-export function checkIncompleteFields(data: Partial<SupplierOutsourcing>): CompletenessCheckResult {
+export function checkIncompleteFields(
+  data: Partial<SupplierOutsourcing>,
+  pendingFields: string[] = []
+): CompletenessCheckResult {
   const incomplete: string[] = []
   const labels: string[] = []
 
-  // Helper function to add incomplete field
+  // Helper function to add incomplete field (skip if field is pending)
   const addIncomplete = (path: string, label: string) => {
+    // Skip validation if field is marked as pending
+    if (pendingFields.includes(path)) {
+      return
+    }
     incomplete.push(path)
     labels.push(label)
   }
@@ -47,9 +56,21 @@ export function checkIncompleteFields(data: Partial<SupplierOutsourcing>): Compl
     addIncomplete("status", "Status (53)")
   }
 
-  // 54.b - Dates
+  // 54.b - Dates (ALL now mandatory)
   if (!data.dates?.startDate || data.dates.startDate.trim() === "") {
     addIncomplete("dates.startDate", "Start Date (54.b)")
+  }
+  if (!data.dates?.nextRenewalDate || data.dates.nextRenewalDate.trim() === "") {
+    addIncomplete("dates.nextRenewalDate", "Next Renewal Date (54.b)")
+  }
+  if (!data.dates?.endDate || data.dates.endDate.trim() === "") {
+    addIncomplete("dates.endDate", "End Date (54.b)")
+  }
+  if (!data.dates?.serviceProviderNoticePeriod || data.dates.serviceProviderNoticePeriod.trim() === "") {
+    addIncomplete("dates.serviceProviderNoticePeriod", "Service Provider Notice Period (54.b)")
+  }
+  if (!data.dates?.entityNoticePeriod || data.dates.entityNoticePeriod.trim() === "") {
+    addIncomplete("dates.entityNoticePeriod", "Entity Notice Period (54.b)")
   }
 
   // 54.c - Function Description
@@ -91,12 +112,15 @@ export function checkIncompleteFields(data: Partial<SupplierOutsourcing>): Compl
     addIncomplete("serviceProvider.contactDetails", "Contact Details (54.e)")
   }
 
-  // 54.f - Location Information
+  // 54.f - Location Information (all mandatory)
   if (!data.location?.servicePerformanceCountries || data.location.servicePerformanceCountries.length === 0) {
     addIncomplete("location.servicePerformanceCountries", "Service Performance Countries (54.f)")
   }
   if (!data.location?.dataLocationCountry || data.location.dataLocationCountry.trim() === "") {
     addIncomplete("location.dataLocationCountry", "Data Location Country (54.f)")
+  }
+  if (!data.location?.dataStorageLocation || data.location.dataStorageLocation.trim() === "") {
+    addIncomplete("location.dataStorageLocation", "Data Storage Location (54.f)")
   }
 
   // 54.g - Criticality Assessment
@@ -114,20 +138,28 @@ export function checkIncompleteFields(data: Partial<SupplierOutsourcing>): Compl
 
   // ========================================
   // POINT 54.h: Cloud Service (Conditional)
+  // Only check if category is Cloud
   // ========================================
 
-  if (data.cloudService) {
-    if (!data.cloudService.serviceModel) {
+  if (data.category === OutsourcingCategory.CLOUD) {
+    if (!data.cloudService?.serviceModel) {
       addIncomplete("cloudService.serviceModel", "Cloud Service Model (54.h)")
     }
-    if (!data.cloudService.deploymentModel) {
+    if (!data.cloudService?.deploymentModel) {
       addIncomplete("cloudService.deploymentModel", "Deployment Model (54.h)")
     }
-    if (!data.cloudService.dataNature || data.cloudService.dataNature.trim() === "") {
+    if (!data.cloudService?.dataNature || data.cloudService.dataNature.trim() === "") {
       addIncomplete("cloudService.dataNature", "Data Nature (54.h)")
     }
-    if (!data.cloudService.storageLocations || data.cloudService.storageLocations.length === 0) {
+    if (!data.cloudService?.storageLocations || data.cloudService.storageLocations.length === 0) {
       addIncomplete("cloudService.storageLocations", "Storage Locations (54.h)")
+    }
+    // Cloud Officer and Resource Operator now mandatory (with "if any" label)
+    if (!data.cloudService?.cloudOfficer || data.cloudService.cloudOfficer.trim() === "") {
+      addIncomplete("cloudService.cloudOfficer", "Cloud Officer (54.h) - if any")
+    }
+    if (!data.cloudService?.resourceOperator || data.cloudService.resourceOperator.trim() === "") {
+      addIncomplete("cloudService.resourceOperator", "Resource Operator (54.h) - if any")
     }
   }
 
@@ -175,17 +207,49 @@ export function checkIncompleteFields(data: Partial<SupplierOutsourcing>): Compl
       addIncomplete("criticalFields.governingLaw", "Governing Law (55.e)")
     }
 
+    // 55.f - Audit (now mandatory)
+    if (!cf.audit?.lastAuditDate || cf.audit.lastAuditDate.trim() === "") {
+      addIncomplete("criticalFields.audit.lastAuditDate", "Last Audit Date (55.f)")
+    }
+    if (!cf.audit?.nextScheduledAudit || cf.audit.nextScheduledAudit.trim() === "") {
+      addIncomplete("criticalFields.audit.nextScheduledAudit", "Next Scheduled Audit (55.f)")
+    }
+
     // 55.g - Sub-Outsourcing (conditional within critical)
     if (cf.subOutsourcing) {
       if (!cf.subOutsourcing.subContractors || cf.subOutsourcing.subContractors.length === 0) {
         addIncomplete("criticalFields.subOutsourcing.subContractors", "Sub-Contractors (55.g)")
       } else {
-        // Check each sub-contractor's activity description
+        // Check each sub-contractor's mandatory fields
         cf.subOutsourcing.subContractors.forEach((subContractor, index) => {
+          if (!subContractor.name || subContractor.name.trim() === "") {
+            addIncomplete(
+              `criticalFields.subOutsourcing.subContractors.${index}.name`,
+              `Sub-Contractor ${index + 1}: Name (55.g)`
+            )
+          }
           if (!subContractor.activityDescription || subContractor.activityDescription.trim() === "") {
             addIncomplete(
               `criticalFields.subOutsourcing.subContractors.${index}.activityDescription`,
               `Sub-Contractor ${index + 1}: Activity Description (55.g)`
+            )
+          }
+          if (!subContractor.registrationCountry || subContractor.registrationCountry.trim() === "") {
+            addIncomplete(
+              `criticalFields.subOutsourcing.subContractors.${index}.registrationCountry`,
+              `Sub-Contractor ${index + 1}: Registration Country (55.g)`
+            )
+          }
+          if (!subContractor.servicePerformanceCountry || subContractor.servicePerformanceCountry.trim() === "") {
+            addIncomplete(
+              `criticalFields.subOutsourcing.subContractors.${index}.servicePerformanceCountry`,
+              `Sub-Contractor ${index + 1}: Service Performance Country (55.g)`
+            )
+          }
+          if (!subContractor.dataStorageLocation || subContractor.dataStorageLocation.trim() === "") {
+            addIncomplete(
+              `criticalFields.subOutsourcing.subContractors.${index}.dataStorageLocation`,
+              `Sub-Contractor ${index + 1}: Data Storage Location (55.g)`
             )
           }
         })
@@ -219,9 +283,17 @@ export function checkIncompleteFields(data: Partial<SupplierOutsourcing>): Compl
       addIncomplete("criticalFields.isTimeCritical", "Time-Critical Function (55.j)")
     }
 
-    // 55.k - Cost Information
+    // 55.k - Cost Information (all now mandatory)
     if (cf.estimatedAnnualCost === undefined || cf.estimatedAnnualCost === null) {
       addIncomplete("criticalFields.estimatedAnnualCost", "Estimated Annual Cost (55.k)")
+    }
+    if (!cf.costComments || cf.costComments.trim() === "") {
+      addIncomplete("criticalFields.costComments", "Cost Comments (55.k)")
+    }
+
+    // 55.l - Prior Notification Date (now mandatory)
+    if (!cf.regulatoryNotification?.notificationDate || cf.regulatoryNotification.notificationDate.trim() === "") {
+      addIncomplete("criticalFields.regulatoryNotification.notificationDate", "Prior Notification Date (55.l)")
     }
   }
 

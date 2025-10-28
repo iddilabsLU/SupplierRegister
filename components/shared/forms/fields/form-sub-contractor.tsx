@@ -6,11 +6,14 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Plus, X } from "lucide-react"
+import { PendingToggle } from "../pending-toggle"
 import { useFieldArray, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
 interface FormSubContractorProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   name: FieldPath<TFieldValues>
+  toggleFieldPending?: (fieldPath: string) => void
+  isFieldPending?: (fieldPath: string) => boolean
 }
 
 /**
@@ -27,6 +30,8 @@ interface FormSubContractorProps<TFieldValues extends FieldValues> {
 export function FormSubContractor<TFieldValues extends FieldValues>({
   control,
   name,
+  toggleFieldPending,
+  isFieldPending,
 }: FormSubContractorProps<TFieldValues>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -36,10 +41,19 @@ export function FormSubContractor<TFieldValues extends FieldValues>({
 
   return (
     <div className="space-y-3">
-      <FormLabel className="text-base">
-        Sub-Contractors <span className="text-sm text-muted-foreground">(55.g)</span>
-        <span className="text-destructive ml-1">*</span>
-      </FormLabel>
+      <div className="flex items-center gap-2">
+        <FormLabel className="text-base">
+          Sub-Contractors <span className="text-sm text-muted-foreground">(55.g)</span>
+          <span className="text-destructive ml-1">*</span>
+        </FormLabel>
+        {toggleFieldPending && isFieldPending && (
+          <PendingToggle
+            fieldPath={name as string}
+            isPending={isFieldPending(name as string)}
+            onToggle={toggleFieldPending}
+          />
+        )}
+      </div>
 
       {fields.length === 0 && (
         <p className="text-sm text-muted-foreground">No sub-contractors added yet.</p>

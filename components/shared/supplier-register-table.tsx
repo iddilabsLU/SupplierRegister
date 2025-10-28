@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { MoreVertical, Edit, Copy, Trash2, X, Info } from "lucide-react"
+import { MoreVertical, Edit, Copy, Trash2, X, Info, Pin } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -197,6 +197,15 @@ export function SupplierRegisterTable({ suppliers, searchTerm = "" }: SupplierRe
                             title={`${supplier.incompleteFields.length} incomplete mandatory field(s)`}
                           >
                             !
+                          </span>
+                        )}
+                        {supplier.pendingFields && supplier.pendingFields.length > 0 && (
+                          <span
+                            className="inline-flex items-center justify-center gap-1 px-1.5 h-5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium border border-amber-300"
+                            title={`${supplier.pendingFields.length} field(s) marked as pending`}
+                          >
+                            <Pin className="h-3 w-3 fill-amber-600" />
+                            {supplier.pendingFields.length}
                           </span>
                         )}
                       </div>

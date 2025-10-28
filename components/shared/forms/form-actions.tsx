@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react"
 
 interface FormActionsProps {
   onCancel: () => void
+  onSave: () => void
   onSaveAsDraft?: () => void
   isSubmitting: boolean
   isDraftSaving?: boolean
@@ -18,6 +19,7 @@ interface FormActionsProps {
  */
 export function FormActions({
   onCancel,
+  onSave,
   onSaveAsDraft,
   isSubmitting,
   isDraftSaving = false,
@@ -46,7 +48,7 @@ export function FormActions({
               Save as Draft
             </Button>
           )}
-          <Button type="submit" disabled={isAnyActionInProgress}>
+          <Button type="button" onClick={onSave} disabled={isAnyActionInProgress}>
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {submitLabel}
           </Button>

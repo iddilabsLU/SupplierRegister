@@ -27,36 +27,42 @@ export function SupplierProviderDetails({ supplier }: SupplierProviderDetailsPro
               circularRef="54.e"
               value={supplier.serviceProvider.name}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("serviceProvider.name")}
             />
             <FieldDisplay
               label="Parent Company"
               circularRef="54.e"
               value={supplier.serviceProvider.parentCompany}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("serviceProvider.parentCompany")}
             />
             <FieldDisplay
               label="Corporate Registration Number"
               circularRef="54.e"
               value={supplier.serviceProvider.corporateRegistrationNumber}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("serviceProvider.corporateRegistrationNumber")}
             />
             <FieldDisplay
               label="Legal Entity Identifier (LEI) (if any)"
               circularRef="54.e"
               value={supplier.serviceProvider.legalEntityIdentifier}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("serviceProvider.legalEntityIdentifier")}
             />
             <FieldDisplay
               label="Registered Address"
               circularRef="54.e"
               value={supplier.serviceProvider.registeredAddress}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("serviceProvider.registeredAddress")}
             />
             <FieldDisplay
               label="Contact Details"
               circularRef="54.e"
               value={supplier.serviceProvider.contactDetails}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("serviceProvider.contactDetails")}
             />
           </div>
         </CardContent>
@@ -74,18 +80,21 @@ export function SupplierProviderDetails({ supplier }: SupplierProviderDetailsPro
               circularRef="54.f"
               value={supplier.location.servicePerformanceCountries}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("location.servicePerformanceCountries")}
             />
             <FieldDisplay
               label="Data Location Country"
               circularRef="54.f"
               value={supplier.location.dataLocationCountry}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("location.dataLocationCountry")}
             />
             <FieldDisplay
               label="Data Storage Location"
               circularRef="54.f"
               value={supplier.location.dataStorageLocation}
               searchTerm={searchTerm}
+              isPending={supplier.pendingFields?.includes("location.dataStorageLocation")}
             />
           </div>
         </CardContent>

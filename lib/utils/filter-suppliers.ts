@@ -162,7 +162,6 @@ function searchAllFields(supplier: SupplierOutsourcing, searchTerm: string): boo
 
     // Entities
     if (containsInArray(cf.entitiesUsing.inScopeEntities)) return true
-    if (containsInArray(cf.entitiesUsing.groupEntities)) return true
 
     // Risk assessment
     if (contains(cf.riskAssessment.risk)) return true

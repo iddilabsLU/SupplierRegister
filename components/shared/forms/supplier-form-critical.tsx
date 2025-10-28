@@ -18,6 +18,8 @@ interface SupplierFormCriticalProps {
   control: Control<SupplierFormData>
   hasSubOutsourcing: boolean
   onSubOutsourcingChange: (enabled: boolean) => void
+  toggleFieldPending: (fieldPath: string) => void
+  isFieldPending: (fieldPath: string) => boolean
 }
 
 /**
@@ -28,6 +30,8 @@ export function SupplierFormCritical({
   control,
   hasSubOutsourcing,
   onSubOutsourcingChange,
+  toggleFieldPending,
+  isFieldPending,
 }: SupplierFormCriticalProps) {
   // Risk Level options
   const riskOptions = Object.values(RiskLevel).map((risk) => ({
@@ -56,30 +60,26 @@ export function SupplierFormCritical({
               label="In-Scope Entities"
               circularRef="55.a"
               placeholder="e.g., BankCorp S.A."
-              required
               addButtonLabel="Add Entity"
-            />
-            <FormMultiText
-              control={control}
-              name="criticalFields.entitiesUsing.groupEntities"
-              label="Group Entities"
-              circularRef="55.a"
-              placeholder="e.g., BankCorp Asset Management S.A."
-              addButtonLabel="Add Entity"
+              className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormRadioGroup
               control={control}
               name="criticalFields.groupRelationship.isPartOfGroup"
               label="Part of Group"
               circularRef="55.b"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormRadioGroup
               control={control}
               name="criticalFields.groupRelationship.isOwnedByGroup"
               label="Owned by Group"
               circularRef="55.b"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormSelect
               control={control}
@@ -88,14 +88,16 @@ export function SupplierFormCritical({
               circularRef="55.c"
               options={riskOptions}
               placeholder="Select risk level"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormDatePicker
               control={control}
               name="criticalFields.riskAssessment.lastAssessmentDate"
               label="Last Assessment Date"
               circularRef="55.c"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextarea
               control={control}
@@ -104,8 +106,9 @@ export function SupplierFormCritical({
               circularRef="55.c"
               placeholder="Main results of the risk assessment"
               rows={4}
-              required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextInput
               control={control}
@@ -113,7 +116,8 @@ export function SupplierFormCritical({
               label="Approver Name"
               circularRef="55.d"
               placeholder="e.g., Board of Directors"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextInput
               control={control}
@@ -121,7 +125,8 @@ export function SupplierFormCritical({
               label="Approver Role"
               circularRef="55.d"
               placeholder="e.g., Management Body"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
           </div>
         </CardContent>
@@ -140,26 +145,33 @@ export function SupplierFormCritical({
               label="Governing Law"
               circularRef="55.e"
               placeholder="e.g., Luxembourg Law"
-              required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormDatePicker
               control={control}
               name="criticalFields.audit.lastAuditDate"
               label="Last Audit Date"
               circularRef="55.f"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormDatePicker
               control={control}
               name="criticalFields.audit.nextScheduledAudit"
               label="Next Scheduled Audit"
               circularRef="55.f"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormDatePicker
               control={control}
               name="criticalFields.regulatoryNotification.notificationDate"
               label="Prior Notification Date"
               circularRef="55.l"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
           </div>
         </CardContent>
@@ -189,6 +201,8 @@ export function SupplierFormCritical({
                 <FormSubContractor
                   control={control}
                   name="criticalFields.subOutsourcing.subContractors"
+                  toggleFieldPending={toggleFieldPending}
+                  isFieldPending={isFieldPending}
                 />
               </div>
             )}
@@ -210,14 +224,16 @@ export function SupplierFormCritical({
               circularRef="55.h"
               options={substitutabilityOptions}
               placeholder="Select outcome"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormRadioGroup
               control={control}
               name="criticalFields.isTimeCritical"
               label="Time-Critical Function"
               circularRef="55.j"
-              required
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextarea
               control={control}
@@ -226,8 +242,9 @@ export function SupplierFormCritical({
               circularRef="55.h"
               placeholder="Assess the feasibility of reintegrating this function"
               rows={3}
-              required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextarea
               control={control}
@@ -236,8 +253,9 @@ export function SupplierFormCritical({
               circularRef="55.h"
               placeholder="Describe the impact if this service is discontinued"
               rows={3}
-              required
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormMultiText
               control={control}
@@ -245,9 +263,10 @@ export function SupplierFormCritical({
               label="Alternative Providers"
               circularRef="55.i"
               placeholder="e.g., Azure Government Cloud"
-              required
               addButtonLabel="Add Provider"
               className="col-span-2"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextInput
               control={control}
@@ -255,8 +274,9 @@ export function SupplierFormCritical({
               label="Estimated Annual Cost"
               circularRef="55.k"
               placeholder="e.g., 850000"
-              required
               tooltip="Enter cost in EUR"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
             <FormTextarea
               control={control}
@@ -265,6 +285,8 @@ export function SupplierFormCritical({
               circularRef="55.k"
               placeholder="Optional - any relevant cost notes"
               rows={2}
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
             />
           </div>
         </CardContent>
