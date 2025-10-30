@@ -23,6 +23,7 @@ export const suppliers: SupplierOutsourcing[] = [
     dates: {
       startDate: "2022-01-15",
       nextRenewalDate: "2025-01-15",
+      endDate: "2030-01-15",
       serviceProviderNoticePeriod: "90 days",
       entityNoticePeriod: "180 days",
     },
@@ -117,6 +118,7 @@ export const suppliers: SupplierOutsourcing[] = [
     dates: {
       startDate: "2023-03-01",
       nextRenewalDate: "2025-03-01",
+      endDate: "2026-03-01",
       serviceProviderNoticePeriod: "30 days",
       entityNoticePeriod: "30 days",
     },
@@ -137,6 +139,7 @@ export const suppliers: SupplierOutsourcing[] = [
     location: {
       servicePerformanceCountries: ["Luxembourg"],
       dataLocationCountry: "Luxembourg",
+      dataStorageLocation: "Luxembourg (on-premises)",
     },
     criticality: {
       isCritical: false,
@@ -249,6 +252,7 @@ export const suppliers: SupplierOutsourcing[] = [
     dates: {
       startDate: "2024-01-10",
       nextRenewalDate: "2025-01-10",
+      endDate: "2026-01-10",
       serviceProviderNoticePeriod: "60 days",
       entityNoticePeriod: "60 days",
     },
@@ -287,6 +291,7 @@ export const suppliers: SupplierOutsourcing[] = [
     dates: {
       startDate: "2020-09-01",
       nextRenewalDate: "2025-09-01",
+      endDate: "2030-09-01",
       serviceProviderNoticePeriod: "12 months",
       entityNoticePeriod: "24 months",
     },

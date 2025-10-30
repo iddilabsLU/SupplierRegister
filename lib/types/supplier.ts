@@ -57,13 +57,13 @@ export interface MandatoryOutsourcingFields {
   // 54.a - Reference Number
   referenceNumber: string
 
-  // 54.b - Dates
+  // 54.b - Dates (all mandatory per CSSF Point 54.b)
   dates: {
     startDate: string
-    nextRenewalDate?: string
-    endDate?: string
-    serviceProviderNoticePeriod?: string
-    entityNoticePeriod?: string
+    nextRenewalDate: string
+    endDate: string
+    serviceProviderNoticePeriod: string
+    entityNoticePeriod: string
   }
 
   // 53 - Status
@@ -91,11 +91,11 @@ export interface MandatoryOutsourcingFields {
     parentCompany?: string
   }
 
-  // 54.f - Location Information
+  // 54.f - Location Information (all mandatory per CSSF Point 54.f)
   location: {
     servicePerformanceCountries: string[]
     dataLocationCountry: string
-    dataStorageLocation?: string
+    dataStorageLocation: string
   }
 
   // 54.g - Criticality Assessment
@@ -147,10 +147,10 @@ export interface CriticalOutsourcingFields {
   // 55.e - Governing Law
   governingLaw: string
 
-  // 55.f - Audit Information
+  // 55.f - Audit Information (all mandatory when criticality.isCritical = true per CSSF Point 55.f)
   audit: {
-    lastAuditDate?: string
-    nextScheduledAudit?: string
+    lastAuditDate: string
+    nextScheduledAudit: string
   }
 
   // 55.g - Sub-Outsourcing Information (where applicable)
@@ -177,12 +177,12 @@ export interface CriticalOutsourcingFields {
   // 55.j - Time Criticality
   isTimeCritical: boolean
 
-  // 55.k - Cost Information
+  // 55.k - Cost Information (all mandatory when criticality.isCritical = true per CSSF Point 55.k)
   estimatedAnnualCost: number
-  costComments?: string
+  costComments: string
 
-  // 55.l - Regulatory Notification
-  regulatoryNotification?: {
+  // 55.l - Regulatory Notification (mandatory when criticality.isCritical = true per CSSF Point 55.l)
+  regulatoryNotification: {
     notificationDate: string
   }
 }

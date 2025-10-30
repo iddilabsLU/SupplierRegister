@@ -205,10 +205,10 @@ export function SupplierForm({
         status: data.status!,
         dates: {
           startDate: data.dates?.startDate || "",
-          nextRenewalDate: data.dates?.nextRenewalDate,
-          endDate: data.dates?.endDate,
-          serviceProviderNoticePeriod: data.dates?.serviceProviderNoticePeriod,
-          entityNoticePeriod: data.dates?.entityNoticePeriod,
+          nextRenewalDate: data.dates?.nextRenewalDate || "",
+          endDate: data.dates?.endDate || "",
+          serviceProviderNoticePeriod: data.dates?.serviceProviderNoticePeriod || "",
+          entityNoticePeriod: data.dates?.entityNoticePeriod || "",
         },
         functionDescription: {
           name: data.functionDescription?.name || "",
@@ -229,7 +229,7 @@ export function SupplierForm({
         location: {
           servicePerformanceCountries: data.location?.servicePerformanceCountries || [],
           dataLocationCountry: data.location?.dataLocationCountry || "",
-          dataStorageLocation: data.location?.dataStorageLocation,
+          dataStorageLocation: data.location?.dataStorageLocation || "",
         },
         criticality: {
           isCritical: data.criticality?.isCritical || false,
