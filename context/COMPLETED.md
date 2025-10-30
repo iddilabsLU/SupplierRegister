@@ -173,6 +173,54 @@ Entries are organized by sync date (when documentation was updated), not feature
   - Cloud/critical data clearing already existed (no changes needed)
   - All 10 test scenarios passed successfully
 
+## Documentation Sync: 2025-10-28 (Final)
+
+**Features Processed:** 3
+**Documentation Updated:** CLAUDE.md, ROADMAP.md
+**Sync Duration:** ~5 minutes
+
+---
+
+### ✅ SessionStorage Data Persistence (2025-10-28)
+- **User Impact:** Changes to suppliers (add, edit, delete) now persist when refreshing the page. Data survives refreshes during the session but resets to default when the browser tab is closed, providing a clean demo experience.
+- **Technical Details:**
+  - Created `lib/utils/session-storage.ts` (save/load/clear supplier utilities)
+  - Created `hooks/use-session-storage.ts` (React hook with automatic persistence on state changes)
+  - Created `components/shared/demo-banner.tsx` (dismissible banner explaining demo mode)
+  - Modified `app/suppliers/page.tsx` (integrated useSessionStorage hook)
+  - Modified `components/shared/supplier-register-table.tsx` (changed table hint banner from localStorage to sessionStorage for consistency)
+- **Validation Change:** NO
+- **Architecture Change:** NO (added utility layer, no structural changes)
+- **Commit:** a01dffb4 "feature: Add sessionStorage data persistence for supplier register"
+- **Docs Updated:** CLAUDE.md (added to What Works), ROADMAP.md (marked as Done)
+
+### ✅ Delete Supplier Functionality (2025-10-28)
+- **User Impact:** Users can now delete suppliers from the register table. Clicking the delete button shows a confirmation dialog with supplier details, and upon confirmation, the supplier is permanently removed from the list. Changes persist across page refreshes during the session.
+- **Technical Details:**
+  - Added `handleDeleteSupplier` function in `app/suppliers/page.tsx` (filters suppliers by reference number)
+  - Wired `onDelete` prop to `SupplierRegisterTable` component
+  - Fixed toast notification in `components/shared/supplier-register-table.tsx` (moved outside if/else to always show)
+  - Delete functionality integrates with existing sessionStorage persistence (auto-saves)
+  - Confirmation dialog and toast notification already existed, just needed wiring
+- **Validation Change:** NO
+- **Architecture Change:** NO (used existing UI components and state patterns)
+- **Commit:** 813d3ca "feature: Implement delete supplier functionality"
+- **Docs Updated:** CLAUDE.md (added to What Works), ROADMAP.md (marked as Done)
+
+### ✅ Instant Duplicate Supplier (2025-10-28)
+- **User Impact:** Users can now instantly duplicate any supplier by clicking the Duplicate button. A new supplier is created with an auto-generated reference number, Draft status, and all original fields preserved (including dates and pending fields). A toast notification confirms the action.
+- **Technical Details:**
+  - Added `handleDuplicateSupplier` function in `app/suppliers/page.tsx` (clones supplier data, generates new reference, sets status to Draft)
+  - Added `toast` import from sonner library
+  - Wired `onDuplicate` prop to `SupplierRegisterTable` component
+  - Duplicate is added directly to suppliers array (no form redirect, stays on register list)
+  - Toast notification shows: "Supplier duplicated - Created {newRef} based on {originalRef}"
+  - Changes auto-persist via sessionStorage
+- **Validation Change:** NO
+- **Architecture Change:** NO (reused existing patterns and state management)
+- **Commit:** 778f14b "feature: Implement instant duplicate supplier functionality"
+- **Docs Updated:** CLAUDE.md (added to What Works), ROADMAP.md (marked as Done)
+
 ---
 
 <!-- Future syncs will be appended below -->

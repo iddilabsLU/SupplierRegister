@@ -6,13 +6,16 @@ This document outlines the planned features and priorities for the Supplier Regi
 
 ## Current Status
 
-**Phase 1: Frontend Demo - 97% COMPLETE** ✅
+**Phase 1: Frontend Demo - 100% COMPLETE** ✅
 
 ### What's Working:
 - ✅ Supplier Register Table with expand/collapse rows
 - ✅ 4-tab detail view (Basic Info, Provider, Cloud, Critical)
 - ✅ **Add Supplier Form** - Complete 4-tab form with all 73 CSSF fields
 - ✅ **Edit Supplier Form** - Edit existing suppliers with pre-filled data
+- ✅ **Delete Supplier** - Remove suppliers with confirmation dialog and toast notification
+- ✅ **Duplicate Supplier** - Instantly clone suppliers with new reference number and Draft status
+- ✅ **Data Persistence** - sessionStorage saves changes across page refreshes (within session)
 - ✅ **Pending Fields Feature** - Mark incomplete fields, skip validation, amber badges
 - ✅ **Form Validation** - Two-layer system (see `VALIDATION.md`)
 - ✅ **Save as Draft** - Auto-marks empty required fields as pending
@@ -21,9 +24,6 @@ This document outlines the planned features and priorities for the Supplier Regi
 - ✅ **CSSF Compliance** - All 73 fields from Circular 22/806 Points 53, 54, 55
 
 ### What's NOT Working:
-- ❌ **Duplicate Supplier** - Shows toast but doesn't clone (UI only)
-- ❌ **Delete Supplier** - Shows toast but doesn't remove (UI only)
-- ❌ **Data Persistence** - All data resets on page refresh (no storage yet)
 - ❌ **Dashboard View** - Placeholder only (Coming Soon message)
 
 ---
@@ -379,9 +379,9 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 | Feature | Priority | Effort | Impact | Status |
 |---------|----------|--------|--------|--------|
 | Edit Supplier | 🔥 High | 2h | High | ✅ Done |
-| Data Persistence | 🔥 High | 1-2h | High | Pending |
-| Duplicate Supplier | 🔸 Medium | 1h | Medium | Pending |
-| Delete Supplier | 🔸 Medium | 30m | Medium | Pending |
+| Data Persistence | 🔥 High | 1-2h | High | ✅ Done |
+| Delete Supplier | 🔸 Medium | 30m | Medium | ✅ Done |
+| Duplicate Supplier | 🔸 Medium | 1h | Medium | ✅ Done |
 | Export (Excel/PDF) | 🔸 Medium | 3-4h | Medium | Pending |
 | Dashboard View | 🔹 Low | 4-6h | Medium | Pending |
 | Desktop App (Tauri) | 🔹 Future | 2-3w | High | Not Started |
@@ -390,29 +390,29 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 
 ## Next Steps (Immediate)
 
-Based on roadmap priorities: **"data persistence then delete supplier"**
+**Phase 1 is COMPLETE!** All planned frontend features implemented.
 
-### Step 1: Data Persistence (Next Priority)
-1. Create `session-storage.ts` utility
-2. Create demo banner component
-3. Load suppliers on mount
-4. Save on every add/edit/delete
-5. Test refresh behavior
+### Step 1: Export Functionality (Next Priority)
+1. Implement Excel export (.xlsx) using SheetJS
+2. Implement PDF export using jsPDF + AutoTable
+3. Add export button to register table
+4. Test with various filter combinations
 
-### Step 2: Delete Supplier (After Persistence)
-1. Wire up Delete button with confirmation
-2. Remove from suppliers array
-3. Update sessionStorage
-4. Test edge cases
+### Step 2: Dashboard View (Optional)
+1. Create metrics cards (total, critical, cloud, pending)
+2. Add charts (Recharts recommended)
+3. Implement filter integration
+4. Add PDF export option
 
-### Step 3: Duplicate Supplier
-1. Clone supplier data
-2. Generate new reference number
-3. Open form in add mode with pre-filled data
-4. Allow modifications before saving
+### Step 3: Phase 2 Planning (Future)
+1. Design Tauri desktop app architecture
+2. Plan SQLite database schema
+3. Migrate frontend to desktop
+4. Add local persistence layer
 
 ---
 
 **Last Updated:** 2025-10-28
-**Next Priority:** Data Persistence (sessionStorage)
-**Related Files:** CLAUDE.md, VALIDATION.md, app/suppliers/page.tsx
+**Phase Status:** Phase 1 - 100% Complete ✅
+**Next Priority:** Export Functionality or Dashboard
+**Related Files:** CLAUDE.md, VALIDATION.md, ARCHITECTURE.md

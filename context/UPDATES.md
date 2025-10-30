@@ -2,7 +2,7 @@
 
 **Purpose:** This file tracks completed features that need to be incorporated into main documentation (CLAUDE.md, ROADMAP.md, etc.). It is maintained by Claude Code via the `/log-update` slash command.
 
-**Last Updated:** 2025-10-28
+**Last Updated:** 2025-10-28 (Synced: Documentation updated, entries archived)
 
 ---
 
@@ -57,33 +57,7 @@ When `/docs-sync` is run:
 <!-- Claude Code: Add completed features here via /log-update -->
 <!-- These will be processed by /docs-sync and moved to COMPLETED.md -->
 
-### ✅ SessionStorage Data Persistence (2025-10-28)
-- **User Impact:** Changes to suppliers (add, edit, delete) now persist when refreshing the page. Data survives refreshes during the session but resets to default when the browser tab is closed, providing a clean demo experience.
-- **Technical Details:**
-  - Created `lib/utils/session-storage.ts` (save/load/clear supplier utilities)
-  - Created `hooks/use-session-storage.ts` (React hook with automatic persistence on state changes)
-  - Created `components/shared/demo-banner.tsx` (dismissible banner explaining demo mode)
-  - Modified `app/suppliers/page.tsx` (integrated useSessionStorage hook)
-  - Modified `components/shared/supplier-register-table.tsx` (changed table hint banner from localStorage to sessionStorage for consistency)
-- **Validation Change:** NO
-- **Architecture Change:** NO (added utility layer, no structural changes)
-- **Commit:** a01dffb4 "feature: Add sessionStorage data persistence for supplier register"
-- **Docs to Update:** CLAUDE.md, ROADMAP.md
-- **Additional Notes:** All banners now use sessionStorage for dismissal (reset on tab close). Successfully tested: add/edit persist on refresh, delete pending implementation, data resets on tab close.
-
-### ✅ Delete Supplier Functionality (2025-10-28)
-- **User Impact:** Users can now delete suppliers from the register table. Clicking the delete button shows a confirmation dialog with supplier details, and upon confirmation, the supplier is permanently removed from the list. Changes persist across page refreshes during the session.
-- **Technical Details:**
-  - Added `handleDeleteSupplier` function in `app/suppliers/page.tsx` (filters suppliers by reference number)
-  - Wired `onDelete` prop to `SupplierRegisterTable` component
-  - Fixed toast notification in `components/shared/supplier-register-table.tsx` (moved outside if/else to always show)
-  - Delete functionality integrates with existing sessionStorage persistence (auto-saves)
-  - Confirmation dialog and toast notification already existed, just needed wiring
-- **Validation Change:** NO
-- **Architecture Change:** NO (used existing UI components and state patterns)
-- **Commit:** 813d3ca " feature: Implement delete supplier functionality"
-- **Docs to Update:** CLAUDE.md, ROADMAP.md
-- **Additional Notes:** Fixed bug where toast notification wasn't appearing because it was inside else block. All tests passed: basic delete, persistence on refresh, reset on tab close, delete with filters, delete multiple suppliers, delete while row expanded.
+*No completed features pending documentation.*
 
 ---
 

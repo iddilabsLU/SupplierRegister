@@ -29,7 +29,8 @@
       "Bash(node:*)",
       "Read(//c/**)",
       "Bash(git checkout:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []

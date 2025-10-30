@@ -43,18 +43,19 @@ $ npm run lint         # Check code quality
 - **Supplier Register Table** - View, filter, search 73 CSSF-compliant fields
 - **Add Supplier Form** - Complete 4-tab form with pending fields feature
 - **Edit Supplier** - Edit existing suppliers, form pre-fills with data, reference locked
+- **Delete Supplier** - Remove suppliers with confirmation dialog
+- **Duplicate Supplier** - Instantly clone suppliers with new reference number and Draft status
+- **Data Persistence** - sessionStorage saves changes across page refreshes (within session)
 - **Validation System** - Two-layer approach (see `context/VALIDATION.md`)
 - **Filtering** - Quick filters, custom filters, global text search with highlighting
 - **Pending Fields** - Mark incomplete fields, auto-mark on draft, skip validation
 - **Build & Deployment** - All TypeScript errors fixed, ready for Vercel
 
 ### Recent Changes:
-- ✅ **Edit Supplier** (Oct 28) - Users can edit suppliers, reference number locked, pending fields preserved
-- ✅ **Removed Zod content validation** - No more red borders on blur
-- ✅ **Fixed 4 Vercel build errors** - TypeScript, unused functions resolved
-- ✅ **Validation happens ONLY on save** - Dialog shows missing fields
-- ✅ **All 73 fields work with pending feature** - Amber badges, skip validation
-- ✅ **Group Entities field removed** - Per CSSF requirements
+- ✅ **Instant Duplicate Supplier** (Oct 28) - Click duplicate button to instantly create new supplier with auto-generated reference and Draft status
+- ✅ **Delete Supplier** (Oct 28) - Remove suppliers with confirmation dialog, toast notification
+- ✅ **Data Persistence** (Oct 28) - sessionStorage saves supplier data across page refreshes within session
+- ✅ **Edit Supplier** (Oct 28) - Edit existing suppliers, reference number locked, pending fields preserved
 
 ---
 
@@ -71,11 +72,11 @@ For detailed information, see these files:
 
 ## 🎯 Next Priorities
 
-1. **Data Persistence** (High Priority) - sessionStorage for demo
-2. **Delete Supplier** (Medium Priority) - Remove suppliers with confirmation
-3. **Duplicate Supplier** (Medium) - Clone with new reference number
-4. **Export** (Medium) - Excel/PDF export
-5. **Dashboard** (Low) - Analytics and charts
+**Phase 1 is COMPLETE!** All core features implemented. Next phase options:
+
+1. **Export Functionality** (Medium) - Excel/PDF export of supplier data
+2. **Dashboard View** (Low) - Analytics, charts, key metrics
+3. **Desktop Application** (Future) - Tauri + SQLite for offline use
 
 See full roadmap in `context/ROADMAP.md`
 
@@ -124,9 +125,7 @@ See `context/workflows/DEPLOY.md` for Vercel checklist
 
 ## 🐛 Known Issues
 
-- **Duplicate/Delete actions** - UI only (not functional yet)
-- **Data resets on refresh** - No persistence yet (sessionStorage planned)
-- **Dashboard view** - Placeholder only
+- **Dashboard view** - Placeholder only (coming soon)
 
 ---
 
@@ -150,4 +149,4 @@ See `context/workflows/DEPLOY.md` for Vercel checklist
 
 ---
 
-**Created with Claude Code** | Last Updated: 2025-10-25
+**Created with Claude Code** | Last Updated: 2025-10-28
