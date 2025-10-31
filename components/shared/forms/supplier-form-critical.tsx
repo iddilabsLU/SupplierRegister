@@ -8,16 +8,13 @@ import { FormRadioGroup } from "./fields/form-radio-group"
 import { FormDatePicker } from "./fields/form-date-picker"
 import { FormMultiText } from "./fields/form-multi-text"
 import { FormSubContractor } from "./fields/form-sub-contractor"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { RiskLevel, SubstitutabilityOutcome } from "@/lib/types/supplier"
 import type { Control } from "react-hook-form"
 import type { SupplierFormData } from "@/lib/validations/supplier-schema"
+import { useWatch } from "react-hook-form"
 
 interface SupplierFormCriticalProps {
   control: Control<SupplierFormData>
-  hasSubOutsourcing: boolean
-  onSubOutsourcingChange: (enabled: boolean) => void
   toggleFieldPending: (fieldPath: string) => void
   isFieldPending: (fieldPath: string) => boolean
 }
@@ -28,11 +25,15 @@ interface SupplierFormCriticalProps {
  */
 export function SupplierFormCritical({
   control,
-  hasSubOutsourcing,
-  onSubOutsourcingChange,
   toggleFieldPending,
   isFieldPending,
 }: SupplierFormCriticalProps) {
+  // Watch hasSubOutsourcing field to control conditional visibility
+  const hasSubOutsourcing = useWatch({
+    control,
+    name: "criticalFields.subOutsourcing.hasSubOutsourcing",
+  })
+
   // Risk Level options
   const riskOptions = Object.values(RiskLevel).map((risk) => ({
     value: risk,
@@ -184,19 +185,17 @@ export function SupplierFormCritical({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {/* Toggle for sub-outsourcing */}
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="has-sub-outsourcing"
-                checked={hasSubOutsourcing}
-                onCheckedChange={onSubOutsourcingChange}
-              />
-              <Label htmlFor="has-sub-outsourcing" className="text-base cursor-pointer">
-                Activities are sub-outsourced <span className="text-sm text-muted-foreground">(55.g)</span>
-              </Label>
-            </div>
+            {/* Toggle for sub-outsourcing - now properly wired to React Hook Form */}
+            <FormRadioGroup
+              control={control}
+              name="criticalFields.subOutsourcing.hasSubOutsourcing"
+              label="Activities are Sub-Outsourced"
+              circularRef="55.g"
+              toggleFieldPending={toggleFieldPending}
+              isFieldPending={isFieldPending}
+            />
 
-            {hasSubOutsourcing && (
+            {hasSubOutsourcing === true && (
               <div className="space-y-4 pt-2">
                 <FormSubContractor
                   control={control}

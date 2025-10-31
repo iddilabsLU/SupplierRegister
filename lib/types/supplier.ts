@@ -52,7 +52,12 @@ export enum RiskLevel {
   HIGH = "High",
 }
 
-// Mandatory fields for ALL outsourcing arrangements (Point 54)
+/**
+ * Mandatory fields for ALL outsourcing arrangements (Point 54)
+ * 25 fields total. All fields are mandatory per CSSF requirements except:
+ * - legalEntityIdentifier (optional "if any")
+ * - parentCompany (optional "if any")
+ */
 export interface MandatoryOutsourcingFields {
   // 54.a - Reference Number
   referenceNumber: string
@@ -66,7 +71,7 @@ export interface MandatoryOutsourcingFields {
     entityNoticePeriod: string
   }
 
-  // 53 - Status
+  // 53 - Status of outsourcing arrangement
   status: OutsourcingStatus
 
   // 54.c - Function Description
@@ -78,17 +83,17 @@ export interface MandatoryOutsourcingFields {
     personalDataTransferred: boolean
   }
 
-  // 54.d - Category
+  // 54.d - Category of outsourcing
   category: OutsourcingCategory
 
   // 54.e - Service Provider Information
   serviceProvider: {
     name: string
     corporateRegistrationNumber: string
-    legalEntityIdentifier?: string
+    legalEntityIdentifier?: string // Optional: "if any" per CSSF
     registeredAddress: string
     contactDetails: string
-    parentCompany?: string
+    parentCompany?: string // Optional: "if any" per CSSF
   }
 
   // 54.f - Location Information (all mandatory per CSSF Point 54.f)
@@ -100,25 +105,30 @@ export interface MandatoryOutsourcingFields {
 
   // 54.g - Criticality Assessment
   criticality: {
-    isCritical: boolean
+    isCritical: boolean // Determines if Point 55 (CriticalOutsourcingFields) is required
     reasons: string
   }
 
   // 54.i - Criticality Assessment Date
   criticalityAssessmentDate: string
 
-  // 54.h - Cloud Service Information (if applicable)
+  // 54.h - Cloud Service Information (conditional: entire section only when category = Cloud)
   cloudService?: {
     serviceModel: CloudServiceModel
     deploymentModel: DeploymentModel
     dataNature: string
     storageLocations: string[]
-    cloudOfficer?: string
-    resourceOperator?: string
+    cloudOfficer?: string // Optional within cloud section
+    resourceOperator?: string // Optional within cloud section
   }
 }
 
-// Additional fields for CRITICAL functions only (Point 55)
+/**
+ * Additional fields for CRITICAL functions only (Point 55)
+ * 21 fields total. Only required when criticality.isCritical = true
+ * All fields are mandatory within this section except:
+ * - subOutsourcing.subContractors (conditional: only when hasSubOutsourcing = true)
+ */
 export interface CriticalOutsourcingFields {
   // 55.a - Entities Using the Outsourcing
   entitiesUsing: {
@@ -147,17 +157,18 @@ export interface CriticalOutsourcingFields {
   // 55.e - Governing Law
   governingLaw: string
 
-  // 55.f - Audit Information (all mandatory when criticality.isCritical = true per CSSF Point 55.f)
+  // 55.f - Audit Information (all mandatory per CSSF Point 55.f)
   audit: {
     lastAuditDate: string
     nextScheduledAudit: string
   }
 
-  // 55.g - Sub-Outsourcing Information (where applicable)
+  // 55.g - Sub-Outsourcing Information (conditional: only when sub-outsourcing exists)
   subOutsourcing?: {
+    hasSubOutsourcing: boolean // Are activities sub-outsourced? (Yes/No)
     subContractors: Array<{
-      activityDescription: string
       name: string
+      activityDescription: string
       registrationCountry: string
       servicePerformanceCountry: string
       dataStorageLocation: string
@@ -177,27 +188,42 @@ export interface CriticalOutsourcingFields {
   // 55.j - Time Criticality
   isTimeCritical: boolean
 
-  // 55.k - Cost Information (all mandatory when criticality.isCritical = true per CSSF Point 55.k)
+  // 55.k - Cost Information (all mandatory per CSSF Point 55.k)
   estimatedAnnualCost: number
   costComments: string
 
-  // 55.l - Regulatory Notification (mandatory when criticality.isCritical = true per CSSF Point 55.l)
+  // 55.l - Regulatory Notification (all mandatory per CSSF Point 55.l)
   regulatoryNotification: {
     notificationDate: string
   }
 }
 
-// Complete supplier outsourcing type
+/**
+ * Complete supplier outsourcing type
+ * Combines mandatory fields (Point 54: 25 fields) with conditional critical fields (Point 55: 21 fields)
+ * Total: 52 CSSF-compliant fields
+ */
 export interface SupplierOutsourcing extends MandatoryOutsourcingFields {
-  // Critical fields are optional - only present if criticality.isCritical is true
+  /**
+   * Critical fields - conditional section only required when criticality.isCritical = true
+   * Contains all Point 55 fields (21 fields)
+   */
   criticalFields?: CriticalOutsourcingFields
 
-  // Incomplete fields tracking - array of field paths that are mandatory but not filled
-  // Used to show red "!" indicator in register and for future dashboard/filter functionality
+  /**
+   * Incomplete fields tracking - array of field paths that are mandatory but not filled
+   * Not actively used in Phase 1, reserved for future dashboard/analytics
+   * Field path examples: "serviceProvider.name", "dates.startDate"
+   */
   incompleteFields?: string[]
 
-  // Pending fields tracking - array of field paths that are marked as "to be completed later"
-  // Pending fields skip validation and are highlighted in amber in the register view
-  // Field path examples: "referenceNumber", "dates.startDate", "serviceProvider.name", "criticalFields.riskAssessment.risk"
+  /**
+   * Pending fields tracking - array of field paths marked as "to be completed later"
+   * Pending fields:
+   * - Skip validation (can save supplier with pending fields empty)
+   * - Display amber pin indicator in register view
+   * - Show "*" marker in exports
+   * Field path examples: "referenceNumber", "dates.startDate", "serviceProvider.name", "criticalFields.riskAssessment.risk"
+   */
   pendingFields?: string[]
 }

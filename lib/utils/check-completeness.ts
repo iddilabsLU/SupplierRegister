@@ -215,10 +215,22 @@ export function checkIncompleteFields(
       addIncomplete("criticalFields.audit.nextScheduledAudit", "Next Scheduled Audit (55.f)")
     }
 
-    // 55.g - Sub-Outsourcing (conditional within critical)
-    if (cf.subOutsourcing) {
+    // 55.g - Sub-Outsourcing (mandatory toggle, conditional array)
+    // First check: hasSubOutsourcing toggle is mandatory for critical suppliers
+    if (typeof cf.subOutsourcing?.hasSubOutsourcing !== "boolean") {
+      addIncomplete(
+        "criticalFields.subOutsourcing.hasSubOutsourcing",
+        "Activities are Sub-Outsourced? (55.g)"
+      )
+    }
+
+    // Second check: If toggle = true, validate sub-contractors array
+    if (cf.subOutsourcing?.hasSubOutsourcing === true) {
       if (!cf.subOutsourcing.subContractors || cf.subOutsourcing.subContractors.length === 0) {
-        addIncomplete("criticalFields.subOutsourcing.subContractors", "Sub-Contractors (55.g)")
+        addIncomplete(
+          "criticalFields.subOutsourcing.subContractors",
+          "Sub-Contractors (55.g) - You indicated sub-outsourcing but provided no details"
+        )
       } else {
         // Check each sub-contractor's mandatory fields
         cf.subOutsourcing.subContractors.forEach((subContractor, index) => {

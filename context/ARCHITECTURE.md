@@ -328,6 +328,14 @@ export interface SupplierOutsourcing extends MandatoryOutsourcingFields {
 }
 ```
 
+**Type System Design (Oct 30, 2025):**
+The type definitions in `supplier.ts` are intentionally aligned with CSSF Circular 22/806 requirements:
+- **Mandatory fields** (all except noted) are marked as **required** (no `?`)
+- **CSSF-Optional fields** remain optional: `parentCompany?`, `legalEntityIdentifier?`
+- **Conditional objects** remain optional: `cloudService?` (only when category=Cloud), `criticalFields?` (only when isCritical=true), `subOutsourcing?` (when declared)
+- The type accurately reflects business logic in `checkIncompleteFields()`, which validates these fields as mandatory per CSSF requirements
+- This alignment improves code clarity and eliminates defensive checks for guaranteed-to-exist fields
+
 #### `/lib/data` - Dummy Data
 
 | File | Purpose |

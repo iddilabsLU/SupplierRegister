@@ -143,11 +143,12 @@ export const supplierFormSchema = z.object({
       // 55.g - Sub-Outsourcing Information
       subOutsourcing: z
         .object({
+          hasSubOutsourcing: z.boolean().optional(),
           subContractors: z
             .array(
               z.object({
-                activityDescription: z.string().optional(),
                 name: z.string().optional(),
+                activityDescription: z.string().optional(),
                 registrationCountry: z.string().optional(),
                 servicePerformanceCountry: z.string().optional(),
                 dataStorageLocation: z.string().optional(),

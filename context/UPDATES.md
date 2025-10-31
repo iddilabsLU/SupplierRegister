@@ -57,7 +57,18 @@ When `/docs-sync` is run:
 <!-- Claude Code: Add completed features here via /log-update -->
 <!-- These will be processed by /docs-sync and moved to COMPLETED.md -->
 
-*No completed features pending documentation.*
+### ✅ Align Type Definitions with CSSF Requirements (2025-10-30)
+- **User Impact:** No user-facing changes. Internal code clarity improvement.
+- **Technical Details:**
+  - Modified `lib/types/supplier.ts` (removed 9 optional markers from mandatory fields per CSSF Circular 22/806)
+  - Modified `lib/data/suppliers.ts` (updated dummy suppliers with missing required fields)
+  - Modified `components/shared/forms/supplier-form.tsx` (added `|| ""` fallbacks for newly-required fields)
+  - Type now accurately reflects CSSF requirements: all fields mandatory except `parentCompany`, `legalEntityIdentifier`, and conditional objects (`cloudService?`, `criticalFields?`, `subOutsourcing?`)
+- **Validation Change:** NO - `check-completeness.ts` logic unchanged; type now matches existing validation requirements
+- **Architecture Change:** NO - No structural or architectural changes
+- **Commit:** d937da6 "align lib/types/supplier.ts with CSSF mandatory field requirements"
+- **Docs to Update:** CLAUDE.md, ARCHITECTURE.md
+- **Additional Notes:** Build: 0 TypeScript errors. All tests passing (draft save, edit, duplicate, display). This improves code maintainability and makes export function implementation cleaner by removing need for defensive checks on guaranteed-to-exist fields.
 
 ---
 

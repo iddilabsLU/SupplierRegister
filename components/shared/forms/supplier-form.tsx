@@ -55,7 +55,6 @@ export function SupplierForm({
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [incompleteFieldLabels, setIncompleteFieldLabels] = useState<string[]>([])
   const [pendingData, setPendingData] = useState<SupplierFormData | null>(null)
-  const [hasSubOutsourcing, setHasSubOutsourcing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDraftSaving, setIsDraftSaving] = useState(false)
   const [pendingFields, setPendingFields] = useState<string[]>(initialData?.pendingFields || [])
@@ -273,6 +272,7 @@ export function SupplierForm({
                 },
                 subOutsourcing: data.criticalFields.subOutsourcing
                   ? {
+                      hasSubOutsourcing: data.criticalFields.subOutsourcing.hasSubOutsourcing ?? false,
                       subContractors: data.criticalFields.subOutsourcing.subContractors || [],
                     }
                   : undefined,
@@ -452,8 +452,6 @@ export function SupplierForm({
             <div className={activeTab === "critical" ? "relative z-10" : "absolute top-0 left-0 w-full opacity-0 pointer-events-none z-0"}>
               <SupplierFormCritical
                 control={form.control}
-                hasSubOutsourcing={hasSubOutsourcing}
-                onSubOutsourcingChange={setHasSubOutsourcing}
                 toggleFieldPending={toggleFieldPending}
                 isFieldPending={isFieldPending}
               />

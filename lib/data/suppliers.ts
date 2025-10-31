@@ -84,10 +84,11 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-06-20",
       },
       subOutsourcing: {
+        hasSubOutsourcing: true,
         subContractors: [
           {
-            activityDescription: "Physical data center infrastructure and network connectivity services",
             name: "SecureNet Data Centers GmbH",
+            activityDescription: "Physical data center infrastructure and network connectivity services",
             registrationCountry: "Germany",
             servicePerformanceCountry: "Germany",
             dataStorageLocation: "Frankfurt, Germany",
@@ -218,10 +219,11 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-05-10",
       },
       subOutsourcing: {
+        hasSubOutsourcing: true,
         subContractors: [
           {
-            activityDescription: "International wire transfer messaging and settlement services via SWIFT network",
             name: "SWIFT Belgium",
+            activityDescription: "International wire transfer messaging and settlement services via SWIFT network",
             registrationCountry: "Belgium",
             servicePerformanceCountry: "Belgium",
             dataStorageLocation: "Brussels, Belgium",
@@ -352,10 +354,11 @@ export const suppliers: SupplierOutsourcing[] = [
         nextScheduledAudit: "2025-02-15",
       },
       subOutsourcing: {
+        hasSubOutsourcing: true,
         subContractors: [
           {
-            activityDescription: "Cloud infrastructure hosting and managed database services for core banking platform",
             name: "AWS Europe (Luxembourg) S.à r.l.",
+            activityDescription: "Cloud infrastructure hosting and managed database services for core banking platform",
             registrationCountry: "Luxembourg",
             servicePerformanceCountry: "Luxembourg",
             dataStorageLocation: "Luxembourg",

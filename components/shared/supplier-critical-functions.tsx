@@ -143,66 +143,73 @@ export function SupplierCriticalFunctions({ supplier }: SupplierCriticalFunction
         </CardContent>
       </Card>
 
-      {/* Card 3: Sub-Outsourcing (conditional - only if exists) */}
-      {criticalFields.subOutsourcing && (
-        <Card className="bg-white shadow-sm gap-4 py-4">
-          <CardHeader className="pb-0">
-            <CardTitle className="text-xl">Sub-Outsourcing Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <FieldDisplay
-              label="Activities sub-outsourced?"
-              circularRef="55.g"
-              value="Yes"
-              searchTerm={searchTerm}
-              isPending={false}
-            />
-            {criticalFields.subOutsourcing.subContractors.map((sub, index) => (
-              <div
-                key={index}
-                className="grid gap-3 rounded-lg border p-2 grid-cols-2 [&>*]:min-w-0"
-              >
-                <FieldDisplay
-                  label="Activity Sub-Outsourced"
-                  circularRef="55.g"
-                  value={sub.activityDescription}
-                  className="col-span-2"
-                  searchTerm={searchTerm}
-                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.activityDescription`)}
-                />
-                <FieldDisplay
-                  label="Sub-Contractor Name"
-                  circularRef="55.g"
-                  value={sub.name}
-                  searchTerm={searchTerm}
-                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.name`)}
-                />
-                <FieldDisplay
-                  label="Registration Country"
-                  circularRef="55.g"
-                  value={sub.registrationCountry}
-                  searchTerm={searchTerm}
-                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.registrationCountry`)}
-                />
-                <FieldDisplay
-                  label="Service Performance Country"
-                  circularRef="55.g"
-                  value={sub.servicePerformanceCountry}
-                  searchTerm={searchTerm}
-                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.servicePerformanceCountry`)}
-                />
-                <FieldDisplay
-                  label="Data Storage Location"
-                  circularRef="55.g"
-                  value={sub.dataStorageLocation}
-                  searchTerm={searchTerm}
-                  isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.dataStorageLocation`)}
-                />
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
+      {/* Card 3: Sub-Outsourcing - Always shown for critical suppliers */}
+      <Card className="bg-white shadow-sm gap-4 py-4">
+        <CardHeader className="pb-0">
+          <CardTitle className="text-xl">Sub-Outsourcing Information</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {/* Toggle field - mandatory for critical suppliers */}
+          <FieldDisplay
+            label="Activities are Sub-Outsourced"
+            circularRef="55.g"
+            value={criticalFields.subOutsourcing?.hasSubOutsourcing}
+            searchTerm={searchTerm}
+            isPending={supplier.pendingFields?.includes("criticalFields.subOutsourcing.hasSubOutsourcing")}
+          />
+
+          {/* Subcontractor details - only shown if toggle is Yes */}
+          {criticalFields.subOutsourcing?.hasSubOutsourcing === true &&
+           criticalFields.subOutsourcing.subContractors &&
+           criticalFields.subOutsourcing.subContractors.length > 0 && (
+            <>
+              {criticalFields.subOutsourcing.subContractors.map((sub, index) => (
+                <div
+                  key={index}
+                  className="grid gap-3 rounded-lg border p-2 grid-cols-2 [&>*]:min-w-0"
+                >
+                  <FieldDisplay
+                    label="Activity Sub-Outsourced"
+                    circularRef="55.g"
+                    value={sub.activityDescription}
+                    className="col-span-2"
+                    searchTerm={searchTerm}
+                    isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.activityDescription`)}
+                  />
+                  <FieldDisplay
+                    label="Sub-Contractor Name"
+                    circularRef="55.g"
+                    value={sub.name}
+                    searchTerm={searchTerm}
+                    isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.name`)}
+                  />
+                  <FieldDisplay
+                    label="Registration Country"
+                    circularRef="55.g"
+                    value={sub.registrationCountry}
+                    searchTerm={searchTerm}
+                    isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.registrationCountry`)}
+                  />
+                  <FieldDisplay
+                    label="Service Performance Country"
+                    circularRef="55.g"
+                    value={sub.servicePerformanceCountry}
+                    searchTerm={searchTerm}
+                    isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.servicePerformanceCountry`)}
+                  />
+                  <FieldDisplay
+                    label="Data Storage Location"
+                    circularRef="55.g"
+                    value={sub.dataStorageLocation}
+                    searchTerm={searchTerm}
+                    isPending={supplier.pendingFields?.includes(`criticalFields.subOutsourcing.subContractors.${index}.dataStorageLocation`)}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Card 4: Substitutability & Operations */}
       <Card className="bg-white shadow-sm gap-4 py-4">

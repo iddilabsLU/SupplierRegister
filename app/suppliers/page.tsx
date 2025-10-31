@@ -187,6 +187,7 @@ export default function SuppliersPage() {
                 onEdit={handleEditSupplier}
                 onDuplicate={handleDuplicateSupplier}
                 onDelete={handleDeleteSupplier}
+                allSuppliers={suppliers}
               />
             ) : (
               <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/30 p-12 text-center">

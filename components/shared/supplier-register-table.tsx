@@ -33,6 +33,7 @@ import type { SupplierOutsourcing } from "@/lib/types/supplier"
 import { SupplierDetailTabs } from "./supplier-detail-tabs"
 import { formatDateShort } from "@/lib/utils/formatters"
 import { toast } from "sonner"
+import { ExportButton } from "./export-button"
 
 interface SupplierRegisterTableProps {
   suppliers: SupplierOutsourcing[]
@@ -40,6 +41,7 @@ interface SupplierRegisterTableProps {
   onEdit?: (supplier: SupplierOutsourcing) => void
   onDuplicate?: (supplier: SupplierOutsourcing) => void
   onDelete?: (supplier: SupplierOutsourcing) => void
+  allSuppliers?: SupplierOutsourcing[] // For export: all suppliers before filtering
 }
 
 export function SupplierRegisterTable({
@@ -48,7 +50,10 @@ export function SupplierRegisterTable({
   onEdit,
   onDuplicate,
   onDelete,
+  allSuppliers,
 }: SupplierRegisterTableProps) {
+  // Use allSuppliers if provided, otherwise use suppliers (for backward compatibility)
+  const suppliersForExport = allSuppliers || suppliers
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [supplierToDelete, setSupplierToDelete] = useState<SupplierOutsourcing | null>(null)
@@ -136,6 +141,20 @@ export function SupplierRegisterTable({
           </Button>
         </div>
       )}
+
+      {/* Toolbar with Export Button */}
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          {suppliers.length === suppliersForExport.length ? (
+            <span>Showing {suppliers.length} supplier{suppliers.length !== 1 ? "s" : ""}</span>
+          ) : (
+            <span>
+              Showing {suppliers.length} of {suppliersForExport.length} suppliers (filtered)
+            </span>
+          )}
+        </div>
+        <ExportButton allSuppliers={suppliersForExport} filteredSuppliers={suppliers} />
+      </div>
 
       <div className="rounded-md border bg-white">
         <Table className="w-full table-fixed">
