@@ -130,7 +130,10 @@ export function checkIncompleteFields(
 - criticalFields.audit.lastAuditDate: must be non-empty string
 // ... 12+ more fields
 
-// If sub-outsourcing exists:
+// Sub-outsourcing toggle and subcontractors:
+- criticalFields.subOutsourcing.hasSubOutsourcing: must be true or false (not undefined)
+
+// If hasSubOutsourcing = true:
 - criticalFields.subOutsourcing.subContractors: must be non-empty array
   - Each sub-contractor must have: name, activityDescription, registrationCountry,
     servicePerformanceCountry, dataStorageLocation
@@ -156,6 +159,12 @@ const addIncomplete = (path: string, label: string) => {
 - `pendingFields = ["serviceProvider.name"]`
 - When completeness checker runs, it **skips** this field
 - User can save supplier without completing this field
+
+**Note on Sub-Outsourcing:**
+- The `hasSubOutsourcing` toggle is always checked first (must be true/false)
+- If toggle = true, then subcontractor array is checked
+- If toggle = false, subcontractor validation is skipped
+- This two-step validation allows proper pending field handling
 
 ---
 
@@ -263,14 +272,21 @@ if (data.criticality?.isCritical === true) {
 
 ### Sub-Outsourcing (Within Critical)
 ```typescript
-if (data.criticalFields?.subOutsourcing) {
+// Step 1: Always check toggle for critical suppliers
+if (data.criticality?.isCritical === true) {
+  // hasSubOutsourcing toggle must be true or false
+}
+
+// Step 2: If toggle = true, check subcontractors
+if (data.criticalFields?.subOutsourcing?.hasSubOutsourcing === true) {
   // Check sub-contractor array is non-empty
   // Check each sub-contractor has 5 mandatory fields
 }
 ```
 
 **When Hidden:** Sub-contractor fields are NOT checked
-**When Visible:** All sub-contractor fields become mandatory
+**When Toggle = No:** Sub-contractor fields are NOT checked
+**When Toggle = Yes:** Sub-contractor array and all sub-contractor fields become mandatory
 
 ---
 
@@ -377,5 +393,5 @@ const handleSaveSupplier = () => {
 
 ---
 
-**Last Updated:** 2025-10-25
+**Last Updated:** 2025-10-31
 **Related Files:** supplier-schema.ts, check-completeness.ts, supplier-form.tsx

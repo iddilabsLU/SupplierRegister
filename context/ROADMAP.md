@@ -309,7 +309,14 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 **Files to Modify:**
 - `components/shared/supplier-register-table.tsx` - Add export button
 
-**Estimated Effort:** 3-4 hours
+**Estimated Effort:** 3-4 hours (Actual: ~4 hours)
+
+**Status:** ✅ COMPLETED (2025-10-31)
+- Excel export: Summary (8 columns) + Full (52 fields) ✅
+- PDF export: Summary (8 columns) only ✅
+- Full PDF intentionally removed (layout too messy for 52 fields)
+- Both formats support filtered results
+- Export feature complete (Phase 1-4 of ExportFunctionPlan.md)
 
 ---
 
@@ -382,7 +389,7 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 | Data Persistence | 🔥 High | 1-2h | High | ✅ Done |
 | Delete Supplier | 🔸 Medium | 30m | Medium | ✅ Done |
 | Duplicate Supplier | 🔸 Medium | 1h | Medium | ✅ Done |
-| Export (Excel/PDF) | 🔸 Medium | 3-4h | Medium | Pending |
+| Export (Excel/PDF) | 🔸 Medium | 3-4h | Medium | ✅ Done |
 | Dashboard View | 🔹 Low | 4-6h | Medium | Pending |
 | Desktop App (Tauri) | 🔹 Future | 2-3w | High | Not Started |
 
@@ -392,19 +399,13 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 
 **Phase 1 is COMPLETE!** All planned frontend features implemented.
 
-### Step 1: Export Functionality (Next Priority)
-1. Implement Excel export (.xlsx) using SheetJS
-2. Implement PDF export using jsPDF + AutoTable
-3. Add export button to register table
-4. Test with various filter combinations
-
-### Step 2: Dashboard View (Optional)
+### Step 1: Dashboard View (Optional - Next Priority)
 1. Create metrics cards (total, critical, cloud, pending)
 2. Add charts (Recharts recommended)
 3. Implement filter integration
 4. Add PDF export option
 
-### Step 3: Phase 2 Planning (Future)
+### Step 2: Phase 2 Planning (Future)
 1. Design Tauri desktop app architecture
 2. Plan SQLite database schema
 3. Migrate frontend to desktop
@@ -412,7 +413,7 @@ function exportToPDF(suppliers: SupplierOutsourcing[]) {
 
 ---
 
-**Last Updated:** 2025-10-28
+**Last Updated:** 2025-10-31
 **Phase Status:** Phase 1 - 100% Complete ✅
-**Next Priority:** Export Functionality or Dashboard
+**Next Priority:** Dashboard View (Optional)
 **Related Files:** CLAUDE.md, VALIDATION.md, ARCHITECTURE.md

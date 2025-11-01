@@ -35,7 +35,7 @@ $ npm run lint         # Check code quality
 
 ---
 
-## ✅ Current Status (Updated: 2025-10-30)
+## ✅ Current Status (Updated: 2025-10-31)
 
 **Phase 1: Frontend Demo - COMPLETE** ✅
 
@@ -46,17 +46,18 @@ $ npm run lint         # Check code quality
 - **Delete Supplier** - Remove suppliers with confirmation dialog
 - **Duplicate Supplier** - Instantly clone suppliers with new reference number and Draft status
 - **Data Persistence** - sessionStorage saves changes across page refreshes (within session)
+- **Export Functionality** - Export to Excel (compact 8 cols / full 52 fields) or PDF (compact 8 cols)
 - **Validation System** - Two-layer approach (see `context/VALIDATION.md`)
 - **Filtering** - Quick filters, custom filters, global text search with highlighting
 - **Pending Fields** - Mark incomplete fields, auto-mark on draft, skip validation
 - **Build & Deployment** - All TypeScript errors fixed, ready for Vercel
 
 ### Recent Changes:
+- ✅ **Excel & PDF Export** (Oct 31) - Export register in Excel (compact/full) or PDF (compact only)
 - ✅ **Type System Alignment** (Oct 30) - Type definitions now match CSSF requirements for code clarity
 - ✅ **Instant Duplicate Supplier** (Oct 28) - Click duplicate button to instantly create new supplier with auto-generated reference and Draft status
 - ✅ **Delete Supplier** (Oct 28) - Remove suppliers with confirmation dialog, toast notification
 - ✅ **Data Persistence** (Oct 28) - sessionStorage saves supplier data across page refreshes within session
-- ✅ **Edit Supplier** (Oct 28) - Edit existing suppliers, reference number locked, pending fields preserved
 
 ---
 
@@ -75,9 +76,8 @@ For detailed information, see these files:
 
 **Phase 1 is COMPLETE!** All core features implemented. Next phase options:
 
-1. **Export Functionality** (Medium) - Excel/PDF export of supplier data
-2. **Dashboard View** (Low) - Analytics, charts, key metrics
-3. **Desktop Application** (Future) - Tauri + SQLite for offline use
+1. **Dashboard View** (Low) - Analytics, charts, key metrics
+2. **Desktop Application** (Future) - Tauri + SQLite for offline use
 
 See full roadmap in `context/ROADMAP.md`
 
@@ -92,7 +92,7 @@ This app implements **CSSF Circular 22/806 Section 4.2.7** requirements:
 - **Point 54.h:** Cloud service fields (6 fields, conditional)
 - **Point 55:** Critical function fields (18+ fields, conditional)
 
-**Total Fields:** 73 CSSF-compliant fields across 4 tabs
+**Total Fields:** 52 CSSF-compliant fields across 4 tabs
 
 **Mandatory Fields:** All except LEI and Parent Company
 **Conditional Fields:** Cloud (when category=Cloud), Critical (when isCritical=Yes)
@@ -150,4 +150,4 @@ See `context/workflows/DEPLOY.md` for Vercel checklist
 
 ---
 
-**Created with Claude Code** | Last Updated: 2025-10-28
+**Created with Claude Code** | Last Updated: 2025-10-31

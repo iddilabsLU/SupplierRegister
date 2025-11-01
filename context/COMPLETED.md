@@ -223,6 +223,83 @@ Entries are organized by sync date (when documentation was updated), not feature
 
 ---
 
+## Documentation Sync: 2025-10-31
+
+**Features Processed:** 3
+**Documentation Updated:** CLAUDE.md, ROADMAP.md, VALIDATION.md
+**Sync Duration:** ~5 minutes
+
+---
+
+### ✅ Excel Export Functionality (2025-10-31)
+- **User Impact:** Users can now export the supplier register to Excel with three options:
+  - **Compact view** - Summary export with 8 key columns
+  - **Full view** - Complete export with all 52 CSSF-compliant fields
+  - **Filtered view** - Export only the filtered results from current search/filters
+- **Technical Details:**
+  - Created `export-dialog.tsx` (modal with scope + format options)
+  - Created `export-button.tsx` (toolbar button to trigger export)
+  - Created `lib/utils/export-excel.ts` (Excel generation using SheetJS)
+  - Created `lib/utils/export-field-mapping.ts` (complete 52-field CSSF mapping - 548 lines)
+  - Created `lib/utils/export-formatters.ts` (data transformation utilities for dates, booleans, arrays)
+  - Integrated export button into `supplier-register-table.tsx` toolbar
+  - Added `xlsx` package for Excel generation
+  - Added `jspdf` + `jspdf-autotable` dependencies (for future PDF export)
+  - Smart handling: Pending fields marked with `*`, Cloud/Critical fields show "N/A" when not applicable, arrays formatted with commas/pipes
+  - **Added "Activities are sub-outsourced" field (Yes/No toggle) for critical suppliers:**
+    - Added `hasSubOutsourcing` boolean to 9 files (types, validation, form, display, export mapping, completeness check)
+    - Replaced plain Switch with proper FormRadioGroup in critical form
+    - Updated field count from 51→52 fields (21 critical fields now)
+    - Toggle controls whether subcontractor array fields are shown/required
+- **Validation Change:** YES - Added `hasSubOutsourcing` validation logic (checks toggle first, then subcontractor array if Yes)
+- **Architecture Change:** NO - New export utilities added, but no major structural changes
+- **Commit:** 54b67be 'Feature implemented: export excel function both compact and full view, phase 1 - 3 of the exprotfunctionplan.md.'
+- **Docs to Update:** CLAUDE.md, ROADMAP.md, VALIDATION.md
+- **Additional Notes:**
+  - Tested and working with no bugs found
+  - Part of `ExportFunctionPlan.md` implementation (Phase 1-3 complete)
+  - Phase 4-5 (PDF export) pending - button placeholder exists in dialog
+  - ARCHITECTURE.md already updated in commit with export section
+
+### ✅ PDF Export Functionality (2025-10-31)
+- **User Impact:** Users can now export the supplier register to PDF (compact/summary view only with 8 columns). Combined with Excel export, users now have 3 export options:
+  - **Excel Compact** - Summary export with 8 key columns
+  - **Excel Full** - Complete export with all 52 CSSF fields
+  - **PDF Compact** - Professional summary PDF with 8 columns (landscape, headers, page numbers)
+  - All formats support exporting filtered results
+- **Technical Details:**
+  - Created `lib/utils/export-pdf.ts` (PDF generation using jsPDF + jsPDF-AutoTable)
+  - Modified `export-dialog.tsx` (added PDF functionality, loading states, UX polish)
+  - Professional PDF formatting: landscape orientation, blue headers, striped rows, page numbers, export date
+  - Loading spinner during export prevents double-clicks
+  - Button text changes to "Exporting..." with animated Loader2 icon
+  - Helper text guides users when incompatible options selected
+  - PDF button disabled when "Full export" format selected (full PDF intentionally removed - layout too messy for 52 fields)
+  - All edge cases handled with proper error messages and toast notifications
+- **Validation Change:** NO - No validation logic changed
+- **Architecture Change:** NO - Added new utility file, no structural changes
+- **Commit:** 37789e5 'feat: implement PDF export and add export feature polish'
+- **Docs to Update:** CLAUDE.md, ROADMAP.md
+- **Additional Notes:**
+  - Tested and working with no bugs found
+  - Export feature now complete (Phase 4 of ExportFunctionPlan.md complete, Phase 5 skipped)
+  - Full PDF intentionally removed - Excel recommended for 52-field export
+
+### ✅ Align Type Definitions with CSSF Requirements (2025-10-30)
+- **User Impact:** No user-facing changes. Internal code clarity improvement.
+- **Technical Details:**
+  - Modified `lib/types/supplier.ts` (removed 9 optional markers from mandatory fields per CSSF Circular 22/806)
+  - Modified `lib/data/suppliers.ts` (updated dummy suppliers with missing required fields)
+  - Modified `components/shared/forms/supplier-form.tsx` (added `|| ""` fallbacks for newly-required fields)
+  - Type now accurately reflects CSSF requirements: all fields mandatory except `parentCompany`, `legalEntityIdentifier`, and conditional objects (`cloudService?`, `criticalFields?`, `subOutsourcing?`)
+- **Validation Change:** NO - `check-completeness.ts` logic unchanged; type now matches existing validation requirements
+- **Architecture Change:** NO - No structural or architectural changes
+- **Commit:** d937da6 "align lib/types/supplier.ts with CSSF mandatory field requirements"
+- **Docs to Update:** CLAUDE.md, ARCHITECTURE.md
+- **Additional Notes:** Build: 0 TypeScript errors. All tests passing (draft save, edit, duplicate, display). This improves code maintainability and makes export function implementation cleaner by removing need for defensive checks on guaranteed-to-exist fields.
+
+---
+
 <!-- Future syncs will be appended below -->
 <!-- /docs-sync automatically adds entries here -->
 
